@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>互动试戴 — 口腔3D图鉴</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <script type="importmap">{"imports":{"three":"./vendor/three/build/three.module.js","three/addons/":"./vendor/three/addons/"}}</script>
+</head>
+<body class="sim-page try-page">
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="口腔3D图鉴首页">
+      <span class="brand-mark">口</span>
+      <span data-brand-label>口腔3D图鉴<small>互动试戴</small></span>
+    </a>
+    <button class="nav-toggle" type="button" aria-label="打开导航" aria-expanded="false">菜单</button>
+    <nav class="specialty-nav" aria-label="专科导航">
+      <a href="index.html">首页</a><a href="pages/implant.html">种植</a><a href="pages/ortho.html">正畸</a><a href="pages/prostho.html">修复</a><a href="pages/general.html">全科</a><a href="pages/pedo.html">儿牙</a>
+    </nav>
+    <div class="header-actions">
+      <a class="btn btn-outline" href="simulate.html">模拟口腔</a>
+      <a class="btn btn-primary" href="try.html">互动试戴</a>
+    </div>
+  </header>
+  <div class="sim-body">
+    <div class="sim-viewport">
+      <canvas id="try-canvas" aria-label="互动试戴三维示意，可拖动旋转"></canvas>
+      <div class="sim-hint">拖动旋转 · 滚轮缩放 · 右侧切换试戴类型</div>
+      <div class="try-status" id="try-status">正在加载颌骨模型…</div>
+    </div>
+    <aside class="sim-panel" aria-label="试戴控制">
+      <div class="sim-tabs try-mode-tabs" role="tablist" aria-label="试戴类型">
+        <button type="button" class="active" data-mode="aligner">隐形牙套</button>
+        <button type="button" data-mode="braces">固定矫治器</button>
+        <button type="button" data-mode="crown">牙冠/贴面</button>
+        <button type="button" data-mode="bridge">固定桥</button>
+      </div>
+
+      <div class="panel-block">
+        <h3 id="try-title">隐形牙套</h3>
+        <p class="try-desc" id="try-desc">透明矫治器薄壳覆盖上、下牙列，便于向患者说明「戴上后大致会是什么样」。</p>
+      </div>
+
+      <div class="panel-block" id="block-fdi">
+        <h3>选择牙位（FDI）</h3>
+        <div class="fdi-grid" aria-label="上颌右侧至左侧"><button type="button" data-fdi="17">17</button><button type="button" data-fdi="16">16</button><button type="button" data-fdi="15">15</button><button type="button" data-fdi="14">14</button><button type="button" data-fdi="13">13</button><button type="button" data-fdi="12">12</button><button type="button" data-fdi="11">11</button><button type="button" data-fdi="21">21</button><button type="button" data-fdi="22">22</button><button type="button" data-fdi="23">23</button><button type="button" data-fdi="24">24</button><button type="button" data-fdi="25">25</button><button type="button" data-fdi="26">26</button><button type="button" data-fdi="27">27</button></div>
+        <div class="fdi-grid" aria-label="下颌右侧至左侧"><button type="button" data-fdi="47">47</button><button type="button" data-fdi="46">46</button><button type="button" data-fdi="45">45</button><button type="button" data-fdi="44">44</button><button type="button" data-fdi="43">43</button><button type="button" data-fdi="42">42</button><button type="button" data-fdi="41">41</button><button type="button" data-fdi="31">31</button><button type="button" data-fdi="32">32</button><button type="button" data-fdi="33">33</button><button type="button" data-fdi="34">34</button><button type="button" data-fdi="35">35</button><button type="button" data-fdi="36">36</button><button type="button" data-fdi="37">37</button></div>
+        <p class="fdi-meta" id="fdi-meta">当前：FDI 11</p>
+      </div>
+
+      <div class="panel-block" id="block-crown-kind" hidden>
+        <h3>修复类型</h3>
+        <div class="try-subtabs">
+          <button type="button" class="active" data-crown-kind="crown">牙冠</button>
+          <button type="button" data-crown-kind="veneer">贴面</button>
+        </div>
+      </div>
+
+      <div class="panel-block" id="block-crown-explode" hidden>
+        <h3>结构拆解</h3>
+        <div class="slider-row">
+          <label><span>就位 ← → 拆解</span><span class="val" id="val-crown-explode">0%</span></label>
+          <input id="crown-explode" type="range" min="0" max="100" value="0" />
+        </div>
+        <div class="try-subtabs" style="margin-top:8px;">
+          <button type="button" id="crown-seat">就位</button>
+          <button type="button" id="crown-open">拆开</button>
+        </div>
+      </div>
+
+      <div class="panel-block" id="block-bridge" hidden>
+        <h3>桥体示意</h3>
+        <p class="try-desc" style="margin:0">默认以 <strong>15</strong> 为缺牙区，<strong>14</strong> 与 <strong>16</strong> 为基牙；也可点选其他牙位作为桥体中心。</p>
+      </div>
+
+      <div class="panel-block">
+        <h3>显示</h3>
+        <div class="slider-row">
+          <label><span>骨透明度</span><span class="val" id="val-bone">55%</span></label>
+          <input id="opacity-bone" type="range" min="0" max="100" value="55" />
+        </div>
+        <div class="slider-row">
+          <label><span>软组织</span><span class="val" id="val-soft">70%</span></label>
+          <input id="opacity-soft" type="range" min="0" max="100" value="70" />
+        </div>
+        <button class="btn btn-outline" id="reset-try" type="button" style="width:100%;margin-top:8px;">复位视角与试戴</button>
+      </div>
+
+      <div class="panel-block">
+        <h3>说明</h3>
+        <p class="try-desc" style="margin:0">本页为<strong>科普示意</strong>，非临床诊断或治疗方案依据。颌骨与牙列来自开源解剖模型 Z-Anatomy（CC BY-SA 4.0）。详见 <a href="credits.html">模型来源与许可</a>。</p>
+      </div>
+    </aside>
+  </div>
+  <script src="js/site-config.js"></script>
+  <script src="js/nav.js"></script>
+  <script type="module" src="js/try.js"></script>
+</body>
+</html>

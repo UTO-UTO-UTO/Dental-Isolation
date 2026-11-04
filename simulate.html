@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>模拟口腔 — 口腔3D图鉴</title>
+  <link rel="stylesheet" href="css/style.css" />
+<script type="importmap">{"imports":{"three":"./vendor/three/build/three.module.js","three/addons/":"./vendor/three/addons/"}}</script>
+</head>
+<body class="sim-page">
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="口腔3D图鉴首页">
+      <span class="brand-mark">口</span>
+      <span data-brand-label>口腔3D图鉴<small>口腔模拟</small></span>
+    </a>
+    <button class="nav-toggle" type="button" aria-label="打开导航" aria-expanded="false">菜单</button>
+    <nav class="specialty-nav" aria-label="专科导航">
+      <a href="index.html">首页</a><a href="pages/implant.html">种植</a><a href="pages/ortho.html">正畸</a><a href="pages/prostho.html">修复</a><a href="pages/general.html">全科</a><a href="pages/pedo.html">儿牙</a>
+    </nav>
+    <div class="header-actions">
+      <a class="btn btn-outline" href="simulate.html">模拟口腔</a>
+      <a class="btn btn-primary" href="try.html">互动试戴</a>
+    </div>
+  </header>
+  <div class="sim-body">
+    <div class="sim-viewport">
+      <canvas id="sim-canvas" aria-label="颌骨与牙列示意，可拖动旋转"></canvas>
+      <div class="sim-hint">拖动旋转 · 滚轮缩放 · 右侧调节透明度</div>
+    </div>
+    <aside class="sim-panel" aria-label="模拟控制">
+      <div class="sim-tabs">
+        <button type="button" class="active" data-tab="manual">手动设置</button>
+        <button type="button" data-tab="display">显示调节</button>
+        <button type="button" data-tab="about">说明</button>
+      </div>
+
+      <div data-panel="manual">
+        <div class="panel-block">
+          <h3>FDI 牙位</h3>
+          <div class="fdi-grid" aria-label="上颌右侧至左侧"><button type="button" data-fdi="18">18</button><button type="button" data-fdi="17">17</button><button type="button" data-fdi="16">16</button><button type="button" data-fdi="15">15</button><button type="button" data-fdi="14">14</button><button type="button" data-fdi="13">13</button><button type="button" data-fdi="12">12</button><button type="button" data-fdi="11">11</button><button type="button" data-fdi="21">21</button><button type="button" data-fdi="22">22</button><button type="button" data-fdi="23">23</button><button type="button" data-fdi="24">24</button><button type="button" data-fdi="25">25</button><button type="button" data-fdi="26">26</button><button type="button" data-fdi="27">27</button><button type="button" data-fdi="28">28</button></div>
+          <div class="fdi-grid" aria-label="下颌右侧至左侧"><button type="button" data-fdi="48">48</button><button type="button" data-fdi="47">47</button><button type="button" data-fdi="46">46</button><button type="button" data-fdi="45">45</button><button type="button" data-fdi="44">44</button><button type="button" data-fdi="43">43</button><button type="button" data-fdi="42">42</button><button type="button" data-fdi="41">41</button><button type="button" data-fdi="31">31</button><button type="button" data-fdi="32">32</button><button type="button" data-fdi="33">33</button><button type="button" data-fdi="34">34</button><button type="button" data-fdi="35">35</button><button type="button" data-fdi="36">36</button><button type="button" data-fdi="37">37</button><button type="button" data-fdi="38">38</button></div>
+          <p class="fdi-meta" id="fdi-meta">点击牙位数字进行选择（示意）</p>
+          <div class="select-row">
+            <label>当前牙位
+              <select id="fdi-select"><option value="18">18 号牙</option><option value="17">17 号牙</option><option value="16">16 号牙</option><option value="15">15 号牙</option><option value="14">14 号牙</option><option value="13">13 号牙</option><option value="12">12 号牙</option><option value="11">11 号牙</option><option value="21">21 号牙</option><option value="22">22 号牙</option><option value="23">23 号牙</option><option value="24">24 号牙</option><option value="25">25 号牙</option><option value="26">26 号牙</option><option value="27">27 号牙</option><option value="28">28 号牙</option><option value="31">31 号牙</option><option value="32">32 号牙</option><option value="33">33 号牙</option><option value="34">34 号牙</option><option value="35">35 号牙</option><option value="36">36 号牙</option><option value="37">37 号牙</option><option value="38">38 号牙</option><option value="48">48 号牙</option><option value="47">47 号牙</option><option value="46">46 号牙</option><option value="45">45 号牙</option><option value="44">44 号牙</option><option value="43">43 号牙</option><option value="42">42 号牙</option><option value="41">41 号牙</option></select>
+            </label>
+            <label>状态
+              <select>
+                <option>存在</option>
+                <option>缺失（占位）</option>
+                <option>种植修复（占位）</option>
+              </select>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div data-panel="display" hidden>
+        <div class="panel-block">
+          <h3>显示调节</h3>
+          <div class="slider-row">
+            <label><span>张嘴程度</span><span class="val">35%</span></label>
+            <input id="mouth-open" type="range" min="0" max="100" value="35" />
+          </div>
+          <div class="slider-row">
+            <label><span>骨</span><span class="val">92%</span></label>
+            <input id="opacity-bone" type="range" min="0" max="100" value="92" />
+          </div>
+          <div class="slider-row">
+            <label><span>软组织</span><span class="val">80%</span></label>
+            <input id="opacity-soft" type="range" min="0" max="100" value="80" />
+          </div>
+          <div class="slider-row">
+            <label><span>牙</span><span class="val">100%</span></label>
+            <input id="opacity-tooth" type="range" min="0" max="100" value="100" />
+          </div>
+          <button class="btn btn-outline" id="reset-view" type="button" style="width:100%;margin-top:8px;">恢复视角</button>
+        </div>
+      </div>
+
+      <div data-panel="about" hidden>
+        <div class="panel-block">
+          <h3>关于本页</h3>
+          <p style="margin:0;font-size:13px;color:var(--muted);line-height:1.7;">
+            颌骨、牙列与软组织来自开源解剖模型 Z-Anatomy（CC BY-SA 4.0），可拖动旋转、点击牙齿选择牙位，并分层调节透明度。模型不含第三磨牙（18/28/38/48），选择时将高亮相邻第二磨牙。详见 <a href="credits.html">模型来源与许可</a>。
+            科普示意非临床依据。
+          </p>
+        </div>
+      </div>
+    </aside>
+  </div>
+  <script src="js/site-config.js"></script>
+  <script src="js/nav.js"></script>
+  <script type="module" src="js/simulate.js"></script>
+</body>
+</html>

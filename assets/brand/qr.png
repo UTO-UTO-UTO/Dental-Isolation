@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240" viewBox="0 0 240 240" role="img" aria-label="二维码占位">
+  <rect width="240" height="240" fill="#f6f8f8"/>
+  <rect x="16" y="16" width="208" height="208" fill="#fff" stroke="#d9dfd9" stroke-width="2"/>
+  <rect x="36" y="36" width="56" height="56" fill="#243536"/>
+  <rect x="148" y="36" width="56" height="56" fill="#243536"/>
+  <rect x="36" y="148" width="56" height="56" fill="#243536"/>
+  <rect x="48" y="48" width="32" height="32" fill="#f6f8f8"/>
+  <rect x="160" y="48" width="32" height="32" fill="#f6f8f8"/>
+  <rect x="48" y="160" width="32" height="32" fill="#f6f8f8"/>
+  <rect x="56" y="56" width="16" height="16" fill="#243536"/>
+  <rect x="168" y="56" width="16" height="16" fill="#243536"/>
+  <rect x="56" y="168" width="16" height="16" fill="#243536"/>
+  <rect x="108" y="108" width="24" height="24" fill="#2f7772"/>
+  <text x="120" y="220" text-anchor="middle" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="12" fill="#707974">替换 assets/brand/qr.png</text>
+</svg>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>模型来源与许可 — 口腔3D图鉴</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .credits-table{width:100%;border-collapse:collapse;font-size:14px;line-height:1.7}
+    .credits-table th,.credits-table td{text-align:left;padding:12px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+    .credits-table th{color:var(--muted);font-weight:500;font-size:13px}
+    .credits-note{font-size:13px;color:var(--muted);line-height:1.8}
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="口腔3D图鉴首页">
+      <span class="brand-mark">口</span>
+      <span data-brand-label>口腔3D图鉴</span>
+    </a>
+    <button class="nav-toggle" type="button" aria-label="打开导航" aria-expanded="false">菜单</button>
+    <nav class="specialty-nav" aria-label="专科导航">
+      <a href="index.html">首页</a><a href="pages/implant.html">种植</a><a href="pages/ortho.html">正畸</a><a href="pages/prostho.html">修复</a><a href="pages/general.html">全科</a><a href="pages/pedo.html">儿牙</a>
+    </nav>
+    <div class="header-actions">
+      <a class="btn btn-outline" href="simulate.html">模拟口腔</a>
+      <a class="btn btn-primary" href="try.html">互动试戴</a>
+    </div>
+  </header>
+  <div class="page-wrap">
+    <section class="page-hero">
+      <div class="breadcrumb"><a href="index.html" data-brand-crumb>口腔3D图鉴</a> / 模型来源与许可</div>
+      <h1>模型来源与许可</h1>
+      <p>本站使用的三维资产均来自开放许可素材或为原创几何。以下列出全部来源、许可及我们所做的修改。</p>
+    </section>
+    <section class="section">
+      <table class="credits-table">
+        <thead><tr><th>用途</th><th>来源 / 作者</th><th>许可</th><th>修改说明</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>模拟口腔页：上下颌骨、28 颗牙、牙龈、舌（<code>assets/models/jaw.glb</code>）<br>首页牙冠（<code>assets/models/crown_molar.glb</code>）</td>
+            <td><a href="https://github.com/LluisV/Z-Anatomy" target="_blank" rel="noopener">Z-Anatomy</a>（Skeletal / Visceral 系统）。其牙列网格上游来自 <a href="https://lifesciencedb.jp/bp3d/" target="_blank" rel="noopener">BodyParts3D</a>（© The Database Center for Life Science, CC BY 4.0）。</td>
+            <td><a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a><br>衍生的 GLB 文件同样以 CC BY-SA 4.0 提供。</td>
+            <td>从 FBX 提取并烘焙变换；按牙位（FDI）拆分为独立网格；Loop 细分平滑牙冠；重新居中、统一朝向与单位（厘米）；Meshopt 压缩并量化；首页牙冠另做顶点着色渐变与材质处理。</td>
+          </tr>
+          <tr>
+            <td>环境光照（<code>assets/env/studio_small_08_1k.hdr</code>）</td>
+            <td><a href="https://polyhaven.com/a/studio_small_08" target="_blank" rel="noopener">Poly Haven — Studio Small 08</a>，作者 Sergej Majboroda</td>
+            <td><a href="https://creativecommons.org/publicdomain/zero/1.0/" target="_blank" rel="noopener">CC0</a></td>
+            <td>未修改（1k 版本），经 PMREM 预过滤后用作反射环境。</td>
+          </tr>
+          <tr>
+            <td>首页种植体：螺纹种植体、基台、中央螺丝</td>
+            <td>本站原创程序化几何（<code>js/implant-geometry.js</code>）</td>
+            <td>随本站发布；非任何商业种植系统的复制品</td>
+            <td>真实螺旋螺纹、微螺纹颈部、锥形圆头根尖、内六角连接，PBR 钛金属材质。仅为通用示意，不代表具体产品尺寸或性能。</td>
+          </tr>
+          <tr>
+            <td>三维渲染库</td>
+            <td><a href="https://threejs.org/" target="_blank" rel="noopener">three.js</a> r160（含 GLTFLoader、OrbitControls、RoomEnvironment、MeshoptDecoder）</td>
+            <td>MIT</td>
+            <td>本地随站托管（<code>vendor/three</code>），未修改。</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <section class="section">
+      <p class="credits-note">
+        署名（CC BY-SA 4.0 / CC BY 4.0）：Z-Anatomy 项目及其贡献者；BodyParts3D，© The Database Center for Life Science，授权 CC BY 4.0。<br>
+        上述修改版模型文件按 CC BY-SA 4.0 重新分发；本站界面代码与原创种植体几何不受该许可约束。<br>
+        站点显示名称与诊所信息可在 <code>js/site-config.js</code> 配置。本站内容为口腔科普与医患沟通示意，不构成诊断或治疗依据。解剖模型为通用示意，不代表个体患者；模型不包含第三磨牙（18/28/38/48）。
+      </p>
+    </section>
+    <footer class="site-footer-simple" data-site-footer>口腔3D图鉴 · 科普示意非临床依据 · 模型来源与许可</footer>
+  </div>
+  <script src="js/site-config.js"></script>
+  <script src="js/nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#f6f8f8" />
+  <title>口腔3D图鉴 — 看见牙齿，读懂口腔</title>
+  <meta name="description" content="口腔3D图鉴：互动三维科普，帮助理解种植、正畸、修复等口腔结构。" />
+  <link rel="stylesheet" href="css/style.css" />
+<script type="importmap">{"imports":{"three":"./vendor/three/build/three.module.js","three/addons/":"./vendor/three/addons/"}}</script>
+</head>
+<body class="home">
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="口腔3D图鉴首页">
+      <span class="brand-mark">口</span>
+      <span data-brand-label>口腔3D图鉴</span>
+    </a>
+    <button class="nav-toggle" type="button" aria-label="打开导航" aria-expanded="false">菜单</button>
+    <nav class="specialty-nav" aria-label="专科导航">
+      <a class="active" href="index.html">首页</a><a href="pages/implant.html">种植</a><a href="pages/ortho.html">正畸</a><a href="pages/prostho.html">修复</a><a href="pages/general.html">全科</a><a href="pages/pedo.html">儿牙</a>
+    </nav>
+    <div class="header-actions">
+      <a class="btn btn-outline" href="simulate.html">模拟口腔</a>
+      <a class="btn btn-primary" href="try.html">互动试戴</a>
+    </div>
+  </header>
+
+  <div id="scene" aria-label="三维种植修复示意">
+    <div class="halo" aria-hidden="true"></div>
+    <canvas id="implant-canvas"></canvas>
+  </div>
+  <div id="part-labels" aria-hidden="true">
+    <span id="lbl-crown">牙冠</span>
+    <span id="lbl-abutment">基台</span>
+    <span id="lbl-implant">种植体</span>
+  </div>
+
+  <main>
+    <section id="home" class="chapter">
+      <div class="copy">
+        <p class="eyebrow"><span data-site-name>口腔3D图鉴</span> / 种植修复</p>
+        <h1>看见牙齿，<br>读懂口腔</h1>
+        <p class="lead">把种植牙拆开看清楚：<br>种在骨头里的是什么，露在外面的又是什么。</p>
+        <div class="explore-actions">
+          <a class="btn btn-primary" href="pages/implant.html">进入图鉴</a>
+          <a class="btn btn-outline" href="try.html">互动试戴</a>
+        </div>
+        <div class="chapter-note">三维科普示意 · 便于医患沟通 · 非临床依据</div>
+      </div>
+      <span class="scroll-note">向下滚动，逐层了解</span>
+    </section>
+
+    <section id="whole" class="chapter right">
+      <div class="copy">
+        <p class="eyebrow">整体认识</p>
+        <h2>先看清「一整颗」种植牙</h2>
+        <p class="lead">患者看到的是牙冠；<br>真正稳固在颌骨里的，是种植体。</p>
+        <p class="body-copy">沟通时先建立整体印象：看得见的修复体，和看不见的植入部分，怎样连成一套。再往下拆，就不容易迷路。</p>
+        <div class="rule-caption">一枚种植体，连接基台，再承托牙冠。</div>
+      </div>
+    </section>
+
+    <section id="structure" class="chapter">
+      <div class="copy">
+        <p class="eyebrow">结构拆解</p>
+        <h2>三个部分，<br>怎样连在一起</h2>
+        <p class="lead">种植体 · 基台 · 牙冠<br>滚动页面，模型会缓缓拆开。</p>
+        <p class="body-copy">拆开不是为了吓人，而是让连接关系一目了然：谁在骨头里、谁负责过渡、谁负责咀嚼与外观。中央螺丝也会单独分开，方便指着说。</p>
+        <div class="rule-caption">通用组合示意；不同品牌、系统的细节会有差异。</div>
+      </div>
+    </section>
+
+    <section id="detail" class="chapter">
+      <div class="copy">
+        <p class="eyebrow">细节观察</p>
+        <h2>螺纹、颈部与连接</h2>
+        <p class="lead">靠近看外形层次：<br>为什么种植体「拧」进骨头，又如何与上部衔接。</p>
+        <p class="body-copy">可用「旋转查看细节」自由拖动模型。本页只展示通用外形，帮助理解结构语言；具体产品性能与手术方案，请以面诊与影像为准。</p>
+        <button class="btn btn-outline observe" type="button">旋转查看细节</button>
+      </div>
+    </section>
+
+    <section id="roles" class="chapter right">
+      <div class="copy">
+        <p class="eyebrow">理解修复</p>
+        <h2>每一部分，<br>各司其职</h2>
+        <dl class="roles">
+          <div><dt>种植体</dt><dd>植入颌骨，提供稳固的「牙根」支撑</dd></div>
+          <div><dt>基台</dt><dd>承上启下，连接种植体与牙冠</dd></div>
+          <div><dt>牙冠</dt><dd>恢复咀嚼与美观，是患者日常看见的部分</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <section id="explore" class="chapter end">
+      <div class="copy">
+        <p class="eyebrow">继续探索</p>
+        <h2>结构看懂了，<br>沟通更轻松</h2>
+        <p class="lead">三维示意帮患者建立共同语言；下一步可进入种植图鉴，或自由旋转这枚模型。</p>
+        <div class="explore-actions">
+          <a class="btn btn-primary" href="pages/implant.html">进入种植图鉴</a>
+          <button class="btn btn-outline observe" type="button">自由观察模型</button>
+        </div>
+        <footer class="home-footer site-footer-simple" data-site-footer>
+          <span data-site-name>华雅口腔图鉴</span>
+        </footer>
+      </div>
+    </section>
+  </main>
+
+  <nav class="chapter-nav" aria-label="章节">
+    <a href="#home">首页</a>
+    <a href="#whole">整体</a>
+    <a href="#structure">结构</a>
+    <a href="#detail">细节</a>
+    <a href="#roles">价值</a>
+    <a href="#explore">探索</a>
+  </nav>
+  <div class="page-progress" aria-hidden="true">
+    <span id="chapter-count">01 / 06</span>
+    <div><i></i></div>
+    <span>种植修复</span>
+  </div>
+
+  <aside id="interaction" hidden>
+    <div style="position:fixed;inset:88px 16px auto;display:flex;justify-content:space-between;align-items:center;z-index:30;pointer-events:auto;">
+      <strong style="font-weight:500;font-size:20px;">单颗种植（示意）</strong>
+      <button class="btn btn-outline" id="exit-observe" type="button">返回滚动浏览</button>
+    </div>
+    <div style="position:fixed;left:50%;bottom:72px;transform:translateX(-50%);display:flex;gap:10px;align-items:center;background:#f6f8f8ee;border:1px solid var(--line);padding:10px 14px;border-radius:30px;z-index:30;pointer-events:auto;">
+      <label style="font-size:13px;color:var(--accent);">拆解 <input id="explode-range" type="range" min="0" max="100" value="80" style="accent-color:var(--accent);vertical-align:middle;"></label>
+      <button class="btn btn-outline" id="reset-model" type="button" style="padding:8px 14px;">复位</button>
+    </div>
+    <p style="position:fixed;left:0;right:0;bottom:36px;text-align:center;font-size:12px;color:var(--muted);z-index:30;">拖动旋转 · 滚轮缩放</p>
+  </aside>
+
+  <script src="js/site-config.js"></script>
+  <script src="js/nav.js"></script>
+  <script type="module" src="js/implant-viewer.js"></script>
+</body>
+</html>
