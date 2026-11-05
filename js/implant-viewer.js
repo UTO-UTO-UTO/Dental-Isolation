@@ -47,19 +47,23 @@ async function init() {
 
   // --- abutment (+ retention screw inside)
   const abutment = new THREE.Group();
+  titaniumAbut.side = THREE.DoubleSide;
   abutment.add(new THREE.Mesh(G.makeAbutmentGeometry(), titaniumAbut), new THREE.Mesh(G.makeAbutmentHexStub(), titaniumAbut));
   abutment.userData = { homeY: 0, explodeY: 3.5 };
 
   const screw = new THREE.Group();
   const sg = G.makeScrewGeometry();
   screw.add(new THREE.Mesh(sg.shaft, titanium), new THREE.Mesh(sg.head, titanium));
-  screw.userData = { homeX: 0, explodeX: -9, homeY: 4, explodeY: 8 };
-  screw.position.set(0, 7, 0);
+  // Seated: head (0..0.7 local) rests on the abutment channel ledge at y=2.2, shaft runs coaxially
+  // down through the abutment and threads into the implant below the hex socket (tip at y=-4.8).
+  // Exploded: lifted on the same axis, between abutment (top 3.5+3.7=7.2) and crown.
+  screw.userData = { homeX: 0, explodeX: 0, homeY: 2.2, explodeY: 15 };
+  screw.position.set(0, 2.2, 0);
   screw.visible = false;
 
   // --- crown (real anatomy mesh)
   const crown = new THREE.Group();
-  crown.userData = { homeY: 1.3, explodeY: 8.5 };
+  crown.userData = { homeY: 1.3, explodeY: 17 };
   try {
     const gltf = await loadGLB("assets/models/crown_molar.glb");
     const src = gltf.scene;
@@ -172,13 +176,17 @@ async function init() {
     for (const o of [crown, abutment, fixture]) o.position.y = lerp(o.userData.homeY, o.userData.explodeY, t);
     screw.position.x = lerp(screw.userData.homeX, screw.userData.explodeX, t);
     screw.position.y = lerp(screw.userData.homeY, screw.userData.explodeY, t);
-    screw.visible = t > 0.15;
+    screw.visible = true; // seated screw is hidden inside abutment/crown anyway
     // fixture/abutment pair stays visually centred as the stack opens
-    model.position.y = lerp(0.1, -0.2, t);
-    group.scale.setScalar(zoom);
+    model.position.y = lerp(0.1, -0.3, t);
+    group.scale.setScalar(zoom * lerp(1, 0.82, t)); // taller exploded stack (screw on axis) must fit
     if (!free && !reduce) group.rotation.y += 0.0025;
     controls.update();
     renderer.render(scene, camera);
   })();
+  // debug/preview hook: ?explode=0..1 pins the explode state
+  const qx = new URLSearchParams(location.search).get("explode");
+  if (qx !== null) { free = true; setExplode(+qx); explodeT = +qx; }
+  window.__implant = { fixture, abutment, screw, crown, setExplode: (v) => { free = true; setExplode(v); explodeT = v; } };
   canvas.dataset.ready = "1";
 }

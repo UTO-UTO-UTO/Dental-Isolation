@@ -110,9 +110,10 @@ body.home { overflow-x: hidden; }
   content: ""; position: absolute; left: -24px; top: 8px; width: 5px; height: 5px;
   border-radius: 50%; background: #70928b;
 }
-#lbl-crown { top: 28%; right: 18%; }
-#lbl-abutment { top: 46%; right: 14%; }
-#lbl-implant { top: 62%; right: 20%; }
+#lbl-crown { top: 24%; right: 18%; }
+#lbl-screw { top: 38%; right: 12%; }
+#lbl-abutment { top: 50%; right: 16%; }
+#lbl-implant { top: 64%; right: 20%; }
 
 .chapter {
   position: relative; z-index: 2;
@@ -309,7 +310,7 @@ body.home { overflow-x: hidden; }
   .chapter-nav { display: none; }
   .sim-body { grid-template-columns: 1fr; grid-template-rows: 1fr auto; }
   .sim-panel { border-left: 0; border-top: 1px solid var(--line); max-height: 42vh; }
-  #lbl-crown, #lbl-abutment, #lbl-implant { right: 8%; font-size: 12px; }
+  #lbl-crown, #lbl-screw, #lbl-abutment, #lbl-implant { right: 8%; font-size: 12px; }
 }
 
 body.interacting { overflow: hidden; }
