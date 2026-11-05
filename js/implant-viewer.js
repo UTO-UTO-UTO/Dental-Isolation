@@ -135,6 +135,7 @@ async function init() {
     else if (active === "detail") { setExplode(0); targetZoom = 1.3; }
     else if (active === "explore") { setExplode(0.9); targetZoom = 1; }
     else { setExplode(active === "whole" ? 0.12 : 0); targetZoom = 1; }
+    if (labels) labels.classList.toggle("show", active === "structure" && targetExplode > 0.35);
   }
   let free = false;
   window.addEventListener("scroll", updateFromScroll, { passive: true });
