@@ -118,6 +118,8 @@
   if (toggle && links) {
     toggle.addEventListener("click", () => {
       links.classList.toggle("open");
+      const hdr = toggle.closest(".site-header");
+      if (hdr) hdr.classList.toggle("nav-open", links.classList.contains("open"));
       toggle.setAttribute("aria-expanded", links.classList.contains("open") ? "true" : "false");
     });
   }
