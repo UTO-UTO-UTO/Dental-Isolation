@@ -168,15 +168,28 @@ async function init() {
 
   const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const lerp = (a, b, t) => a + (b - a) * t;
+  // Stagger part motion so crown > screw > abutment > fixture order never crosses.
+  // Linear t made crown/screw intersect around t≈0.3–0.5 (the scroll "细节" chapter
+  // pins explode at 0.35), so reseating mid-scroll looked broken.
+  const easePart = (t, t0, t1) => {
+    const u = Math.max(0, Math.min(1, (t - t0) / (t1 - t0)));
+    return u * u * (3 - 2 * u);
+  };
   (function loop() {
     requestAnimationFrame(loop);
     explodeT += (targetExplode - explodeT) * 0.07;
     zoom += (targetZoom - zoom) * 0.08;
     const t = explodeT;
-    for (const o of [crown, abutment, fixture]) o.position.y = lerp(o.userData.homeY, o.userData.explodeY, t);
-    screw.position.x = lerp(screw.userData.homeX, screw.userData.explodeX, t);
-    screw.position.y = lerp(screw.userData.homeY, screw.userData.explodeY, t);
-    screw.visible = true; // seated screw is hidden inside abutment/crown anyway
+    const tc = easePart(t, 0.00, 0.55); // crown lifts first
+    const ts = easePart(t, 0.20, 0.75); // screw follows, stays under crown
+    const ta = easePart(t, 0.45, 1.00); // abutment / fixture last
+    crown.position.y = lerp(crown.userData.homeY, crown.userData.explodeY, tc);
+    screw.position.x = lerp(screw.userData.homeX, screw.userData.explodeX, ts);
+    screw.position.y = lerp(screw.userData.homeY, screw.userData.explodeY, ts);
+    abutment.position.y = lerp(abutment.userData.homeY, abutment.userData.explodeY, ta);
+    fixture.position.y = lerp(fixture.userData.homeY, fixture.userData.explodeY, ta);
+    // Match initial seated look: hide screw until the crown has cleared it
+    screw.visible = tc > 0.15;
     // fixture/abutment pair stays visually centred as the stack opens
     model.position.y = lerp(0.1, -0.3, t);
     group.scale.setScalar(zoom * lerp(1, 0.82, t)); // taller exploded stack (screw on axis) must fit
