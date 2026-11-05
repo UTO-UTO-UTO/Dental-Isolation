@@ -129,10 +129,12 @@ async function init() {
     if (bar) bar.style.width = ((idx + 1) / chapters.length) * 100 + "%";
     if (count) count.textContent = String(idx + 1).padStart(2, "0") + " / 0" + chapters.length;
     if (free) return;
+    // structure/roles = full explode; detail = true reseat (close-up of assembled implant).
+    // Mid values like 0.35 with staggered part windows left the crown floating — "合不到一起".
     if (active === "structure" || active === "roles") { setExplode(1); targetZoom = 1; }
-    else if (active === "detail") { setExplode(0.35); targetZoom = 1.3; }
-    else if (active === "explore") { setExplode(0.6); targetZoom = 1; }
-    else { setExplode(active === "whole" ? 0.15 : 0); targetZoom = 1; }
+    else if (active === "detail") { setExplode(0); targetZoom = 1.3; }
+    else if (active === "explore") { setExplode(0.9); targetZoom = 1; }
+    else { setExplode(active === "whole" ? 0.12 : 0); targetZoom = 1; }
   }
   let free = false;
   window.addEventListener("scroll", updateFromScroll, { passive: true });
@@ -168,31 +170,32 @@ async function init() {
 
   const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const lerp = (a, b, t) => a + (b - a) * t;
-  // Stagger part motion so crown > screw > abutment > fixture order never crosses.
-  // Linear t made crown/screw intersect around t≈0.3–0.5 (the scroll "细节" chapter
-  // pins explode at 0.35), so reseating mid-scroll looked broken.
+  // Late-start stagger: t ≲ 0.4 keeps every part at home (true reseat for detail/home),
+  // then crown → screw → abutment/fixture open so order never crosses.
   const easePart = (t, t0, t1) => {
     const u = Math.max(0, Math.min(1, (t - t0) / (t1 - t0)));
     return u * u * (3 - 2 * u);
   };
   (function loop() {
     requestAnimationFrame(loop);
-    explodeT += (targetExplode - explodeT) * 0.07;
+    explodeT += (targetExplode - explodeT) * 0.08;
     zoom += (targetZoom - zoom) * 0.08;
+    // Snap so asymptotic lerp cannot leave a hairline gap when fully closed/open
+    if (Math.abs(targetExplode - explodeT) < 0.002) explodeT = targetExplode;
+    if (Math.abs(targetZoom - zoom) < 0.002) zoom = targetZoom;
     const t = explodeT;
-    const tc = easePart(t, 0.00, 0.55); // crown lifts first
-    const ts = easePart(t, 0.20, 0.75); // screw follows, stays under crown
-    const ta = easePart(t, 0.45, 1.00); // abutment / fixture last
+    const tc = easePart(t, 0.40, 0.85); // crown lifts first (only after t>0.4)
+    const ts = easePart(t, 0.50, 0.92); // screw under crown
+    const ta = easePart(t, 0.60, 1.00); // abutment / fixture last
     crown.position.y = lerp(crown.userData.homeY, crown.userData.explodeY, tc);
     screw.position.x = lerp(screw.userData.homeX, screw.userData.explodeX, ts);
     screw.position.y = lerp(screw.userData.homeY, screw.userData.explodeY, ts);
     abutment.position.y = lerp(abutment.userData.homeY, abutment.userData.explodeY, ta);
     fixture.position.y = lerp(fixture.userData.homeY, fixture.userData.explodeY, ta);
-    // Match initial seated look: hide screw until the crown has cleared it
-    screw.visible = tc > 0.15;
-    // fixture/abutment pair stays visually centred as the stack opens
+    // Seated look matches initial load: screw hidden until crown has cleared
+    screw.visible = tc > 0.12;
     model.position.y = lerp(0.1, -0.3, t);
-    group.scale.setScalar(zoom * lerp(1, 0.82, t)); // taller exploded stack (screw on axis) must fit
+    group.scale.setScalar(zoom * lerp(1, 0.82, t));
     if (!free && !reduce) group.rotation.y += 0.0025;
     controls.update();
     renderer.render(scene, camera);
