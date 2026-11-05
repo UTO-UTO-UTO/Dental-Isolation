@@ -47,19 +47,23 @@ async function init() {
 
   // --- abutment (+ retention screw inside)
   const abutment = new THREE.Group();
+  titaniumAbut.side = THREE.DoubleSide;
   abutment.add(new THREE.Mesh(G.makeAbutmentGeometry(), titaniumAbut), new THREE.Mesh(G.makeAbutmentHexStub(), titaniumAbut));
   abutment.userData = { homeY: 0, explodeY: 3.5 };
 
   const screw = new THREE.Group();
   const sg = G.makeScrewGeometry();
   screw.add(new THREE.Mesh(sg.shaft, titanium), new THREE.Mesh(sg.head, titanium));
-  screw.userData = { homeX: 0, explodeX: -9, homeY: 4, explodeY: 8 };
-  screw.position.set(0, 7, 0);
+  // Seated: head (0..0.7 local) rests on the abutment channel ledge at y=2.2, shaft runs coaxially
+  // down through the abutment and threads into the implant below the hex socket (tip at y=-4.8).
+  // Exploded: lifted on the same axis, between abutment (top 3.5+3.7=7.2) and crown.
+  screw.userData = { homeX: 0, explodeX: 0, homeY: 2.2, explodeY: 15 };
+  screw.position.set(0, 2.2, 0);
   screw.visible = false;
 
   // --- crown (real anatomy mesh)
   const crown = new THREE.Group();
-  crown.userData = { homeY: 1.3, explodeY: 8.5 };
+  crown.userData = { homeY: 1.3, explodeY: 17 };
   try {
     const gltf = await loadGLB("assets/models/crown_molar.glb");
     const src = gltf.scene;
@@ -164,21 +168,38 @@ async function init() {
 
   const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const lerp = (a, b, t) => a + (b - a) * t;
+  // Stagger part motion so crown > screw > abutment > fixture order never crosses.
+  // Linear t made crown/screw intersect around t≈0.3–0.5 (the scroll "细节" chapter
+  // pins explode at 0.35), so reseating mid-scroll looked broken.
+  const easePart = (t, t0, t1) => {
+    const u = Math.max(0, Math.min(1, (t - t0) / (t1 - t0)));
+    return u * u * (3 - 2 * u);
+  };
   (function loop() {
     requestAnimationFrame(loop);
     explodeT += (targetExplode - explodeT) * 0.07;
     zoom += (targetZoom - zoom) * 0.08;
     const t = explodeT;
-    for (const o of [crown, abutment, fixture]) o.position.y = lerp(o.userData.homeY, o.userData.explodeY, t);
-    screw.position.x = lerp(screw.userData.homeX, screw.userData.explodeX, t);
-    screw.position.y = lerp(screw.userData.homeY, screw.userData.explodeY, t);
-    screw.visible = t > 0.15;
+    const tc = easePart(t, 0.00, 0.55); // crown lifts first
+    const ts = easePart(t, 0.20, 0.75); // screw follows, stays under crown
+    const ta = easePart(t, 0.45, 1.00); // abutment / fixture last
+    crown.position.y = lerp(crown.userData.homeY, crown.userData.explodeY, tc);
+    screw.position.x = lerp(screw.userData.homeX, screw.userData.explodeX, ts);
+    screw.position.y = lerp(screw.userData.homeY, screw.userData.explodeY, ts);
+    abutment.position.y = lerp(abutment.userData.homeY, abutment.userData.explodeY, ta);
+    fixture.position.y = lerp(fixture.userData.homeY, fixture.userData.explodeY, ta);
+    // Match initial seated look: hide screw until the crown has cleared it
+    screw.visible = tc > 0.15;
     // fixture/abutment pair stays visually centred as the stack opens
-    model.position.y = lerp(0.1, -0.2, t);
-    group.scale.setScalar(zoom);
+    model.position.y = lerp(0.1, -0.3, t);
+    group.scale.setScalar(zoom * lerp(1, 0.82, t)); // taller exploded stack (screw on axis) must fit
     if (!free && !reduce) group.rotation.y += 0.0025;
     controls.update();
     renderer.render(scene, camera);
   })();
+  // debug/preview hook: ?explode=0..1 pins the explode state
+  const qx = new URLSearchParams(location.search).get("explode");
+  if (qx !== null) { free = true; setExplode(+qx); explodeT = +qx; }
+  window.__implant = { fixture, abutment, screw, crown, setExplode: (v) => { free = true; setExplode(v); explodeT = v; } };
   canvas.dataset.ready = "1";
 }

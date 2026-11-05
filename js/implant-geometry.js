@@ -99,8 +99,9 @@ function makeHexSocket(outerR, hexR, depth) {
 // Abutment profile (lathe) with hex connection stub below the platform.
 export function makeAbutmentGeometry() {
   const pts = [
-    [0.0, -0.001], [1.9, -0.001], [1.9, 0.0], [2.12, 0.25], [2.2, 0.9], [2.0, 1.55], [1.78, 2.3],
-    [1.72, 3.0], [1.58, 3.45], [1.3, 3.62], [0.8, 3.7], [0.0, 3.7],
+    // hollow: central screw channel (r 1.3 above the seat ledge at y=2.2, r 0.8 through-hole below)
+    [0.8, 2.2], [0.8, -0.001], [1.9, -0.001], [1.9, 0.0], [2.12, 0.25], [2.2, 0.9], [2.0, 1.55], [1.78, 2.3],
+    [1.72, 3.0], [1.58, 3.45], [1.42, 3.62], [1.3, 3.7], [1.3, 2.2], [0.8, 2.2],
   ];
   const v = pts.map(([r, y]) => new THREE.Vector2(r, y));
   const g = new THREE.LatheGeometry(v, 96);
@@ -108,6 +109,7 @@ export function makeAbutmentGeometry() {
 }
 export function makeAbutmentHexStub() {
   const s = new THREE.Shape(hexPts(1.3));
+  const h = new THREE.Path(); h.absarc(0, 0, 0.8, 0, Math.PI * 2, true); s.holes.push(h); // screw through-hole
   const g = new THREE.ExtrudeGeometry(s, { depth: 2.4, bevelEnabled: true, bevelSize: 0.06, bevelThickness: 0.06, bevelSegments: 2 });
   g.rotateX(Math.PI / 2); // extrude along -Y: from y=0 down to -2.4
   g.translate(0, 0, 0);
