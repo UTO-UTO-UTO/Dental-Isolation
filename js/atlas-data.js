@@ -8,79 +8,79 @@ window.AtlasData = {
     implant: {
       id: "implant",
       title: "种植",
-      lead: "认识种植体部件、半全口方案、相关术式与术后维护。",
+      lead: "了解种植牙由哪几部分组成、半口全口怎么补、相关手术步骤，以及戴牙后怎么保养。",
       groups: [
         {
-          title: "种植体与修复",
+          title: "种植牙由哪几部分组成",
           topics: [
-            { id: "implant-crown", title: "种植体与牙冠", subtitle: "植入体、基台与可见牙冠如何衔接" },
-            { id: "implant-healing-abutment", title: "愈合基台", subtitle: "二期开窗后塑形牙龈轮廓" },
+            { id: "implant-crown", title: "种植体与牙冠", subtitle: "种在骨头里的部分，和您看得见的牙冠怎样衔接" },
+            { id: "implant-healing-abutment", title: "愈合基台", subtitle: "二期开窗后，用来塑形牙龈轮廓的小帽" },
             { id: "implant-abutment", title: "修复基台", subtitle: "连接种植体与牙冠的中间结构" },
-            { id: "implant-screw", title: "中央螺丝", subtitle: "固定基台或牙冠的螺丝连接" },
-            { id: "implant-anterior-esthetic", title: "前牙美学种植", subtitle: "微笑区软硬组织与外形协调" },
-            { id: "implant-single", title: "常规单颗种植", subtitle: "缺一颗牙时的常见修复路径" },
-            { id: "implant-splinted", title: "种植连冠", subtitle: "相邻种植体联冠修复" },
-            { id: "implant-bridge", title: "种植支持固定桥", subtitle: "以种植体作基牙的固定桥" },
-            { id: "implant-screw-retained", title: "螺丝固位冠", subtitle: "可拆卸维护的上部结构" },
-            { id: "implant-cement-retained", title: "粘接固位冠", subtitle: "以粘接剂固定的牙冠方式" },
-            { id: "implant-custom-abutment", title: "个性化基台", subtitle: "按牙龈与咬合定制外形" },
-            { id: "implant-temp-crown", title: "临时种植冠", subtitle: "过渡期外形与咬合管理" },
+            { id: "implant-screw", title: "中央螺丝", subtitle: "把基台或牙冠固定住的螺丝" },
+            { id: "implant-anterior-esthetic", title: "前牙美学种植", subtitle: "微笑区对牙龈和外形的协调要求更高" },
+            { id: "implant-single", title: "常规单颗种植", subtitle: "缺一颗牙时常见的修复路径" },
+            { id: "implant-splinted", title: "种植连冠", subtitle: "相邻几颗种植牙连在一起做牙冠" },
+            { id: "implant-bridge", title: "种植支持固定桥", subtitle: "用种植体当「基牙」的固定桥" },
+            { id: "implant-screw-retained", title: "螺丝固位冠", subtitle: "用螺丝固定、必要时可拆下来维护的牙冠" },
+            { id: "implant-cement-retained", title: "粘接固位冠", subtitle: "用粘接剂固定的牙冠方式" },
+            { id: "implant-custom-abutment", title: "个性化基台", subtitle: "按您的牙龈和咬合定制外形" },
+            { id: "implant-temp-crown", title: "临时种植冠", subtitle: "过渡阶段用来维持外形与咬合的临时牙" },
           ],
         },
         {
-          title: "半全口种植",
+          title: "半口、全口缺牙怎么补",
           topics: [
-            { id: "implant-full-options", title: "半口与全口缺牙怎么选", subtitle: "固定、半固定与活动方案对比" },
-            { id: "implant-semi-fixed", title: "半固定修复", subtitle: "患者可取下清洁的覆盖义齿" },
-            { id: "implant-segmented", title: "分段种植修复", subtitle: "分区完成、降低单次手术负担" },
-            { id: "implant-allon6", title: "All-on-6", subtitle: "六枚种植体支持全弓固定桥" },
-            { id: "implant-allon4", title: "All-on-4", subtitle: "四枚倾斜种植体支持全弓修复" },
+            { id: "implant-full-options", title: "半口与全口缺牙怎么选", subtitle: "固定、半固定与活动方案怎么比" },
+            { id: "implant-semi-fixed", title: "半固定修复", subtitle: "您可以取下来清洁的覆盖义齿" },
+            { id: "implant-segmented", title: "分段种植修复", subtitle: "分区完成，减轻单次手术负担" },
+            { id: "implant-allon6", title: "All-on-6", subtitle: "六枚种植体支持一整弓固定桥" },
+            { id: "implant-allon4", title: "All-on-4", subtitle: "四枚倾斜种植体支持一整弓修复" },
             { id: "implant-malone", title: "马龙桥式修复", subtitle: "混合固位的全弓方案示意" },
-            { id: "implant-bar-overdenture", title: "杆卡式覆盖义齿", subtitle: "杆附着体增强固位与稳定" },
-            { id: "implant-locator", title: "Locator 覆盖义齿", subtitle: "按扣式附着体便于取戴清洁" },
-            { id: "implant-monolithic-bridge", title: "一体式全口桥", subtitle: "整弓桥体一次就位示意" },
-            { id: "implant-zygoma", title: "颧骨种植（概览）", subtitle: "严重上颌骨萎缩时的特殊路径" },
+            { id: "implant-bar-overdenture", title: "杆卡式覆盖义齿", subtitle: "用杆附着体增强固位与稳定" },
+            { id: "implant-locator", title: "Locator 覆盖义齿", subtitle: "按扣式附着体，便于取戴清洁" },
+            { id: "implant-monolithic-bridge", title: "一体式全口桥", subtitle: "整弓桥体一次就位的示意" },
+            { id: "implant-zygoma", title: "颧骨种植（概览）", subtitle: "上颌骨严重萎缩时的特殊路径" },
           ],
         },
         {
-          title: "种植相关术式",
+          title: "骨头不够时可能用到的术式",
           topics: [
-            { id: "implant-sinus-internal", title: "上颌窦内提", subtitle: "经牙槽嵴提升窦底增加骨高度" },
-            { id: "implant-sinus-external", title: "上颌窦外提", subtitle: "侧壁开窗植骨扩大可用骨量" },
-            { id: "implant-split", title: "骨劈开", subtitle: "窄嵴增宽以便植入种植体" },
-            { id: "implant-gbr", title: "引导骨再生（GBR）", subtitle: "膜与植骨材料重建缺损区" },
-            { id: "implant-block-graft", title: "块状骨移植", subtitle: "较大三维缺损时的植骨方式" },
+            { id: "implant-sinus-internal", title: "上颌窦内提", subtitle: "经牙槽嵴轻轻抬高窦底，增加骨高度" },
+            { id: "implant-sinus-external", title: "上颌窦外提", subtitle: "侧壁开小窗植骨，扩大可用骨量" },
+            { id: "implant-split", title: "骨劈开", subtitle: "窄嵴增宽，以便放入种植体" },
+            { id: "implant-gbr", title: "引导骨再生（常说的植骨，GBR）", subtitle: "用膜和植骨材料，帮缺损区长出新骨" },
+            { id: "implant-block-graft", title: "块状骨移植", subtitle: "较大立体缺损时的植骨方式" },
             { id: "implant-socket-preserve", title: "拔牙位点保存", subtitle: "拔牙同期减少牙槽骨吸收" },
-            { id: "implant-immediate", title: "即刻种植", subtitle: "拔牙同期植入种植体" },
+            { id: "implant-immediate", title: "即刻种植", subtitle: "拔牙的同时植入种植体" },
             { id: "implant-early", title: "早期种植", subtitle: "软组织愈合后较早植入" },
             { id: "implant-delayed", title: "延期种植", subtitle: "骨与软组织稳定后再植入" },
             { id: "implant-soft-tissue", title: "软组织增量", subtitle: "改善牙龈厚度与美学轮廓" },
-            { id: "implant-guided", title: "导板引导种植", subtitle: "数字化设计后精准植入" },
-            { id: "implant-provisional-loading", title: "即刻负重（概览）", subtitle: "满足条件时当日戴临时牙" },
-            { id: "implant-rescue", title: "种植体周围炎处理", subtitle: "维护失败时的干预方向" },
+            { id: "implant-guided", title: "导板引导种植", subtitle: "数字化设计后更精准地植入" },
+            { id: "implant-provisional-loading", title: "即刻负重（概览）", subtitle: "条件合适时，当日可戴临时牙" },
+            { id: "implant-rescue", title: "种植体周围炎处理", subtitle: "维护不到位时，可能需要的干预方向" },
           ],
         },
         {
-          title: "种植体系统说明",
+          title: "种植体系统怎么看",
           topics: [
             { id: "implant-system-overview", title: "种植系统怎么看", subtitle: "连接方式、表面处理与通用性" },
-            { id: "implant-domestic-import", title: "国产与进口（沟通要点）", subtitle: "如何比较而非简单比价" },
+            { id: "implant-domestic-import", title: "国产与进口怎么选", subtitle: "怎么比较，而不只是比价格" },
           ],
         },
         {
-          title: "种植流程与维护",
+          title: "从检查到戴牙后的保养",
           topics: [
-            { id: "implant-preop", title: "术前检查", subtitle: "全身与口腔评估清单" },
-            { id: "implant-systemic", title: "全身疾病与种植", subtitle: "需与医师共同评估的风险点" },
+            { id: "implant-preop", title: "术前检查", subtitle: "全身与口腔需要了解的项目" },
+            { id: "implant-systemic", title: "全身疾病与种植", subtitle: "需要和医生一起评估的风险点" },
             { id: "implant-bone-quality", title: "骨量与骨质", subtitle: "影像上如何理解可用骨条件" },
-            { id: "implant-surgery-heal", title: "手术与骨结合愈合", subtitle: "从植入到上部修复的时间窗" },
+            { id: "implant-surgery-heal", title: "手术与骨结合愈合", subtitle: "从植入到上部修复大致要等多久" },
             { id: "implant-impression", title: "开窗与非开窗取模", subtitle: "传统印模方式示意" },
-            { id: "implant-ios", title: "数字化口扫", subtitle: "光学印模用于种植修复" },
+            { id: "implant-ios", title: "数字化口扫", subtitle: "用光学扫描代替传统印模" },
             { id: "implant-delivery", title: "修复体安装", subtitle: "试戴、咬合与固位检查" },
             { id: "implant-home-care", title: "术后与居家护理", subtitle: "清洁工具与复查节奏" },
             { id: "implant-maintenance", title: "定期维护", subtitle: "种植牙也需要洗牙与检查" },
             { id: "implant-faq-pain", title: "疼痛与不适常见问题", subtitle: "哪些情况需要尽快复诊" },
-            { id: "implant-lifespan", title: "种植牙能用多久", subtitle: "寿命取决于维护与咬合" },
+            { id: "implant-lifespan", title: "种植牙能用多久", subtitle: "寿命取决于日常维护与咬合" },
           ],
         },
       ],
@@ -89,7 +89,7 @@ window.AtlasData = {
     ortho: {
       id: "ortho",
       title: "正畸",
-      lead: "牙列咬合问题、矫治器类型、辅助装置与全程维护沟通。",
+      lead: "了解牙列咬合问题、矫治器类型、辅助装置，以及矫治过程中要注意什么。",
       groups: [
         {
           title: "牙列与咬合",
@@ -104,7 +104,7 @@ window.AtlasData = {
             { id: "ortho-dental-skeletal", title: "牙性与骨性问题", subtitle: "决定方案难度的关键分层" },
             { id: "ortho-midline", title: "中线偏斜", subtitle: "上下牙中线与面中线" },
             { id: "ortho-asymm", title: "颜面不对称（概览）", subtitle: "何时需要正畸正颌联合评估" },
-            { id: "ortho-impacted", title: "阻生牙与埋伏牙", subtitle: "牵引萌出相关沟通" },
+            { id: "ortho-impacted", title: "阻生牙与埋伏牙", subtitle: "牵引萌出时您需要了解的事项" },
             { id: "ortho-missing", title: "先天缺牙", subtitle: "间隙管理与修复协同" },
           ],
         },
@@ -121,7 +121,7 @@ window.AtlasData = {
           ],
         },
         {
-          title: "托槽外观沟通",
+          title: "托槽外观怎么选",
           topics: [
             { id: "ortho-bracket-looks", title: "托槽外观总览", subtitle: "金属 / 陶瓷 / 舌侧对比" },
             { id: "ortho-metal-sl-demo", title: "金属自锁示意", subtitle: "开合盖设计示意" },
@@ -173,7 +173,7 @@ window.AtlasData = {
           topics: [
             { id: "ortho-biology", title: "牙齿移动原理", subtitle: "压力侧与张力侧的简单解释" },
             { id: "ortho-records", title: "检查与影像记录", subtitle: "模型、照片与头影的作用" },
-            { id: "ortho-plan-talk", title: "方案沟通", subtitle: "拔牙与否、疗程与预期" },
+            { id: "ortho-plan-talk", title: "和医生讨论方案", subtitle: "拔牙与否、疗程与预期" },
             { id: "ortho-extraction", title: "拔牙与非拔牙方案", subtitle: "间隙来源如何决定" },
             { id: "ortho-surgery", title: "正畸正颌联合", subtitle: "骨性畸形的联合路径" },
             { id: "ortho-ipr-flow", title: "邻面去釉流程", subtitle: "适应证与感受说明" },
@@ -189,7 +189,7 @@ window.AtlasData = {
     prostho: {
       id: "prostho",
       title: "修复",
-      lead: "冠桥贴面、嵌体义齿与缺损修复的沟通要点。",
+      lead: "了解牙冠、牙桥、贴面、嵌体与活动义齿等常见修复方式。",
       groups: [
         {
           title: "牙冠",
@@ -214,7 +214,7 @@ window.AtlasData = {
           topics: [
             { id: "prostho-veneer-porcelain", title: "瓷贴面", subtitle: "薄层瓷片改善前牙外观" },
             { id: "prostho-veneer-resin", title: "树脂贴面", subtitle: "椅旁完成的贴面方式" },
-            { id: "prostho-veneer-prep", title: "贴面预备量", subtitle: "尽量少磨牙的沟通要点" },
+            { id: "prostho-veneer-prep", title: "贴面预备量", subtitle: "尽量少磨牙时您需要了解的事项" },
           ],
         },
         {
@@ -231,7 +231,7 @@ window.AtlasData = {
           ],
         },
         {
-          title: "材料沟通",
+          title: "材料怎么选",
           topics: [
             { id: "prostho-mat-domestic", title: "冠材料如何比较", subtitle: "强度、美学与适应证" },
             { id: "prostho-veneer-mat", title: "贴面材料选择", subtitle: "瓷与树脂的取舍" },
@@ -242,7 +242,7 @@ window.AtlasData = {
           topics: [
             { id: "prostho-residual", title: "残根与残冠", subtitle: "能否保留取决于剩余牙体" },
             { id: "prostho-fracture", title: "牙齿折裂", subtitle: "裂纹深度决定能否保住" },
-            { id: "prostho-discolor", title: "牙齿变色", subtitle: "氟斑牙、四环素牙等沟通" },
+            { id: "prostho-discolor", title: "牙齿变色", subtitle: "氟斑牙、四环素牙等常见情况" },
           ],
         },
         {
@@ -499,20 +499,20 @@ window.AtlasData = {
       title: "种植体与牙冠",
       specialty: "implant",
       specialtyLabel: "种植",
-      summary: "种植牙看得见的是牙冠，看不见的是植入颌骨的种植体，中间靠基台连接。",
+      summary: "您看得见的是牙冠，看不见的是植入颌骨的种植体，中间靠基台连接。",
       sections: [
         {
           heading: "它由哪几部分组成",
           paragraphs: [
-            "一颗常见的种植修复，大致可看成三层：种植体固定在颌骨里；基台连接种植体与上部结构；牙冠恢复咀嚼和外观。",
-            "不同品牌的连接方式、螺丝位置会有差别，门诊沟通时医生会结合您的影像说明具体设计。",
+            "一颗常见的种植牙，大致可看成三层：种植体固定在颌骨里；基台连接种植体与上部结构；牙冠恢复咀嚼和外观。",
+            "不同品牌的连接方式、螺丝位置会有差别，医生会结合您的影像说明具体设计。",
           ],
           bullets: ["种植体：承担骨内固位", "基台：过渡与支持牙冠", "牙冠：恢复外形与咬合"],
         },
         {
-          heading: "沟通时可以关注什么",
+          heading: "您可以和医生讨论什么",
           paragraphs: [
-            "除了“能不能种”，还常会谈到：骨量是否足够、是否需要植骨、愈合时间、临时牙如何过渡，以及上部牙冠是螺丝固位还是粘接固位。",
+            "除了“能不能种”，您还可以问：骨量是否足够、是否需要植骨、愈合要多久、临时牙怎么过渡，以及上部牙冠是螺丝固位还是粘接固位。",
           ],
         },
         {
@@ -526,7 +526,7 @@ window.AtlasData = {
     },
 
     "implant-gbr": {
-      title: "引导骨再生（GBR）",
+      title: "引导骨再生（常说的植骨，GBR）",
       specialty: "implant",
       specialtyLabel: "种植",
       summary: "当缺牙区骨量不足时，可用生物膜与植骨材料引导新骨形成，为种植创造条件。",
@@ -558,12 +558,12 @@ window.AtlasData = {
       title: "All-on-4",
       specialty: "implant",
       specialtyLabel: "种植",
-      summary: "用四枚种植体支持一整弓固定义齿，常用于半口或全口无牙颌患者。",
+      summary: "用四枚种植体支持一整弓固定义齿，常用于半口或全口缺牙的情况。",
       sections: [
         {
-          heading: "适合怎样沟通的场景",
+          heading: "什么情况下会谈到它",
           paragraphs: [
-            "当余牙所剩无几或已全口无牙，又希望固定、少摘戴时，医生可能介绍“少量种植体支持整弓假牙”的方案。All-on-4 是其中一种设计思路。",
+            "当余牙所剩无几或已全口无牙，您又希望固定、少摘戴时，医生可能介绍“少量种植体支持整弓假牙”的方案。All-on-4 是其中一种设计思路。",
           ],
         },
         {
@@ -576,7 +576,7 @@ window.AtlasData = {
         {
           heading: "需要特别说明的",
           paragraphs: [
-            "并非所有骨条件都能做；是否即刻负重、是否需植骨、最终材料选择，都要结合 CBCT 与全身状况评估。本页仅为科普示意。",
+            "并非所有骨条件都能做；是否即刻负重、是否需植骨、最终材料选择，都要结合三维牙片（CBCT）与全身状况来评估。本页仅为科普示意，具体方案要由医生结合检查来定。",
           ],
         },
       ],
@@ -587,7 +587,7 @@ window.AtlasData = {
       title: "即刻种植",
       specialty: "implant",
       specialtyLabel: "种植",
-      summary: "拔牙的同时植入种植体，缩短部分患者的治疗周期，但并非人人适合。",
+      summary: "拔牙的同时植入种植体，能缩短部分人的治疗周期，但并非人人适合。",
       sections: [
         {
           heading: "什么叫即刻种植",

@@ -12,7 +12,7 @@ if (canvas) init().catch((err) => {
 const MODE_COPY = {
   aligner: {
     title: "隐形牙套",
-    desc: "透明矫治器薄壳覆盖上、下牙列，便于向患者说明「戴上后大致会是什么样」。",
+    desc: "透明矫治器薄壳覆盖上、下牙列，方便您直观了解「戴上后大致会是什么样」。",
   },
   braces: {
     title: "固定矫治器",

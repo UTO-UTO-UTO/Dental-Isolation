@@ -118,11 +118,18 @@ body.home { overflow-x: hidden; }
 .chapter {
   position: relative; z-index: 2;
   min-height: 100svh; padding: calc(var(--header-h) + 24px) var(--pad) 90px;
-  display: flex; align-items: center; pointer-events: none;
+  display: flex; align-items: center; justify-content: flex-start;
+  pointer-events: none;
 }
-.chapter .copy { width: min(42%, 620px); pointer-events: auto; }
-.chapter.right { justify-content: flex-end; }
-.chapter.right .copy { width: min(40%, 560px); }
+/* Keep ALL homepage copy in the left safe zone — never over the centered 3D model / #part-labels (right). */
+.chapter .copy {
+  width: min(36%, 480px);
+  max-width: 42vw;
+  pointer-events: auto;
+}
+/* .chapter.right kept for compatibility but forced left: right-side copy overlaps the implant. */
+.chapter.right { justify-content: flex-start; }
+.chapter.right .copy { width: min(36%, 480px); max-width: 42vw; }
 .eyebrow { margin: 0 0 22px; font-size: 12px; color: #697f79; letter-spacing: 0.08em; }
 .chapter h1, .chapter h2 {
   margin: 0 0 28px; font-weight: 300; letter-spacing: 0.02em; line-height: 1.35;
@@ -303,20 +310,59 @@ body.home { overflow-x: hidden; }
   .nav-toggle { display: inline-flex; margin-left: auto; }
   .header-actions .btn { padding: 8px 12px; font-size: 12px; }
   .brand small { display: none; }
-  .chapter .copy, .chapter.right .copy { width: 100%; }
-  .chapter { align-items: flex-start; padding-top: calc(var(--header-h) + 16px); }
-  #scene { inset: 42svh 0 0; }
-  .halo { width: 80vw; height: 80vw; right: 10vw; top: 20%; }
+  /* Hard split: copy stays in the top band; 3D model only in the bottom band. Never overlap. */
+  body.home { --home-copy-band: 44svh; }
+  .chapter .copy, .chapter.right .copy {
+    width: 100%;
+    max-width: none;
+  }
+  .chapter {
+    align-items: flex-start;
+    padding-top: calc(var(--header-h) + 12px);
+    padding-bottom: calc(100svh - var(--home-copy-band) + 24px);
+  }
+  #scene { inset: var(--home-copy-band) 0 0; }
+  .halo { width: 62vw; height: 62vw; right: 19vw; top: 42%; }
   .chapter-nav { display: none; }
   .sim-body { grid-template-columns: 1fr; grid-template-rows: 1fr auto; }
   .sim-panel { border-left: 0; border-top: 1px solid var(--line); max-height: 42vh; }
+  /* Labels live only inside the model band (below the copy band). */
   #lbl-crown, #lbl-screw, #lbl-abutment, #lbl-implant { right: 6%; font-size: 12px; }
-  #lbl-crown { top: 50%; } #lbl-screw { top: 60%; } #lbl-abutment { top: 70%; } #lbl-implant { top: 80%; }
-  #roles .copy {
-    background: #f6f8f8e6; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
-    border-radius: 14px; padding: 16px 18px; margin: 0 -6px;
+  #lbl-crown { top: calc(var(--home-copy-band) + 6%); }
+  #lbl-screw { top: calc(var(--home-copy-band) + 16%); }
+  #lbl-abutment { top: calc(var(--home-copy-band) + 26%); }
+  #lbl-implant { top: calc(var(--home-copy-band) + 38%); }
+  .chapter .copy {
+    max-height: calc(var(--home-copy-band) - var(--header-h) - 20px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    background: #f6f8f8f2;
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    border-radius: 14px;
+    padding: 14px 16px;
+    margin: 0;
+    border: 1px solid #d9e2de99;
+    box-shadow: 0 8px 24px #1a2e2810;
+    box-sizing: border-box;
+  }
+  .chapter h1 { font-size: clamp(1.7rem, 7vw, 2.2rem); margin-bottom: 14px; }
+  .chapter h2 { font-size: clamp(1.35rem, 5.5vw, 1.75rem); margin-bottom: 12px; }
+  .eyebrow { margin-bottom: 10px; }
+  .lead { margin-bottom: 14px; font-size: 0.98rem; line-height: 1.65; }
+  .body-copy { font-size: 13px; line-height: 1.7; max-width: none; }
+  .rule-caption { margin-top: 14px; padding-top: 10px; }
+  .roles { margin-top: 10px; max-width: none; }
+  .roles div { gap: 16px; padding: 10px 0; }
+  .roles dt { width: 64px; font-size: 15px; }
+  .scroll-note {
+    /* Keep the scroll hint inside the copy band, above the model. */
+    bottom: auto;
+    top: calc(var(--home-copy-band) - 28px);
+    left: var(--pad);
   }
 }
+
 
 body.interacting { overflow: hidden; }
 body.interacting .chapter,

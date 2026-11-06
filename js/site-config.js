@@ -15,9 +15,9 @@ window.SiteConfig = {
   qr: {
     image: "assets/brand/qr.svg",
     label: "扫码咨询 / 预约",
-    hint: "把正式二维码替换为 assets/brand/qr.png，并在此改成对应路径",
+    hint: "扫码可咨询或预约华雅口腔",
   },
   icp: "",
-  disclaimer: "科普示意非临床依据",
-  footerNote: "科普展示与沟通参考",
+  disclaimer: "科普示意，具体方案要由医生结合检查来定",
+  footerNote: "科普展示，供您在诊室对照了解",
 };
