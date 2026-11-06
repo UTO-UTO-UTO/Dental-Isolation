@@ -8,7 +8,7 @@
   const clinicName = (cfg.clinicName || "").trim();
   const tagline = cfg.tagline || "";
   const disclaimer = cfg.disclaimer || "科普示意非临床依据";
-  const footerNote = cfg.footerNote || "科普展示与沟通参考";
+  const footerNote = cfg.footerNote || "科普展示，供您在诊室对照了解";
   const contact = cfg.contact || {};
   const icp = (cfg.icp || "").trim();
   const qr = cfg.qr || {};

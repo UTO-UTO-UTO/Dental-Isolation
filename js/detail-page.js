@@ -69,17 +69,17 @@
     if (summaryEl) summaryEl.textContent = t.subtitle || "";
     if (stubEl) {
       stubEl.hidden = false;
-      stubEl.textContent = "本主题暂为条目说明页，完整图文将陆续补充。以下为沟通提纲占位。";
+      stubEl.textContent = "本主题暂为条目说明页，完整图文将陆续补充。以下先帮您了解要点。";
     }
     bodyEl.innerHTML = `
       <h2>一句话说明</h2>
       <p>${escapeHtml(t.subtitle || "用于专科图鉴中的主题入口。")}</p>
-      <h2>门诊沟通时可覆盖</h2>
+      <h2>您可以了解这些</h2>
       <ul class="detail-bullets">
-        <li>这是什么、解决什么问题</li>
-        <li>常见适应证与不适合的情况（需面诊确认）</li>
-        <li>流程大致步骤与复诊节奏</li>
-        <li>居家护理与复查要点</li>
+        <li>这是什么、能解决什么问题</li>
+        <li>常见适合与不适合的情况（需面诊确认）</li>
+        <li>大致流程与复诊节奏</li>
+        <li>居家护理与复查要注意什么</li>
       </ul>
       <h2>三维示意</h2>
       <p>可结合「模拟口腔」指出相关牙位，或返回专科图鉴继续浏览。</p>
