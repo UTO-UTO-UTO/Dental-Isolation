@@ -21,13 +21,13 @@ export function createRenderer(canvas, { alpha = false } = {}) {
 }
 
 // Poly Haven "Studio Small 08" (CC0, Sergej Majboroda); falls back to RoomEnvironment.
-export function applyStudioEnvironment(renderer, scene, { intensity = 1 } = {}) {
+export function applyStudioEnvironment(renderer, scene, { intensity = 1, base = "" } = {}) {
   const pmrem = new THREE.PMREMGenerator(renderer);
   const room = pmrem.fromScene(new RoomEnvironment(renderer), 0.04).texture;
   scene.environment = room;
   scene.environmentIntensity = intensity;
   new RGBELoader().load(
-    "assets/env/studio_small_08_1k.hdr",
+    `${base}assets/env/studio_small_08_1k.hdr`,
     (tex) => {
       tex.mapping = THREE.EquirectangularReflectionMapping;
       const env = pmrem.fromEquirectangular(tex).texture;

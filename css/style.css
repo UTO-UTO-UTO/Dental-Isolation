@@ -563,3 +563,147 @@ body.interacting #implant-canvas { cursor: grab; touch-action: none; }
 .guide-nav a { padding: 4px 12px; border-radius: 999px; border: 1px solid #cfe0dd; background: #fff; color: var(--accent); flex: none; }
 .guide-nav a:hover { background: #e3efed; }
 .guide { scroll-margin-top: calc(var(--header-h) + 48px); }
+
+
+/* ===== Detail page 3D viewer (never overlap text ↔ model) ===== */
+body.detail-page { overflow-x: hidden; }
+.detail-wrap { max-width: 1200px; margin: 0 auto; padding-left: var(--pad); padding-right: var(--pad); }
+.detail-hero { max-width: 40rem; }
+.detail-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 46%);
+  gap: clamp(20px, 3vw, 40px);
+  align-items: start;
+  margin: 8px 0 40px;
+  width: 100%;
+}
+.detail-copy-band { min-width: 0; }
+.detail-body { max-width: none; }
+.detail-visual-band {
+  position: sticky;
+  top: calc(var(--header-h) + 12px);
+  width: 100%;
+  min-width: 0;
+}
+.detail-viewer {
+  position: relative;
+  width: 100%;
+  height: min(64vh, 560px);
+  min-height: 360px;
+  border-radius: 20px;
+  border: 1px solid var(--line);
+  background:
+    radial-gradient(ellipse at 55% 40%, #e4eeea 0%, #f3f6f5 55%, #eef2f0 100%);
+  overflow: hidden;
+  isolation: isolate;
+}
+.detail-viewer-halo {
+  position: absolute; inset: 18% 12%;
+  border-radius: 50%;
+  border: 1px solid #73959044;
+  background: radial-gradient(ellipse, #dfe8e355, transparent 70%);
+  pointer-events: none; z-index: 0;
+}
+#topic-canvas {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  display: block;
+  z-index: 1;
+  touch-action: none;
+  cursor: grab;
+}
+#topic-canvas:active { cursor: grabbing; }
+
+.topic-part-labels {
+  position: absolute; inset: 0; z-index: 2;
+  pointer-events: none; opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.topic-part-labels.show { opacity: 1; }
+.topic-lbl {
+  position: absolute;
+  right: 5%;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #f6f8f8ee;
+  border: 1px solid var(--line);
+  font-size: 12px;
+  color: var(--accent-deep);
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px #1a2e2810;
+}
+.topic-lbl:nth-child(1) { top: 14%; }
+.topic-lbl:nth-child(2) { top: 28%; }
+.topic-lbl:nth-child(3) { top: 42%; }
+.topic-lbl:nth-child(4) { top: 56%; }
+.topic-lbl:nth-child(5) { top: 68%; }
+
+.topic-viewer-caption {
+  position: absolute; left: 14px; right: 14px; bottom: 44px;
+  z-index: 2; margin: 0;
+  font-size: 12px; color: var(--muted);
+  text-align: center;
+  pointer-events: none;
+  text-shadow: 0 1px 0 #f6f8f8aa;
+}
+.topic-viewer-hint {
+  position: absolute; left: 14px; bottom: 12px;
+  z-index: 2; margin: 0;
+  font-size: 11px; color: #8a9690;
+  pointer-events: none;
+}
+.topic-viewer-controls {
+  position: absolute; right: 12px; bottom: 10px;
+  z-index: 3;
+  display: flex; align-items: center; gap: 8px;
+}
+#topic-explode-wrap[hidden], .topic-explode-wrap[hidden] { display: none !important; }
+.topic-explode-wrap {
+  display: flex; align-items: center; gap: 6px;
+  background: #f6f8f8ee; border: 1px solid var(--line);
+  border-radius: 999px; padding: 4px 10px;
+  font-size: 11px; color: var(--muted);
+}
+.topic-explode-wrap input[type="range"] { width: 88px; accent-color: var(--accent); }
+.topic-reset-btn {
+  padding: 6px 12px !important;
+  font-size: 12px !important;
+  background: #f6f8f8ee;
+}
+
+@media (max-width: 960px) {
+  .detail-layout {
+    display: flex;
+    flex-direction: column;
+    grid-template-columns: none;
+    gap: 16px;
+    width: 100%;
+  }
+  .detail-visual-band {
+    position: relative;
+    top: auto;
+    order: -1; /* visual first on mobile */
+    width: 100%;
+    flex: 0 0 auto;
+  }
+  .detail-copy-band { width: 100%; order: 1; }
+  .detail-viewer {
+    width: 100%;
+    height: min(52vw, 360px);
+    min-height: 280px;
+    max-height: 420px;
+  }
+  .detail-copy-band .detail-body {
+    background: #f6f8f8f2;
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    border-radius: 16px;
+    padding: 16px 16px 8px;
+    border: 1px solid #d9e2de99;
+    box-shadow: 0 8px 24px #1a2e2810;
+  }
+  .topic-lbl { right: 4%; font-size: 11px; }
+  .topic-viewer-controls { flex-wrap: wrap; justify-content: flex-end; max-width: 70%; }
+  .topic-viewer-caption { bottom: 52px; font-size: 11px; }
+}
