@@ -81,9 +81,8 @@
         <li>大致流程与复诊节奏</li>
         <li>居家护理与复查要注意什么</li>
       </ul>
-      <h2>三维示意</h2>
-      <p>可结合「模拟口腔」指出相关牙位，或返回专科图鉴继续浏览。</p>
-      <div class="detail-placeholder" aria-hidden="true">图示占位 · 可后续替换为步骤图 / 3D</div>
+      <h2>对照三维示意</h2>
+      <p>上方（电脑端在右侧）是可旋转的三维示意；也可结合「模拟口腔」指出相关牙位，或返回专科图鉴继续浏览。</p>
     `;
     actionsEl.innerHTML = `
       <a class="btn btn-outline" href="${spec.id}.html">返回${escapeHtml(spec.title)}图鉴</a>

@@ -5,8 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>主题详情 — 口腔3D图鉴</title>
   <link rel="stylesheet" href="../css/style.css" />
+  <script type="importmap">{"imports":{"three":"../vendor/three/build/three.module.js","three/addons/":"../vendor/three/addons/"}}</script>
 </head>
-<body>
+<body class="detail-page">
   <header class="site-header">
     <a class="brand" href="../index.html" aria-label="口腔3D图鉴首页">
       <span class="brand-mark">口</span>
@@ -26,8 +27,8 @@
       <a class="btn btn-primary" href="../try.html">互动试戴</a>
     </div>
   </header>
-  <div class="page-wrap">
-    <section class="page-hero">
+  <div class="page-wrap detail-wrap">
+    <section class="page-hero detail-hero">
       <div class="breadcrumb">
         <a href="../index.html" data-brand-crumb>口腔3D图鉴</a> /
         <a id="crumb-spec" href="implant.html">专科</a> /
@@ -36,17 +37,42 @@
       <h1 id="detail-title">主题详情</h1>
       <p id="detail-summary">科普说明，方便您在诊室里对照了解。</p>
     </section>
-    <section class="section detail-body">
-      <div id="detail-stub-note" class="stub-note" hidden></div>
-      <article id="detail-article"></article>
-      <p id="detail-actions" class="detail-actions"></p>
-      <p class="detail-disclaimer">科普示意，非临床依据。具体方案要由医生结合检查和影像来定。</p>
+
+    <!-- Desktop: left copy / right 3D. Mobile: visual first, then frosted copy. Never overlap. -->
+    <section class="detail-layout" aria-label="主题内容与三维示意">
+      <div class="detail-copy-band">
+        <section class="section detail-body">
+          <div id="detail-stub-note" class="stub-note" hidden></div>
+          <article id="detail-article"></article>
+          <p id="detail-actions" class="detail-actions"></p>
+          <p class="detail-disclaimer">科普示意，非临床依据。具体方案要由医生结合检查和影像来定。</p>
+        </section>
+      </div>
+
+      <div class="detail-visual-band">
+        <div class="detail-viewer" id="detail-viewer">
+          <div class="detail-viewer-halo" aria-hidden="true"></div>
+          <canvas id="topic-canvas" aria-label="三维科普示意，可拖动旋转"></canvas>
+          <div id="topic-part-labels" class="topic-part-labels" hidden></div>
+          <p id="topic-viewer-caption" class="topic-viewer-caption">三维科普示意加载中…</p>
+          <div class="topic-viewer-controls">
+            <div id="topic-explode-wrap" class="topic-explode-wrap" hidden>
+              <label for="topic-explode-range">拆开查看</label>
+              <input id="topic-explode-range" type="range" min="0" max="100" value="0" />
+            </div>
+            <button type="button" id="topic-reset-view" class="btn btn-outline topic-reset-btn">复位视角</button>
+          </div>
+          <p class="topic-viewer-hint">拖动旋转 · 滚轮缩放</p>
+        </div>
+      </div>
     </section>
+
     <footer class="site-footer-simple" data-site-footer></footer>
   </div>
   <script src="../js/site-config.js"></script>
   <script src="../js/atlas-data.js"></script>
   <script src="../js/nav.js"></script>
   <script src="../js/detail-page.js"></script>
+  <script type="module" src="../js/topic-viewer.js"></script>
 </body>
 </html>
