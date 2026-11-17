@@ -137,7 +137,8 @@ export const TOPIC_SCENES = {
     "caption": "过渡阶段的临时种植冠"
   },
   "implant-full-options": {
-    "kind": "compare",
+    "kind": "multi",
+    "count": 4,
     "caption": "半口全口可有固定、半固定等不同选择"
   },
   "implant-semi-fixed": {
@@ -352,7 +353,8 @@ export const TOPIC_SCENES = {
     "caption": "不同系统细节有别，结构层次相近"
   },
   "implant-domestic-import": {
-    "kind": "compare",
+    "kind": "implant",
+    "explode": 0.25,
     "caption": "国产与进口：看证据与适配，而不只比价格"
   },
   "implant-preop": {
@@ -600,6 +602,7 @@ export const TOPIC_SCENES = {
   "ortho-hawley": {
     "kind": "arch",
     "hawley": true,
+    "appliance": "hawley",
     "labels": [
       "哈雷保持器"
     ],
@@ -645,6 +648,7 @@ export const TOPIC_SCENES = {
   "ortho-twinblock": {
     "kind": "arch",
     "hawley": true,
+    "appliance": "twinblock",
     "caption": "Twin-Block 功能矫治器示意"
   },
   "ortho-herbst": {
@@ -655,11 +659,13 @@ export const TOPIC_SCENES = {
   "ortho-frankel-ii": {
     "kind": "arch",
     "hawley": true,
+    "appliance": "frankel",
     "caption": "Frankel II 型肌功能矫治器示意"
   },
   "ortho-frankel-iii": {
     "kind": "arch",
     "hawley": true,
+    "appliance": "frankel",
     "caption": "Frankel III 型肌功能矫治器示意"
   },
   "ortho-myofunctional": {
@@ -1124,9 +1130,9 @@ export const TOPIC_SCENES = {
     "caption": "全景片看整体牙列与颌骨"
   },
   "gen-cbct": {
-    "kind": "implant",
-    "explode": 0.3,
-    "caption": "CBCT 提供三维骨量信息"
+    "kind": "scan",
+    "cbct": true,
+    "caption": "三维牙片（CBCT）帮助医生看清骨量和重要结构"
   },
   "gen-ceph": {
     "kind": "arch",
@@ -1479,6 +1485,7 @@ export const TOPIC_SCENES = {
   "pedo-early-appliance": {
     "kind": "arch",
     "hawley": true,
+    "appliance": "hawley",
     "caption": "早期矫治装置引导颌骨与牙列"
   },
   "pedo-facemask": {

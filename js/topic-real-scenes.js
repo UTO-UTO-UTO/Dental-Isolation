@@ -9,18 +9,200 @@ import * as J from "./jaw-kit.js";
 
 const PEDO_NOTE = "（模型无乳牙，以缩小的恒牙示意）";
 
-function wantsImplantCloseup(preset) {
-  const explode = preset.explode ?? 0;
-  if (preset.highlight) return true;
-  if (explode >= 0.45) return true;
-  return false;
+function visibleGraftMat() {
+  return new THREE.MeshPhysicalMaterial({
+    color: 0xe39a3c,
+    roughness: 0.55,
+    metalness: 0.05,
+  });
+}
+function visibleMembraneMat() {
+  return new THREE.MeshPhysicalMaterial({
+    color: 0x3f8f88,
+    roughness: 0.28,
+    metalness: 0,
+    transparent: true,
+    opacity: 0.72,
+    side: THREE.DoubleSide,
+    depthWrite: false,
+  });
+}
+function addEdges(mesh, color = 0x2f7772, threshold = 28) {
+  if (!mesh || !mesh.geometry) return;
+  const eg = new THREE.EdgesGeometry(mesh.geometry, threshold);
+  const lines = new THREE.LineSegments(
+    eg,
+    new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0.55 })
+  );
+  mesh.add(lines);
+}
+
+
+function hash01(i, salt) {
+  const x = Math.sin(i * 127.1 + salt * 311.7) * 43758.5453;
+  return x - Math.floor(x);
+}
+
+/** Packed graft granules (deterministic) so patients see particles, not one blob. */
+function addParticulateGraft(parent, origin, buccal, along, opts = {}) {
+  const {
+    count = 42,
+    alongSpan = 0.42,
+    buccalMin = 0.06,
+    buccalMax = 0.18,
+    lateral = 0.14,
+    rMin = 0.04,
+    rMax = 0.07,
+    salt = 1,
+  } = opts;
+  const mat = visibleGraftMat();
+  const group = new THREE.Group();
+  group.name = "particulateGraft";
+  const uB = buccal.clone().normalize();
+  const uA = along.clone().normalize();
+  const side = new THREE.Vector3().crossVectors(uB, uA);
+  if (side.lengthSq() < 1e-8) side.set(1, 0, 0);
+  side.normalize();
+  for (let i = 0; i < count; i++) {
+    const r = rMin + hash01(i, salt) * (rMax - rMin);
+    const grain = new THREE.Mesh(new THREE.IcosahedronGeometry(r, 0), mat);
+    const a = (hash01(i, salt + 1) - 0.08) * alongSpan;
+    const b = buccalMin + hash01(i, salt + 2) * (buccalMax - buccalMin);
+    const s = (hash01(i, salt + 3) - 0.5) * 2 * lateral;
+    grain.position.copy(origin)
+      .add(uA.clone().multiplyScalar(a))
+      .add(uB.clone().multiplyScalar(b))
+      .add(side.clone().multiplyScalar(s));
+    grain.castShadow = true;
+    group.add(grain);
+  }
+  parent.add(group);
+  return group;
+}
+
+/** Thin covering membrane sheet, not a featureless dome. */
+function addMembraneSheet(parent, origin, buccal, along, opts = {}) {
+  const { radius = 0.34, bulge = 0.55, buccalOff = 0.13, alongOff = 0.1 } = opts;
+  const mat = visibleMembraneMat();
+  const mem = new THREE.Mesh(
+    new THREE.SphereGeometry(radius, 18, 12, 0, Math.PI, Math.PI * 0.18, Math.PI * 0.64),
+    mat
+  );
+  mem.scale.set(1.15, 0.95, bulge);
+  mem.position.copy(origin)
+    .add(buccal.clone().normalize().multiplyScalar(buccalOff))
+    .add(along.clone().normalize().multiplyScalar(alongOff));
+  mem.lookAt(mem.position.clone().add(buccal.clone().normalize()));
+  mem.name = "membrane";
+  addEdges(mem, 0x2f7772, 22);
+  parent.add(mem);
+  return mem;
+}
+
+
+
+function applianceOf(preset) {
+  if (preset.appliance) return preset.appliance;
+  const cap = preset.caption || "";
+  const id = preset.id || "";
+  if (/twin-?block/i.test(cap) || /twinblock/i.test(id)) return "twinblock";
+  if (/frankel/i.test(cap) || /frankel/i.test(id)) return "frankel";
+  if (preset.hawley) return "hawley";
+  return "";
+}
+
+function addBuccalCutaway(kit, fdi, { inset = 0.08 } = {}) {
+  const mesh = kit.teeth[fdi];
+  if (!mesh) return null;
+  const fa = J.facialAnchor(mesh, fdi, kit.archCenter);
+  const origin = fa.origin.clone().add(fa.buccal.clone().multiplyScalar(-inset));
+  const plane = new THREE.Plane();
+  plane.setFromNormalAndCoplanarPoint(fa.buccal.clone().negate(), origin);
+  for (const m of [kit.mats.bone, kit.mats.gum]) {
+    if (!m) continue;
+    const planes = m.clippingPlanes ? m.clippingPlanes.slice() : [];
+    planes.push(plane);
+    m.clippingPlanes = planes;
+    m.clipShadows = true;
+    m.transparent = true;
+    if (m.opacity > 0.7) m.opacity = 0.7;
+  }
+  kit.trackPlane(plane);
+  return plane;
+}
+
+function setFocus(kit, fdis, { includeOverlay = true, pad = 0.5 } = {}) {
+  const box = new THREE.Box3();
+  let any = false;
+  for (const fdi of fdis || []) {
+    const mesh = kit.teeth[fdi];
+    if (!mesh) continue;
+    box.expandByObject(mesh);
+    any = true;
+  }
+  if (includeOverlay && kit.overlay) {
+    kit.overlay.updateWorldMatrix(true, true);
+    const ob = new THREE.Box3().setFromObject(kit.overlay);
+    if (!ob.isEmpty()) {
+      box.union(ob);
+      any = true;
+    }
+  }
+  if (!any) return;
+  box.expandByScalar(pad);
+  kit.root.userData.focus = box;
+}
+
+function finish(kit, fdis, extra = {}) {
+  if (extra.cutaway) addBuccalCutaway(kit, extra.cutaway, extra.cutawayOpts || {});
+  const focusOpts = { pad: 0.28, ...(extra.focusOpts || {}) };
+  setFocus(kit, fdis, focusOpts);
+  if (extra.camDir) {
+    kit.root.userData.camDir = extra.camDir;
+  } else if (extra.cutaway && kit.teeth[extra.cutaway]) {
+    const fa = J.facialAnchor(kit.teeth[extra.cutaway], extra.cutaway, kit.archCenter);
+    const cam = fa.buccal.clone().multiplyScalar(1.0).add(new THREE.Vector3(0, 0.35, 0.2));
+    kit.root.userData.camDir = cam.normalize();
+  }
+  if (extra.captionSuffix) kit.root.userData.captionSuffix = extra.captionSuffix;
+  kit.root.userData.syncClip = kit.syncClip;
+  kit.root.userData.needsClip = !!(kit.needsClip || (kit.mats.bone && kit.mats.bone.clippingPlanes && kit.mats.bone.clippingPlanes.length));
+  return kit.root;
+}
+
+function palatalMid(kit, fdis) {
+  const pts = [];
+  for (const fdi of fdis) {
+    const mesh = kit.teeth[fdi];
+    if (!mesh) continue;
+    const fa = J.facialAnchor(mesh, fdi, kit.archCenter, { lingual: true });
+    pts.push(fa.pos.clone().add(fa.buccal.clone().multiplyScalar(-0.28)));
+  }
+  if (!pts.length) return new THREE.Vector3(0, 0.15, 0.2);
+  const mid = pts.reduce((a, p) => a.add(p), new THREE.Vector3()).multiplyScalar(1 / pts.length);
+  return mid;
+}
+
+function placeBiteBlock(kit, fdis, { up = true, height = 0.28 } = {}) {
+  const mat = P.mats.acrylic();
+  for (const fdi of fdis) {
+    const mesh = kit.teeth[fdi];
+    if (!mesh) continue;
+    const fa = J.facialAnchor(mesh, fdi, kit.archCenter);
+    const blk = new THREE.Mesh(
+      new THREE.BoxGeometry(Math.max(fa.size.x, 0.35) * 0.95, height, Math.max(fa.size.z, 0.4) * 0.9),
+      mat
+    );
+    const oc = J.occlusalDir(fdi);
+    blk.position.copy(fa.center).add(oc.clone().multiplyScalar(fa.toothSize * 0.22 + height * 0.35));
+    kit.overlay.add(blk);
+  }
 }
 
 export async function composeTopicModel(preset, { base, crownMesh } = {}) {
   const kind = preset.kind || "tooth";
   switch (kind) {
     case "implant":
-      if (wantsImplantCloseup(preset)) return null; // topic-viewer keeps the close-up stack
       return composeSeatedImplant(preset, { base, crownMesh });
     case "multi":
       return composeMulti(preset, { base, crownMesh });
@@ -39,7 +221,7 @@ export async function composeTopicModel(preset, { base, crownMesh } = {}) {
     case "impression":
       return composeImpression(preset, { base, crownMesh });
     case "compare":
-      return composeCompare(preset, { crownMesh });
+      return composeCompare(preset, { base, crownMesh });
     case "boneQuality":
       return composeBoneQuality(preset, { base, crownMesh });
     case "tooth":
@@ -97,8 +279,13 @@ async function composeSeatedImplant(preset, { base, crownMesh }) {
     boneOpacity: 0.5,
     gumOpacity: 0.78,
     clipSkull: true,
-    openMouth: 0.12,
+    openMouth: 0.08,
     missingTeeth: [fdi],
+    isolateTeeth: [fdi].concat(J.neighborsOf(fdi)),
+    keepSoftOnIsolate: true,
+    keepBoneOnIsolate: true,
+    clipToFocus: true,
+    clipPad: 0.7,
   });
   const stack = implantStack({
     healing: !!preset.healing,
@@ -111,9 +298,7 @@ async function composeSeatedImplant(preset, { base, crownMesh }) {
   if (preset.highlight) P.highlightPart(stack.userData.parts, preset.highlight);
   kit.overlay.add(stack);
   kit.root.userData.parts = stack.userData.parts;
-  kit.root.userData.syncClip = kit.syncClip;
-  kit.root.userData.needsClip = kit.needsClip;
-  return kit.root;
+  return finish(kit, [fdi], { cutaway: fdi, cutawayOpts: { inset: preset.explode >= 0.4 ? 0.05 : 0.12 }, focusOpts: { pad: 0.32 } });
 }
 
 function allOnSites(count) {
@@ -211,9 +396,7 @@ async function composeMulti(preset, { base, crownMesh }) {
     kit.overlay.add(pros);
   }
 
-  kit.root.userData.syncClip = kit.syncClip;
-  kit.root.userData.needsClip = kit.needsClip;
-  return kit.root;
+  return finish(kit, J.UPPER_ORDER.slice(), { focusOpts: { pad: 0.7 } });
 }
 
 async function composeImplantRow(preset, { base, crownMesh }) {
@@ -256,9 +439,7 @@ async function composeImplantRow(preset, { base, crownMesh }) {
       kit.root.userData.parts = stacks[0].userData.parts;
     }
   }
-  kit.root.userData.syncClip = kit.syncClip;
-  kit.root.userData.needsClip = kit.needsClip;
-  return kit.root;
+  return finish(kit, ["14", "15", "16", "17"], { cutaway: "15", cutawayOpts: { inset: 0.08 }, focusOpts: { pad: 0.7 } });
 }
 
 async function composeSinus(preset, { base, crownMesh }) {
@@ -268,59 +449,78 @@ async function composeSinus(preset, { base, crownMesh }) {
     showTongue: false,
     showBone: true,
     showGingiva: true,
-    boneOpacity: 0.42,
+    boneOpacity: 0.55,
     gumOpacity: 0.55,
     clipSkull: true,
     missingTeeth: [fdi],
+    isolateTeeth: [fdi].concat(J.neighborsOf(fdi)),
+    keepSoftOnIsolate: true,
+    keepBoneOnIsolate: true,
+    clipToFocus: true,
+    clipPad: 0.75,
   });
-  const stack = implantStack({ crown: true, screw: true, abutment: true }, crownMesh);
+  const stack = implantStack({
+    crown: false,
+    screw: false,
+    abutment: false,
+    fixture: true,
+    healing: true,
+  }, crownMesh);
   J.placeImplantAtTooth(kit, fdi, stack, { sink: 0.02 });
   kit.overlay.add(stack);
-  J.faceOutward(kit, fdi, { amount: 0.8 });
-
+  J.faceOutward(kit, fdi, { amount: 0.6 });
   const fa = J.facialAnchor(kit.teeth[fdi], fdi, kit.archCenter);
-  const sinusMat = new THREE.MeshPhysicalMaterial({
-    color: 0xc8d8e0,
-    roughness: 0.35,
+  const origin = stack.position.clone();
+  const apical = J.gingivalDir(fdi);
+  const buccal = fa.buccal.clone();
+
+  const floorMat = new THREE.MeshPhysicalMaterial({
+    color: 0xe6d4c8,
+    roughness: 0.42,
     metalness: 0,
     transparent: true,
-    opacity: 0.28,
+    opacity: 0.8,
     side: THREE.DoubleSide,
     depthWrite: false,
   });
-  const sinus = new THREE.Mesh(new THREE.SphereGeometry(0.95, 32, 24), sinusMat);
-  sinus.scale.set(1.35, 0.85, 1.1);
-  // Upper molar roots point +Y; sinus sits apical (above) the site, slightly inward
-  sinus.position.copy(fa.origin).add(new THREE.Vector3(0, 1.05, -0.1)).add(fa.buccal.clone().multiplyScalar(-0.15));
-  kit.overlay.add(sinus);
+  const lifted = new THREE.Mesh(
+    new THREE.SphereGeometry(0.52, 24, 16, 0, Math.PI * 2, 0, Math.PI * 0.55),
+    floorMat
+  );
+  lifted.scale.set(1.15, 0.5, 1.0);
+  lifted.position.copy(origin).add(apical.clone().multiplyScalar(0.72));
+  lifted.name = "sinusFloor";
+  addEdges(lifted, 0xb89888, 24);
+  kit.overlay.add(lifted);
 
-  const graft = J.makeOrganicBlob(0.5, P.mats.graft(), { flatten: 0.55, distort: 0.2 });
-  graft.position.copy(fa.origin).add(new THREE.Vector3(0, 0.5, 0));
-  kit.overlay.add(graft);
+  addParticulateGraft(
+    kit.overlay,
+    origin.clone().add(apical.clone().multiplyScalar(0.48)),
+    buccal,
+    apical,
+    { count: 56, alongSpan: 0.4, buccalMin: -0.06, buccalMax: 0.2, lateral: 0.16, salt: 7 }
+  );
 
   if (preset.external) {
-    const membrane = new THREE.Mesh(
-      new THREE.CircleGeometry(0.55, 24),
-      P.mats.membrane()
-    );
-    // Window on the buccal wall of the sinus
-    const buccal = fa.buccal.clone();
-    membrane.position.copy(sinus.position).add(buccal.clone().multiplyScalar(0.95));
-    membrane.lookAt(membrane.position.clone().add(buccal));
-    kit.overlay.add(membrane);
-    const frame = new THREE.Mesh(
-      new THREE.TorusGeometry(0.55, 0.035, 8, 24),
-      P.mats.titaniumLight()
-    );
-    frame.position.copy(membrane.position);
-    frame.quaternion.copy(membrane.quaternion);
+    const windowPos = origin.clone()
+      .add(apical.clone().multiplyScalar(0.58))
+      .add(buccal.clone().multiplyScalar(0.28));
+    const window = new THREE.Mesh(new THREE.CircleGeometry(0.26, 24), P.mats.membrane());
+    window.position.copy(windowPos);
+    window.lookAt(windowPos.clone().add(buccal));
+    kit.overlay.add(window);
+    const frame = new THREE.Mesh(new THREE.TorusGeometry(0.26, 0.024, 8, 24), P.mats.titaniumLight());
+    frame.position.copy(window.position);
+    frame.quaternion.copy(window.quaternion);
     kit.overlay.add(frame);
   }
 
   kit.root.userData.parts = stack.userData.parts;
-  kit.root.userData.syncClip = kit.syncClip;
-  kit.root.userData.needsClip = kit.needsClip;
-  return kit.root;
+  return finish(kit, [fdi, "15", "17"], {
+    cutaway: fdi,
+    cutawayOpts: { inset: 0.08 },
+    focusOpts: { pad: 0.34 },
+  });
 }
 
 async function composeGbr(preset, { base, crownMesh }) {
@@ -330,13 +530,19 @@ async function composeGbr(preset, { base, crownMesh }) {
     showTongue: false,
     showBone: true,
     showGingiva: true,
-    boneOpacity: 0.5,
+    boneOpacity: 0.55,
     gumOpacity: 0.55,
     clipSkull: true,
-    openMouth: 0.08,
+    openMouth: 0.06,
     missingTeeth: [fdi],
+    isolateTeeth: [fdi].concat(J.neighborsOf(fdi)),
+    keepSoftOnIsolate: true,
+    keepBoneOnIsolate: true,
+    clipToFocus: true,
+    clipPad: 0.75,
   });
 
+  const apical = J.gingivalDir(fdi);
   if (!isSocket) {
     const stack = implantStack({
       crown: false,
@@ -349,40 +555,60 @@ async function composeGbr(preset, { base, crownMesh }) {
     kit.root.userData.parts = stack.userData.parts;
   }
 
-  J.faceOutward(kit, fdi, { amount: 0.85 });
+  J.faceOutward(kit, fdi, { amount: 0.6 });
   const fa = J.facialAnchor(kit.teeth[fdi], fdi, kit.archCenter);
   const buccal = fa.buccal.clone();
+  const origin = fa.origin.clone();
+  const placed = kit.overlay.children.find((c) => c.userData && c.userData.parts);
+  if (placed && placed.position) origin.copy(placed.position);
 
   if (preset.block) {
-    const blk = J.makeOrganicBlob(0.62, P.mats.graft(), { flatten: 0.55, distort: 0.12 });
-    blk.scale.set(1.3, 0.85, 0.7);
-    blk.position.copy(fa.origin).add(buccal.clone().multiplyScalar(0.55));
+    const blk = new THREE.Mesh(
+      new THREE.BoxGeometry(0.38, 0.34, 0.16),
+      visibleGraftMat()
+    );
+    addEdges(blk, 0xc9905e, 18);
+    blk.quaternion.setFromUnitVectors(new THREE.Vector3(0, 0, 1), buccal);
+    blk.position.copy(origin)
+      .add(buccal.clone().multiplyScalar(0.16))
+      .add(apical.clone().multiplyScalar(0.12));
     kit.overlay.add(blk);
-    // tiny fixation screws
-    for (const dy of [-0.18, 0.18]) {
-      const sc = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.025, 0.45, 10), P.mats.titanium());
+    for (const dy of [-0.1, 0.1]) {
+      const sc = new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.022, 0.36, 10), P.mats.titanium());
       sc.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), buccal);
-      sc.position.copy(blk.position).add(new THREE.Vector3(0, dy, 0)).add(buccal.clone().multiplyScalar(0.1));
+      sc.position.copy(blk.position).add(new THREE.Vector3(0, dy, 0)).add(buccal.clone().multiplyScalar(0.02));
       kit.overlay.add(sc);
     }
   } else {
-    const graft = J.makeOrganicBlob(isSocket ? 0.55 : 0.72, P.mats.graft(), { flatten: 0.65, distort: 0.25 });
-    graft.position.copy(fa.origin).add(buccal.clone().multiplyScalar(isSocket ? 0.2 : 0.55)).add(new THREE.Vector3(0, isSocket ? 0.08 : 0.12, 0));
-    kit.overlay.add(graft);
+    addParticulateGraft(
+      kit.overlay,
+      origin.clone().add(apical.clone().multiplyScalar(isSocket ? 0.02 : 0.08)),
+      buccal,
+      apical,
+      {
+        count: isSocket ? 36 : 46,
+        alongSpan: isSocket ? 0.28 : 0.4,
+        buccalMin: isSocket ? 0.02 : 0.07,
+        buccalMax: isSocket ? 0.14 : 0.18,
+        lateral: 0.13,
+        salt: isSocket ? 3 : 11,
+      }
+    );
   }
 
-  const mem = new THREE.Mesh(
-    new THREE.SphereGeometry(0.95, 24, 16, 0, Math.PI * 2, 0, Math.PI * 0.55),
-    P.mats.membrane()
+  addMembraneSheet(
+    kit.overlay,
+    origin,
+    buccal,
+    apical,
+    { radius: isSocket ? 0.28 : 0.32, bulge: 0.5, buccalOff: 0.16, alongOff: 0.08 }
   );
-  mem.scale.set(1.15, 0.75, 1);
-  mem.position.copy(fa.origin).add(buccal.clone().multiplyScalar(0.5)).add(new THREE.Vector3(0, 0.2, 0));
-  mem.lookAt(mem.position.clone().add(buccal.clone().add(new THREE.Vector3(0, 0.4, 0))));
-  kit.overlay.add(mem);
 
-  kit.root.userData.syncClip = kit.syncClip;
-  kit.root.userData.needsClip = kit.needsClip;
-  return kit.root;
+  return finish(kit, [fdi, "15", "17"], {
+    cutaway: fdi,
+    cutawayOpts: { inset: 0.08 },
+    focusOpts: { pad: 0.34 },
+  });
 }
 
 async function composeSplit(preset, { base, crownMesh }) {
@@ -396,7 +622,8 @@ async function composeSplit(preset, { base, crownMesh }) {
     missingTeeth: [fdi],
   });
   const fa = J.facialAnchor(kit.teeth[fdi], fdi, kit.archCenter);
-  const graft = J.makeOrganicBlob(0.28, P.mats.graft(), { flatten: 0.8, distort: 0.15 });
+  const graft = J.makeOrganicBlob(0.34, visibleGraftMat(), { flatten: 0.8, distort: 0.15 });
+  addEdges(graft, 0xc9905e, 30);
   graft.scale.set(0.6, 1.1, 1.3);
   graft.position.copy(fa.origin);
   kit.overlay.add(graft);
@@ -404,9 +631,7 @@ async function composeSplit(preset, { base, crownMesh }) {
   J.placeImplantAtTooth(kit, fdi, stack, { sink: 0.04 });
   kit.overlay.add(stack);
   kit.root.userData.parts = stack.userData.parts;
-  kit.root.userData.syncClip = kit.syncClip;
-  kit.root.userData.needsClip = kit.needsClip;
-  return kit.root;
+  return finish(kit, [fdi, "13", "15"], { cutaway: fdi, cutawayOpts: { inset: 0.12 }, focusOpts: { pad: 0.7 } });
 }
 
 async function composeSoftTissue(preset, { base, crownMesh }) {
@@ -429,9 +654,7 @@ async function composeSoftTissue(preset, { base, crownMesh }) {
   graft.position.copy(fa.origin).add(fa.buccal.clone().multiplyScalar(0.28));
   kit.overlay.add(graft);
   kit.root.userData.parts = stack.userData.parts;
-  kit.root.userData.syncClip = kit.syncClip;
-  kit.root.userData.needsClip = kit.needsClip;
-  return kit.root;
+  return finish(kit, [fdi, "12", "21"], { cutaway: fdi, cutawayOpts: { inset: 0.06 }, focusOpts: { pad: 0.7 } });
 }
 
 async function composeGuided(preset, { base, crownMesh }) {
@@ -485,9 +708,7 @@ async function composeGuided(preset, { base, crownMesh }) {
   kit.overlay.add(sleeve);
 
   kit.root.userData.parts = stack.userData.parts;
-  kit.root.userData.syncClip = kit.syncClip;
-  kit.root.userData.needsClip = kit.needsClip;
-  return kit.root;
+  return finish(kit, [fdi, "15", "17"], { focusOpts: { pad: 0.75 } });
 }
 
 async function composeImpression(preset, { base, crownMesh }) {
@@ -532,27 +753,12 @@ async function composeImpression(preset, { base, crownMesh }) {
     kit.overlay.add(putty);
   }
   kit.root.userData.parts = stack.userData.parts;
-  kit.root.userData.syncClip = kit.syncClip;
-  kit.root.userData.needsClip = kit.needsClip;
-  return kit.root;
+  return finish(kit, [fdi, "15", "17"], { focusOpts: { pad: 0.7 } });
 }
 
-function composeCompare(preset, { crownMesh }) {
-  // Two realistic implant stacks (real crown + procedural fixture) — no box teeth
-  const root = new THREE.Group();
-  const a = implantStack({}, crownMesh);
-  a.position.x = -8;
-  const b = implantStack({}, crownMesh);
-  b.position.x = 8;
-  b.traverse((o) => {
-    if (o.isMesh && o.material && o.material.metalness > 0.5) {
-      o.material = o.material.clone();
-      o.material.color.setHex(0xb8c4cc);
-    }
-  });
-  root.add(a, b);
-  if (a.userData.parts) root.userData.parts = a.userData.parts;
-  return root;
+async function composeCompare(preset, { base, crownMesh }) {
+  // Full-arch implant bridge as a realistic stand-in for “options” topics.
+  return composeMulti({ ...preset, count: preset.count || 4, bridge: true, angled: true }, { base, crownMesh });
 }
 
 async function composeBoneQuality(preset, { base, crownMesh }) {
@@ -584,9 +790,7 @@ async function composeBoneQuality(preset, { base, crownMesh }) {
     halo.position.copy(fa.origin).add(J.gingivalDir(fdi).multiplyScalar(0.3));
     kit.overlay.add(halo);
   });
-  kit.root.userData.syncClip = kit.syncClip;
-  kit.root.userData.needsClip = kit.needsClip;
-  return kit.root;
+  return finish(kit, sites, { cutaway: "46", cutawayOpts: { inset: 0.12 }, focusOpts: { pad: 0.75 } });
 }
 
 async function composeTooth(preset, { base }) {
@@ -711,22 +915,26 @@ async function composeTooth(preset, { base }) {
     for (const b of kit.bones) b.position.y -= drop * 0.5;
   }
 
-  kit.root.userData.syncClip = () => {
-    kit.syncClip();
-  };
-  kit.root.userData.needsClip = kit.needsClip || !!kit.root.userData.extraPlanes;
-  return kit.root;
+  const focusTeeth = (isolate || [fdi]).slice();
+  return finish(kit, focusTeeth, { focusOpts: { pad: (preset.cutaway || preset.showPulp || preset.veneer || preset.post) ? 0.4 : 0.55 } });
 }
 
 async function composeArch(preset, { base }) {
+  const palatal = !!(preset.hawley || applianceOf(preset));
   const kit = await J.cloneJaw(base, {
+    teeth: palatal ? "upper" : "all",
     showTongue: false,
     showBone: false,
     showGingiva: true,
     gumOpacity: 0.88,
     clipSkull: true,
-    openMouth: preset.aligner || preset.brackets ? 0.06 : 0.1,
+    openMouth: palatal ? 0 : (preset.aligner || preset.brackets ? 0.06 : 0.1),
   });
+  if (palatal) {
+    for (const g of kit.gums) {
+      if (g.name === "gum_lower") g.visible = false;
+    }
+  }
   if (preset.crowding) J.applyCrowding(kit, preset.crowding);
   if (preset.spacing) J.applySpacing(kit, preset.spacing);
 
@@ -739,10 +947,12 @@ async function composeArch(preset, { base }) {
     });
   }
   if (preset.aligner) {
-    const mat = J.alignerMaterial(0xc5e8ee);
-    mat.opacity = 0.72;
-    mat.transmission = 0.4;
-    J.placeAligners(kit, kit.overlay, { scale: 1.08, material: mat });
+    const mat = J.alignerMaterial(0x7eb8be);
+    mat.opacity = 0.88;
+    mat.transmission = 0.16;
+    mat.thickness = 0.55;
+    mat.depthWrite = false;
+    J.placeAligners(kit, kit.overlay, { scale: 1.14, material: mat });
   }
   if (preset.attachments) {
     for (const fdi of ["13", "23", "14", "24", "33", "43"]) {
@@ -768,61 +978,123 @@ async function composeArch(preset, { base }) {
     const wire = J.tubeAlong(pts, 0.03, J.metalMaterial());
     if (wire) kit.overlay.add(wire);
   }
-  if (preset.hawley) {
-    // Palatal acrylic plate from lingual points of upper teeth
-    const lingual = J.UPPER_ORDER.map((fdi) => {
-      const mesh = kit.teeth[fdi];
-      if (!mesh) return null;
-      const fa = J.facialAnchor(mesh, fdi, kit.archCenter, { lingual: true });
-      return fa.pos.clone().add(new THREE.Vector3(0, 0.15, 0));
-    }).filter(Boolean);
-    if (lingual.length >= 4) {
-      const shape = new THREE.Shape();
-      shape.absellipse(0, 0, 0.7, 0.12, 0, Math.PI * 2, false, 0);
-      // A simple palatal plate: flattened sphere in the palatal vault
-      const plate = new THREE.Mesh(
-        new THREE.SphereGeometry(1.6, 24, 16, 0, Math.PI * 2, 0, Math.PI * 0.55),
-        P.mats.acrylic()
-      );
-      plate.scale.set(1.15, 0.28, 1.0);
-      plate.position.set(0, 0.15, 0.2);
-      kit.overlay.add(plate);
-    }
-    const bow = ["13", "12", "11", "21", "22", "23"].map((fdi) => {
+  const appliance = applianceOf(preset);
+  if (appliance === "hawley" || appliance === "twinblock" || appliance === "frankel" || preset.hawley) {
+    const acrylic = P.mats.acrylic();
+    const metal = J.metalMaterial();
+    const bowFdis = ["13", "12", "11", "21", "22", "23"];
+    const bow = bowFdis.map((fdi) => {
       const mesh = kit.teeth[fdi];
       if (!mesh) return null;
       const fa = J.facialAnchor(mesh, fdi, kit.archCenter);
-      return fa.pos.clone().add(fa.buccal.clone().multiplyScalar(0.08));
+      return fa.pos.clone().add(fa.buccal.clone().multiplyScalar(0.1));
     }).filter(Boolean);
-    const labial = J.tubeAlong(bow, 0.03, J.metalMaterial());
-    if (labial) kit.overlay.add(labial);
+    if (appliance !== "frankel") {
+      const pts = ["16", "14", "11", "21", "24", "26"].map((id) => {
+        const mesh = kit.teeth[id];
+        if (!mesh) return null;
+        return J.facialAnchor(mesh, id, kit.archCenter, { lingual: true }).pos.clone();
+      }).filter(Boolean);
+      const mid = pts.reduce((a, p) => a.add(p), new THREE.Vector3()).multiplyScalar(1 / Math.max(pts.length, 1));
+      mid.x = kit.archCenter.x;
+      mid.add(J.occlusalDir("11").multiplyScalar(0.18));
+      const plateMat = new THREE.MeshPhysicalMaterial({
+        color: 0xc94e68,
+        roughness: 0.32,
+        metalness: 0,
+        clearcoat: 0.45,
+        clearcoatRoughness: 0.3,
+      });
+      const plate = new THREE.Mesh(new THREE.SphereGeometry(1.55, 28, 18, 0, Math.PI * 2, 0, Math.PI * 0.55), plateMat);
+      plate.scale.set(1.05, 0.22, 0.9);
+      plate.position.copy(mid);
+      kit.overlay.add(plate);
+    }
+    if (appliance !== "twinblock") {
+      const labial = J.tubeAlong(bow, 0.055, metal, { tubular: 40 });
+      if (labial) kit.overlay.add(labial);
+    }
+    for (const fdi of ["16", "26"]) {
+      const mesh = kit.teeth[fdi];
+      if (!mesh) continue;
+      const fa = J.facialAnchor(mesh, fdi, kit.archCenter);
+      const fl = J.facialAnchor(mesh, fdi, kit.archCenter, { lingual: true });
+      const oc = J.occlusalDir(fdi);
+      const pts = [
+        fl.pos.clone().add(oc.clone().multiplyScalar(0.02)),
+        fa.origin.clone().add(oc.clone().multiplyScalar(0.24)).add(fa.buccal.clone().multiplyScalar(0.18)),
+        fa.pos.clone().add(fa.buccal.clone().multiplyScalar(0.1)),
+      ];
+      const clasp = J.tubeAlong(pts, 0.052, metal, { tubular: 28 });
+      if (clasp) kit.overlay.add(clasp);
+    }
+    if (appliance === "twinblock") {
+      placeBiteBlock(kit, ["16", "15", "26", "25"], { height: 0.32 });
+      placeBiteBlock(kit, ["36", "35", "46", "45"], { height: 0.26 });
+      const lowerMid = palatalMid(kit, ["33", "32", "31", "41", "42", "43"]);
+      const lowerPlate = J.makeOrganicBlob(0.95, acrylic, { flatten: 0.22, distort: 0.08 });
+      lowerPlate.scale.set(1.2, 0.22, 0.7);
+      lowerPlate.position.copy(lowerMid);
+      kit.overlay.add(lowerPlate);
+    }
+    if (appliance === "frankel") {
+      for (const side of [["13", "14", "15", "16"], ["23", "24", "25", "26"]]) {
+        const pts = [];
+        for (const fdi of side) {
+          const mesh = kit.teeth[fdi];
+          if (!mesh) continue;
+          const fa = J.facialAnchor(mesh, fdi, kit.archCenter);
+          pts.push(fa.pos.clone().add(fa.buccal.clone().multiplyScalar(0.38)));
+        }
+        if (pts.length < 2) continue;
+        const mid = pts.reduce((a, v) => a.add(v), new THREE.Vector3()).multiplyScalar(1 / pts.length);
+        const shield = J.makeOrganicBlob(0.85, acrylic, { flatten: 0.35, distort: 0.1 });
+        shield.scale.set(0.55, 0.7, 1.35);
+        shield.position.copy(mid);
+        kit.overlay.add(shield);
+      }
+    }
   }
 
-  kit.root.userData.syncClip = kit.syncClip;
-  kit.root.userData.needsClip = kit.needsClip;
-  return kit.root;
+  const focusFdis = preset.brackets || preset.aligner || preset.retainer || preset.hawley || applianceOf(preset)
+    ? ["13", "12", "11", "21", "22", "23", "14", "24", "16", "26", "33", "32", "31", "41", "42", "43"]
+    : J.UPPER_ORDER.concat(J.LOWER_ORDER);
+  let cam = null;
+  if (preset.hawley || applianceOf(preset) || preset.retainer) cam = new THREE.Vector3(0.15, -1.2, 0.5);
+  else if (preset.aligner) cam = new THREE.Vector3(0.12, 0.18, 1.25);
+  else if (preset.brackets) cam = new THREE.Vector3(0.12, 0.16, 1.22);
+  return finish(kit, focusFdis, { camDir: cam, focusOpts: { pad: 0.35 } });
 }
 
 async function composeSpace(preset, { base }) {
   const kind = preset.kindSpace || "band-loop";
-  // Band on first permanent molar 36, gap at 35 (stand-in for lost primary 2nd molar), mesial 34.
+  const isNance = kind === "nance";
   const kit = await J.cloneJaw(base, {
-    teeth: "lower",
+    teeth: isNance ? "upper" : "lower",
     showTongue: false,
     showBone: false,
     showGingiva: true,
     gumOpacity: 0.88,
     clipSkull: true,
-    isolateTeeth: kind === "lingual-arch" || kind === "nance"
+    isolateTeeth: kind === "lingual-arch"
       ? J.LOWER_ORDER.slice()
-      : ["33", "34", "35", "36", "37"],
+      : isNance
+        ? J.UPPER_ORDER.slice()
+        : ["33", "34", "35", "36", "37"],
     keepSoftOnIsolate: true,
     keepBoneOnIsolate: false,
     clipToFocus: false,
   });
-  J.setToothScale(kit, ["33", "34", "35", "36", "37", "44", "45", "46"], 0.88);
-  for (const g of kit.gums) {
-    if (g.name === "gum_upper") g.visible = false;
+  if (!isNance) {
+    J.setToothScale(kit, ["33", "34", "35", "36", "37", "44", "45", "46"], 0.88);
+    for (const g of kit.gums) {
+      if (g.name === "gum_upper") g.visible = false;
+    }
+  } else {
+    J.setToothScale(kit, J.UPPER_ORDER.slice(), 0.92);
+    for (const g of kit.gums) {
+      if (g.name === "gum_lower") g.visible = false;
+    }
   }
   for (const b of kit.bones) b.visible = false;
 
@@ -832,24 +1104,31 @@ async function composeSpace(preset, { base }) {
     const mesial = kit.teeth["34"];
     if (molar) {
       const fa = J.facialAnchor(molar, "36", kit.archCenter);
-      const bandR = Math.max(fa.size.x, fa.size.z) * 0.42;
-      const band = new THREE.Mesh(new THREE.TorusGeometry(bandR, 0.055, 10, 28), J.metalMaterial());
+      const bandR = Math.max(fa.size.x, fa.size.z) * 0.44;
+      const band = new THREE.Mesh(new THREE.TorusGeometry(bandR, 0.1, 12, 28), J.metalMaterial());
       band.rotation.x = Math.PI / 2;
       band.position.copy(fa.origin);
       kit.overlay.add(band);
       if (mesial) {
         const fm = J.facialAnchor(mesial, "34", kit.archCenter);
-        // Loop along the ridge, slightly buccal/occlusal so it reads from the front
         const mid = fa.origin.clone().lerp(fm.origin, 0.5);
-        mid.add(fa.buccal.clone().multiplyScalar(0.12));
-        mid.add(J.occlusalDir("36").multiplyScalar(0.18));
+        mid.add(fa.buccal.clone().multiplyScalar(0.14));
+        mid.add(J.occlusalDir("36").multiplyScalar(0.32));
         const pts = [
           fa.origin.clone().add(J.occlusalDir("36").multiplyScalar(0.08)).add(fa.buccal.clone().multiplyScalar(0.06)),
           mid,
           fm.origin.clone().add(J.occlusalDir("34").multiplyScalar(0.08)).add(fm.buccal.clone().multiplyScalar(0.04)),
         ];
-        const loop = J.tubeAlong(pts, 0.045, J.metalMaterial(), { tubular: 40 });
+        const loop = J.tubeAlong(pts, 0.08, J.metalMaterial(), { tubular: 48 });
         if (loop) kit.overlay.add(loop);
+        // Soft marker for the reserved gap
+        const gap = new THREE.Mesh(
+          new THREE.TorusGeometry(0.22, 0.018, 8, 20),
+          new THREE.MeshBasicMaterial({ color: 0x2f7772, transparent: true, opacity: 0.55 })
+        );
+        gap.rotation.x = Math.PI / 2;
+        gap.position.copy(fa.origin.clone().lerp(fm.origin, 0.5)).add(J.occlusalDir("35").multiplyScalar(0.02));
+        kit.overlay.add(gap);
       }
       J.faceOutward(kit, "36", { amount: 0.7 });
     }
@@ -860,59 +1139,53 @@ async function composeSpace(preset, { base }) {
       const fa = J.facialAnchor(mesh, fdi, kit.archCenter, { lingual: true });
       return fa.pos.clone();
     }).filter(Boolean);
-    const wire = J.tubeAlong(pts, 0.03, J.metalMaterial(), { tubular: 80 });
+    const wire = J.tubeAlong(pts, 0.04, J.metalMaterial(), { tubular: 80 });
     if (wire) kit.overlay.add(wire);
     for (const fdi of ["36", "46"]) {
       const mesh = kit.teeth[fdi];
       if (!mesh) continue;
       const fa = J.facialAnchor(mesh, fdi, kit.archCenter);
-      const bandR = Math.max(fa.size.x, fa.size.z) * 0.38;
-      const band = new THREE.Mesh(new THREE.TorusGeometry(bandR, 0.035, 10, 28), J.metalMaterial());
+      const bandR = Math.max(fa.size.x, fa.size.z) * 0.4;
+      const band = new THREE.Mesh(new THREE.TorusGeometry(bandR, 0.05, 10, 28), J.metalMaterial());
       band.rotation.x = Math.PI / 2;
       band.position.copy(fa.origin);
       kit.overlay.add(band);
     }
   } else if (kind === "nance") {
-    // Palatal nance is an upper appliance — switch visual to upper molars
-    // (we built a lower jaw; rebuild would be cleaner, but add upper via a second clone is heavy).
-    // Use lower as a stand-in? Better clone upper. Let's just put a palatal button on lower? No.
-    // Rebuild isn't possible here without another load — the kit already has all teeth, we isolated lower.
-    // Show upper instead: unhide upper molars, hide lower, build nance on 16-26.
-    for (const fdi of Object.keys(kit.teeth)) {
-      kit.teeth[fdi].visible = J.UPPER_ORDER.includes(fdi);
-    }
-    for (const g of kit.gums) g.visible = g.name === "gum_upper";
     const pts = ["16", "15", "14", "13", "12", "11", "21", "22", "23", "24", "25", "26"].map((fdi) => {
       const mesh = kit.teeth[fdi];
       if (!mesh) return null;
       const fa = J.facialAnchor(mesh, fdi, kit.archCenter, { lingual: true });
       return fa.pos.clone();
     }).filter(Boolean);
-    const wire = J.tubeAlong(pts, 0.03, J.metalMaterial(), { tubular: 80 });
+    const wire = J.tubeAlong(pts, 0.04, J.metalMaterial(), { tubular: 80 });
     if (wire) kit.overlay.add(wire);
     const button = new THREE.Mesh(
-      new THREE.SphereGeometry(0.55, 20, 14),
+      new THREE.SphereGeometry(0.62, 22, 16),
       P.mats.acrylic()
     );
-    button.scale.set(1.2, 0.35, 1.0);
-    button.position.set(0, 0.2, 0.35);
+    button.scale.set(1.15, 0.28, 0.95);
+    button.position.set(0, 0.12, 0.55);
     kit.overlay.add(button);
     for (const fdi of ["16", "26"]) {
       const mesh = kit.teeth[fdi];
       if (!mesh) continue;
       const fa = J.facialAnchor(mesh, fdi, kit.archCenter);
-      const bandR = Math.max(fa.size.x, fa.size.z) * 0.38;
-      const band = new THREE.Mesh(new THREE.TorusGeometry(bandR, 0.035, 10, 28), J.metalMaterial());
+      const bandR = Math.max(fa.size.x, fa.size.z) * 0.4;
+      const band = new THREE.Mesh(new THREE.TorusGeometry(bandR, 0.05, 10, 28), J.metalMaterial());
       band.rotation.x = Math.PI / 2;
       band.position.copy(fa.origin);
       kit.overlay.add(band);
     }
+    J.faceOutward(kit, "11", { amount: 0.15 });
   }
 
-  kit.root.userData.captionSuffix = PEDO_NOTE;
-  kit.root.userData.syncClip = kit.syncClip;
-  kit.root.userData.needsClip = kit.needsClip;
-  return kit.root;
+  const spaceFocus = isNance ? J.UPPER_ORDER.slice() : (kind === "lingual-arch" ? J.LOWER_ORDER.slice() : ["33", "34", "35", "36", "37"]);
+  return finish(kit, spaceFocus, {
+    captionSuffix: PEDO_NOTE,
+    camDir: isNance ? new THREE.Vector3(0.1, -1.25, 0.5) : new THREE.Vector3(0.1, 1.25, 0.55),
+    focusOpts: { pad: 0.45 },
+  });
 }
 
 async function composeDenture(preset, { base }) {
@@ -921,32 +1194,42 @@ async function composeDenture(preset, { base }) {
   const kit = await J.cloneJaw(base, {
     teeth: complete ? "lower" : "all",
     showTongue: false,
-    showBone: true,
+    showBone: false,
     showGingiva: true,
-    boneOpacity: 0.45,
-    gumOpacity: 0.8,
+    gumOpacity: 0.92,
     clipSkull: true,
-    openMouth: 0.18,
+    openMouth: complete ? 0.28 : 0.16,
     missingTeeth: complete ? J.UPPER_ORDER.slice() : ["15", "16", "14"],
   });
-  const lift = complete ? 0.35 : 0.2;
+  const lift = complete ? 0.38 : 0.26;
   if (complete) {
-    const denture = J.makeFullArchProsthesis(kit, { arch, lift, flangeRadius: 0.45 });
+    const denture = J.makeFullArchProsthesis(kit, { arch, lift, flangeRadius: 0.22 });
+    const plateMat = new THREE.MeshPhysicalMaterial({
+      color: 0xd46a7a,
+      roughness: 0.38,
+      metalness: 0,
+      clearcoat: 0.28,
+      sheen: 0.25,
+      sheenColor: new THREE.Color(0xffb0b8),
+    });
     if (preset.flexible) {
+      plateMat.color.setHex(0xe8b0b8);
+      plateMat.transparent = true;
+      plateMat.opacity = 0.92;
       denture.traverse((o) => {
         if (o.isMesh && o.material && o.material.color) {
           const hex = o.material.color.getHex();
           if (hex > 0xe00000 || (o.material.roughness || 0) > 0.4) {
-            o.material = new THREE.MeshPhysicalMaterial({
-              color: 0xe8b0b8, roughness: 0.4, transparent: true, opacity: 0.88, side: THREE.DoubleSide,
-            });
+            o.material = plateMat;
           }
         }
       });
     }
     kit.overlay.add(denture);
+    for (const g of kit.gums) {
+      if (g.name === "gum_upper") g.visible = false;
+    }
   } else {
-    // Partial: hide 14-16, pontics + clasp on 13 and 17
     const mat = J.ceramicMaterial("crown");
     for (const fdi of ["14", "15", "16"]) {
       const mesh = kit.teeth[fdi];
@@ -959,11 +1242,11 @@ async function composeDenture(preset, { base }) {
     const saddlePts = ["13", "14", "15", "16", "17"].map((fdi) => {
       const m = kit.teeth[fdi];
       if (!m) return null;
-      return J.facialAnchor(m, fdi, kit.archCenter).origin.clone().add(J.occlusalDir(fdi).multiplyScalar(lift * 0.4));
+      return J.facialAnchor(m, fdi, kit.archCenter).origin.clone().add(J.occlusalDir(fdi).multiplyScalar(lift * 0.45));
     }).filter(Boolean);
     if (saddlePts.length >= 3) {
       const shape = new THREE.Shape();
-      shape.absellipse(0, 0, 0.42, 0.16, 0, Math.PI * 2, false, 0);
+      shape.absellipse(0, 0, 0.36, 0.2, 0, Math.PI * 2, false, 0);
       const saddle = new THREE.Mesh(
         new THREE.ExtrudeGeometry(shape, {
           extrudePath: new THREE.CatmullRomCurve3(saddlePts, false, "centripetal"),
@@ -971,7 +1254,7 @@ async function composeDenture(preset, { base }) {
           bevelEnabled: false,
         }),
         preset.flexible
-          ? new THREE.MeshPhysicalMaterial({ color: 0xe8b0b8, roughness: 0.4, transparent: true, opacity: 0.88 })
+          ? new THREE.MeshPhysicalMaterial({ color: 0xe8b0b8, roughness: 0.4, transparent: true, opacity: 0.92 })
           : P.mats.acrylic()
       );
       kit.overlay.add(saddle);
@@ -982,39 +1265,50 @@ async function composeDenture(preset, { base }) {
         if (!mesh) continue;
         const fa = J.facialAnchor(mesh, fdi, kit.archCenter);
         const clasp = new THREE.Mesh(
-          new THREE.TorusGeometry(Math.max(fa.size.x, fa.size.z) * 0.36, 0.025, 8, 20, Math.PI * 1.3),
+          new THREE.TorusGeometry(Math.max(fa.size.x, fa.size.z) * 0.36, 0.045, 8, 20, Math.PI * 1.3),
           J.metalMaterial()
         );
         clasp.rotation.x = Math.PI / 2;
-        clasp.position.copy(fa.origin);
+        clasp.position.copy(fa.origin).add(J.occlusalDir(fdi).multiplyScalar(0.04));
         kit.overlay.add(clasp);
       }
     }
   }
-  kit.root.userData.syncClip = kit.syncClip;
-  kit.root.userData.needsClip = kit.needsClip;
-  return kit.root;
+  return finish(kit, complete ? [] : ["14", "15", "16", "13", "17"], {
+    camDir: complete ? new THREE.Vector3(0.42, 0.16, 1.1) : new THREE.Vector3(0.85, 0.35, 0.9),
+    focusOpts: { pad: 0.32, includeOverlay: true },
+  });
 }
 
 async function composeBridge(preset, { base }) {
   const pontic = "15";
   const kit = await J.cloneJaw(base, {
+    teeth: "upper",
     showTongue: false,
-    showBone: true,
+    showBone: false,
     showGingiva: true,
-    boneOpacity: 0.45,
-    gumOpacity: 0.85,
+    gumOpacity: 0.9,
     clipSkull: true,
-    openMouth: 0.08,
-    isolateTeeth: ["14", "15", "16", "13", "17"],
+    openMouth: 0,
+    isolateTeeth: ["13", "14", "15", "16", "17"],
     keepSoftOnIsolate: true,
-    keepBoneOnIsolate: true,
+    keepBoneOnIsolate: false,
     clipToFocus: true,
+    clipPad: 0.8,
   });
-  J.placeBridge(kit, kit.overlay, pontic, { maryland: !!preset.maryland });
-  kit.root.userData.syncClip = kit.syncClip;
-  kit.root.userData.needsClip = kit.needsClip;
-  return kit.root;
+  for (const g of kit.gums) {
+    if (g.name === "gum_lower") g.visible = false;
+  }
+  J.placeBridge(kit, kit.overlay, pontic, { maryland: !!preset.maryland, lift: preset.maryland ? 0.04 : 0.18 });
+  J.faceOutward(kit, pontic, { amount: 1 });
+  const fa = J.facialAnchor(kit.teeth[pontic], pontic, kit.archCenter);
+  const cam = fa.buccal.clone().multiplyScalar(1)
+    .add(J.occlusalDir(pontic).multiplyScalar(0.35))
+    .add(new THREE.Vector3(0, 0, 0.25));
+  return finish(kit, [], {
+    camDir: cam.normalize(),
+    focusOpts: { pad: 0.45, includeOverlay: true },
+  });
 }
 
 async function composeHygiene(preset, { base }) {
@@ -1070,38 +1364,90 @@ async function composeHygiene(preset, { base }) {
       kit.overlay.add(tip);
     }
   }
-  kit.root.userData.syncClip = kit.syncClip;
-  kit.root.userData.needsClip = kit.needsClip;
-  return kit.root;
+  return finish(kit, [fdi, "15", "17"], { camDir: new THREE.Vector3(0.7, 0.85, 0.7), focusOpts: { pad: 0.55 } });
 }
 
 async function composeScan(preset, { base }) {
+  const cap = (preset.caption || "") + " " + (preset.id || "");
+  const isCbct = !!preset.cbct || /CBCT|三维牙片|三维扫描|骨量/.test(cap);
   const kit = await J.cloneJaw(base, {
-    teeth: "upper",
     showTongue: false,
-    showBone: false,
+    showBone: isCbct,
     showGingiva: true,
-    gumOpacity: 0.88,
+    boneOpacity: isCbct ? 0.78 : 0.0,
+    gumOpacity: 0.92,
     clipSkull: true,
+    openMouth: isCbct ? 0.06 : 0.1,
   });
-  const fa = kit.teeth["11"] ? J.facialAnchor(kit.teeth["11"], "11", kit.archCenter) : { pos: new THREE.Vector3(0, 0, 2), buccal: new THREE.Vector3(0, 0, 1) };
-  const wand = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.12, 0.14, 1.4, 16),
-    new THREE.MeshStandardMaterial({ color: 0x4a5560, metalness: 0.4, roughness: 0.4 })
-  );
+
+  if (isCbct) {
+    const tbox = new THREE.Box3();
+    Object.values(kit.teeth).forEach((t) => { if (t.visible) tbox.expandByObject(t); });
+    kit.gums.forEach((g) => { if (g && g.visible) tbox.expandByObject(g); });
+    const size = tbox.getSize(new THREE.Vector3());
+    const center = tbox.getCenter(new THREE.Vector3());
+    const volume = new THREE.Mesh(
+      new THREE.BoxGeometry(size.x * 1.08, size.y * 1.12, size.z * 1.08),
+      new THREE.MeshPhysicalMaterial({
+        color: 0x8ec5d4,
+        roughness: 0.18,
+        metalness: 0,
+        transparent: true,
+        opacity: 0.11,
+        depthWrite: false,
+        side: THREE.DoubleSide,
+      })
+    );
+    volume.position.copy(center);
+    const edges = new THREE.LineSegments(
+      new THREE.EdgesGeometry(volume.geometry),
+      new THREE.LineBasicMaterial({ color: 0x2f7772, transparent: true, opacity: 0.7 })
+    );
+    volume.add(edges);
+    kit.overlay.add(volume);
+    const slice = new THREE.Mesh(
+      new THREE.PlaneGeometry(size.z * 1.0, size.y * 1.06),
+      new THREE.MeshPhysicalMaterial({
+        color: 0xd5ecec,
+        roughness: 0.4,
+        transparent: true,
+        opacity: 0.28,
+        side: THREE.DoubleSide,
+        depthWrite: false,
+      })
+    );
+    slice.rotation.y = Math.PI / 2;
+    slice.position.copy(center);
+    kit.overlay.add(slice);
+    return finish(kit, J.UPPER_ORDER.concat(J.LOWER_ORDER), {
+      camDir: new THREE.Vector3(0.55, 0.32, 1.05),
+      focusOpts: { pad: 0.18, includeOverlay: false },
+    });
+  }
+
+  const fa = kit.teeth["11"]
+    ? J.facialAnchor(kit.teeth["11"], "11", kit.archCenter)
+    : { pos: new THREE.Vector3(0, 0, 2), buccal: new THREE.Vector3(0, 0, 1) };
+  const bodyMat = new THREE.MeshStandardMaterial({ color: 0x3d4a52, metalness: 0.45, roughness: 0.35 });
+  const wand = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.13, 1.15, 18), bodyMat);
+  const handle = new THREE.Mesh(new THREE.CylinderGeometry(0.15, 0.13, 0.45, 18), bodyMat);
+  handle.position.y = -0.7;
   const tip = new THREE.Mesh(
-    new THREE.BoxGeometry(0.28, 0.16, 0.36),
-    new THREE.MeshStandardMaterial({ color: 0x88ccee, emissive: 0x226688, emissiveIntensity: 0.4 })
+    new THREE.BoxGeometry(0.32, 0.14, 0.42),
+    new THREE.MeshStandardMaterial({ color: 0x9fd4e8, emissive: 0x1a5a70, emissiveIntensity: 0.45, roughness: 0.25 })
   );
+  tip.position.y = 0.62;
+  const window = new THREE.Mesh(
+    new THREE.PlaneGeometry(0.22, 0.28),
+    new THREE.MeshBasicMaterial({ color: 0x7fe0ff, transparent: true, opacity: 0.7 })
+  );
+  window.position.set(0, 0.62, 0.22);
   const g = new THREE.Group();
-  tip.position.y = 0.75;
-  g.add(wand, tip);
-  g.position.copy(fa.pos).add(fa.buccal.clone().multiplyScalar(1.1)).add(new THREE.Vector3(0.4, 0.3, 0));
+  g.add(wand, handle, tip, window);
+  g.position.copy(fa.pos).add(fa.buccal.clone().multiplyScalar(0.95)).add(new THREE.Vector3(0.35, 0.25, 0.05));
   g.lookAt(fa.pos);
   kit.overlay.add(g);
-  kit.root.userData.syncClip = kit.syncClip;
-  kit.root.userData.needsClip = kit.needsClip;
-  return kit.root;
+  return finish(kit, ["11", "12", "21", "13", "23"], { focusOpts: { pad: 0.7 } });
 }
 
 async function composeTad(preset, { base }) {
@@ -1135,9 +1481,7 @@ async function composeTad(preset, { base }) {
     head.position.copy(pos).add(dir.clone().multiplyScalar(0.38));
     kit.overlay.add(screw, head);
   }
-  kit.root.userData.syncClip = kit.syncClip;
-  kit.root.userData.needsClip = kit.needsClip;
-  return kit.root;
+  return finish(kit, ["13", "14", "15", "16"], { cutaway: "15", cutawayOpts: { inset: 0.04 }, focusOpts: { pad: 0.55 } });
 }
 
 async function composeExpander(preset, { base }) {
@@ -1160,29 +1504,28 @@ async function composeExpander(preset, { base }) {
     band.position.copy(fa.origin);
     kit.overlay.add(band);
   }
-  // Jackscrew in the palatal midline
+  const mid = palatalMid(kit, ["16", "14", "12", "11", "21", "22", "24", "26"]);
+  mid.y += 0.04;
   const screw = new THREE.Mesh(new THREE.BoxGeometry(0.55, 0.22, 0.35), metal);
-  screw.position.set(0, 0.05, 0.15);
+  screw.position.copy(mid);
   kit.overlay.add(screw);
-  const midL = new THREE.Vector3(-0.28, 0.05, 0.15);
-  const midR = new THREE.Vector3(0.28, 0.05, 0.15);
+  const midL = mid.clone(); midL.x -= 0.28;
+  const midR = mid.clone(); midR.x += 0.28;
   for (const fdi of ["16", "14"]) {
     const mesh = kit.teeth[fdi];
     if (!mesh) continue;
     const fa = J.facialAnchor(mesh, fdi, kit.archCenter, { lingual: true });
-    const arm = J.tubeAlong([midL, fa.pos], 0.025, metal);
+    const arm = J.tubeAlong([midL, fa.pos], 0.028, metal);
     if (arm) kit.overlay.add(arm);
   }
   for (const fdi of ["26", "24"]) {
     const mesh = kit.teeth[fdi];
     if (!mesh) continue;
     const fa = J.facialAnchor(mesh, fdi, kit.archCenter, { lingual: true });
-    const arm = J.tubeAlong([midR, fa.pos], 0.025, metal);
+    const arm = J.tubeAlong([midR, fa.pos], 0.028, metal);
     if (arm) kit.overlay.add(arm);
   }
-  kit.root.userData.syncClip = kit.syncClip;
-  kit.root.userData.needsClip = kit.needsClip;
-  return kit.root;
+  return finish(kit, J.UPPER_ORDER.slice(), { camDir: new THREE.Vector3(0.12, -1.2, 0.5), focusOpts: { pad: 0.4 } });
 }
 
 async function composeMouthguard(preset, { base }) {
@@ -1198,9 +1541,7 @@ async function composeMouthguard(preset, { base }) {
   mat.opacity = 0.72;
   mat.transmission = 0.35;
   J.placeAligners(kit, kit.overlay, { fdis: J.UPPER_ORDER, scale: 1.1, frac: 0.5, material: mat });
-  kit.root.userData.syncClip = kit.syncClip;
-  kit.root.userData.needsClip = kit.needsClip;
-  return kit.root;
+  return finish(kit, J.UPPER_ORDER.slice(), { focusOpts: { pad: 0.45 } });
 }
 
 async function composeSealant(preset, { base }) {
@@ -1226,9 +1567,7 @@ async function composeSealant(preset, { base }) {
     seal.position.copy(fa.center).add(J.occlusalDir(fdi).multiplyScalar(fa.toothSize * 0.18));
     kit.overlay.add(seal);
   }
-  kit.root.userData.syncClip = kit.syncClip;
-  kit.root.userData.needsClip = kit.needsClip;
-  return kit.root;
+  return finish(kit, ["15", "16", "17"], { camDir: new THREE.Vector3(0.35, 1.15, 0.5), focusOpts: { pad: 0.4 } });
 }
 
 async function composeSsc(preset, { base }) {
@@ -1245,8 +1584,5 @@ async function composeSsc(preset, { base }) {
   });
   J.setToothScale(kit, ["35", "36", "37", "34"], 0.85);
   J.placeCrownRestore(kit, kit.overlay, fdi, { kind: "metal", explode: 0.2 });
-  kit.root.userData.captionSuffix = PEDO_NOTE;
-  kit.root.userData.syncClip = kit.syncClip;
-  kit.root.userData.needsClip = kit.needsClip;
-  return kit.root;
+  return finish(kit, ["34", "35", "36", "37"], { captionSuffix: PEDO_NOTE, focusOpts: { pad: 0.45 } });
 }

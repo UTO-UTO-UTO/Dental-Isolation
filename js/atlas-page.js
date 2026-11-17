@@ -33,7 +33,10 @@
         count > 0
           ? "含：" + previewTitles + (count > 3 ? "等" : "")
           : "";
+      const Stills = window.IsoStills;
+      const thumb = Stills ? Stills.groupThumb(specId, group.title) : "";
       return `<article class="atlas-row">
+        <div class="atlas-thumb" aria-hidden="true">${thumb}</div>
         <div>
           <h2>${escapeHtml(group.title)}</h2>
           <p class="atlas-group-sub">${escapeHtml(sub)}</p>

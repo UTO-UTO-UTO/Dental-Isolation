@@ -19,6 +19,29 @@
 
   const article = articles[topicId];
 
+  function prepareVisual(id, isStub) {
+    const Stills = window.IsoStills;
+    const poster = Stills && id ? Stills.topicPosterUrl(id) : "";
+    const viewer = document.getElementById("detail-viewer");
+    if (viewer && poster) {
+      viewer.style.backgroundImage = 'url("' + poster + '")';
+      viewer.style.backgroundSize = "cover";
+      viewer.style.backgroundPosition = "center";
+    }
+    if (isStub && stubEl) {
+      stubEl.hidden = false;
+      stubEl.textContent = "右侧（手机上在文字上方）的三维模型已按这个主题把相关结构单独展示出来。完整图文将陆续补充。";
+    }
+  }
+
+  function escapeHtml(s) {
+    return String(s)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
   if (article) {
     titleEl.textContent = article.title;
     crumbTopic.textContent = article.title;
@@ -29,6 +52,7 @@
     document.title = article.title + " — " + siteName;
     if (summaryEl) summaryEl.textContent = article.summary || "";
     if (stubEl) stubEl.hidden = true;
+    prepareVisual(topicId, false);
 
     bodyEl.innerHTML = article.sections
       .map((sec) => {
@@ -67,10 +91,7 @@
     }
     document.title = t.title + " — " + siteName;
     if (summaryEl) summaryEl.textContent = t.subtitle || "";
-    if (stubEl) {
-      stubEl.hidden = false;
-      stubEl.textContent = "本主题暂为条目说明页，完整图文将陆续补充。以下先帮您了解要点。";
-    }
+    prepareVisual(topicId, true);
     bodyEl.innerHTML = `
       <h2>一句话说明</h2>
       <p>${escapeHtml(t.subtitle || "用于专科图鉴中的主题入口。")}</p>
@@ -81,8 +102,8 @@
         <li>大致流程与复诊节奏</li>
         <li>居家护理与复查要注意什么</li>
       </ul>
-      <h2>对照三维示意</h2>
-      <p>上方（电脑端在右侧）是可旋转的三维示意；也可结合「模拟口腔」指出相关牙位，或返回专科图鉴继续浏览。</p>
+      <h2>三维对照</h2>
+      <p>电脑端右侧（手机上在文字上方）是可旋转的三维结构示意，已尽量按真实口内形态来展示。您也可以结合「模拟口腔」指出相关牙位，或返回专科图鉴继续浏览。</p>
     `;
     actionsEl.innerHTML = `
       <a class="btn btn-outline" href="${spec.id}.html">返回${escapeHtml(spec.title)}图鉴</a>
@@ -101,13 +122,5 @@
       <a class="btn btn-primary" href="../index.html">回首页</a>
     `;
     document.title = "主题详情 — " + siteName;
-  }
-
-  function escapeHtml(s) {
-    return String(s)
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;");
   }
 })();
