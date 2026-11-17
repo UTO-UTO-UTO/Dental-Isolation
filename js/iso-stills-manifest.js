@@ -1,0 +1,1683 @@
+window.IsoStillsManifest = {
+  "topics": {
+    "implant-crown": {
+      "file": "topics/implant-crown.webp",
+      "caption": "种植牙由种植体、基台与牙冠组成",
+      "bytes": 8630
+    },
+    "implant-healing-abutment": {
+      "file": "topics/implant-healing-abutment.webp",
+      "caption": "愈合基台帮助塑形牙龈轮廓",
+      "bytes": 6944
+    },
+    "implant-abutment": {
+      "file": "topics/implant-abutment.webp",
+      "caption": "基台连接种植体与牙冠",
+      "bytes": 6842
+    },
+    "implant-screw": {
+      "file": "topics/implant-screw.webp",
+      "caption": "中央螺丝把上部结构固定住",
+      "bytes": 7192
+    },
+    "implant-anterior-esthetic": {
+      "file": "topics/implant-anterior-esthetic.webp",
+      "caption": "前牙区更强调牙龈与外形协调",
+      "bytes": 8648
+    },
+    "implant-single": {
+      "file": "topics/implant-single.webp",
+      "caption": "单颗缺失时常见的种植修复",
+      "bytes": 9308
+    },
+    "implant-splinted": {
+      "file": "topics/implant-splinted.webp",
+      "caption": "相邻种植牙可连成一体",
+      "bytes": 14108
+    },
+    "implant-bridge": {
+      "file": "topics/implant-bridge.webp",
+      "caption": "用种植体当「基牙」的固定桥",
+      "bytes": 14108
+    },
+    "implant-screw-retained": {
+      "file": "topics/implant-screw-retained.webp",
+      "caption": "螺丝固位：必要时可拆下维护",
+      "bytes": 7264
+    },
+    "implant-cement-retained": {
+      "file": "topics/implant-cement-retained.webp",
+      "caption": "粘接固位：牙冠粘在基台上",
+      "bytes": 9308
+    },
+    "implant-custom-abutment": {
+      "file": "topics/implant-custom-abutment.webp",
+      "caption": "按牙龈形态定制的基台外形",
+      "bytes": 6950
+    },
+    "implant-temp-crown": {
+      "file": "topics/implant-temp-crown.webp",
+      "caption": "过渡阶段的临时种植冠",
+      "bytes": 10096
+    },
+    "implant-full-options": {
+      "file": "topics/implant-full-options.webp",
+      "caption": "半口全口可有固定、半固定等不同选择",
+      "bytes": 8352
+    },
+    "implant-semi-fixed": {
+      "file": "topics/implant-semi-fixed.webp",
+      "caption": "您可以取下来清洁的覆盖义齿",
+      "bytes": 8312
+    },
+    "implant-segmented": {
+      "file": "topics/implant-segmented.webp",
+      "caption": "分区完成，减轻单次负担",
+      "bytes": 15718
+    },
+    "implant-allon6": {
+      "file": "topics/implant-allon6.webp",
+      "caption": "六枚种植体支持一整弓固定桥",
+      "bytes": 8706
+    },
+    "implant-allon4": {
+      "file": "topics/implant-allon4.webp",
+      "caption": "四枚种植体支持一整弓修复",
+      "bytes": 8352
+    },
+    "implant-malone": {
+      "file": "topics/implant-malone.webp",
+      "caption": "混合固位的全弓方案示意",
+      "bytes": 8352
+    },
+    "implant-bar-overdenture": {
+      "file": "topics/implant-bar-overdenture.webp",
+      "caption": "杆卡式附着体增强固位",
+      "bytes": 8960
+    },
+    "implant-locator": {
+      "file": "topics/implant-locator.webp",
+      "caption": "按扣式附着体，便于取戴清洁",
+      "bytes": 8312
+    },
+    "implant-monolithic-bridge": {
+      "file": "topics/implant-monolithic-bridge.webp",
+      "caption": "整弓桥体一次就位的示意",
+      "bytes": 8352
+    },
+    "implant-zygoma": {
+      "file": "topics/implant-zygoma.webp",
+      "caption": "上颌严重萎缩时的特殊路径示意",
+      "bytes": 7514
+    },
+    "implant-sinus-internal": {
+      "file": "topics/implant-sinus-internal.webp",
+      "caption": "经牙槽嵴抬高窦底，增加骨高度",
+      "bytes": 5604
+    },
+    "implant-sinus-external": {
+      "file": "topics/implant-sinus-external.webp",
+      "caption": "侧壁开小窗植骨，扩大可用骨量",
+      "bytes": 5592
+    },
+    "implant-split": {
+      "file": "topics/implant-split.webp",
+      "caption": "窄嵴劈开增宽后放入种植体",
+      "bytes": 9670
+    },
+    "implant-gbr": {
+      "file": "topics/implant-gbr.webp",
+      "caption": "用膜和植骨材料引导新骨生成",
+      "bytes": 5896
+    },
+    "implant-block-graft": {
+      "file": "topics/implant-block-graft.webp",
+      "caption": "较大缺损时的块状植骨示意",
+      "bytes": 5906
+    },
+    "implant-socket-preserve": {
+      "file": "topics/implant-socket-preserve.webp",
+      "caption": "拔牙同期减少牙槽骨吸收",
+      "bytes": 6050
+    },
+    "implant-immediate": {
+      "file": "topics/implant-immediate.webp",
+      "caption": "拔牙同期植入种植体",
+      "bytes": 9308
+    },
+    "implant-early": {
+      "file": "topics/implant-early.webp",
+      "caption": "软组织愈合后较早植入",
+      "bytes": 9308
+    },
+    "implant-delayed": {
+      "file": "topics/implant-delayed.webp",
+      "caption": "骨与软组织稳定后再植入",
+      "bytes": 9308
+    },
+    "implant-soft-tissue": {
+      "file": "topics/implant-soft-tissue.webp",
+      "caption": "改善牙龈厚度与美学轮廓",
+      "bytes": 11132
+    },
+    "implant-guided": {
+      "file": "topics/implant-guided.webp",
+      "caption": "数字化导板引导植入方向",
+      "bytes": 6780
+    },
+    "implant-provisional-loading": {
+      "file": "topics/implant-provisional-loading.webp",
+      "caption": "条件合适时当日可戴临时牙",
+      "bytes": 10096
+    },
+    "implant-rescue": {
+      "file": "topics/implant-rescue.webp",
+      "caption": "种植体周围炎时骨吸收示意（科普）",
+      "bytes": 5676
+    },
+    "implant-system-overview": {
+      "file": "topics/implant-system-overview.webp",
+      "caption": "不同系统细节有别，结构层次相近",
+      "bytes": 8434
+    },
+    "implant-domestic-import": {
+      "file": "topics/implant-domestic-import.webp",
+      "caption": "国产与进口：看证据与适配，而不只比价格",
+      "bytes": 9308
+    },
+    "implant-preop": {
+      "file": "topics/implant-preop.webp",
+      "caption": "术前检查结合全身与口腔评估",
+      "bytes": 9308
+    },
+    "implant-systemic": {
+      "file": "topics/implant-systemic.webp",
+      "caption": "全身状况会影响种植可行性",
+      "bytes": 9308
+    },
+    "implant-bone-quality": {
+      "file": "topics/implant-bone-quality.webp",
+      "caption": "骨质密度影响稳定性与愈合",
+      "bytes": 10372
+    },
+    "implant-surgery-heal": {
+      "file": "topics/implant-surgery-heal.webp",
+      "caption": "植入后需要时间完成骨结合",
+      "bytes": 9112
+    },
+    "implant-impression": {
+      "file": "topics/implant-impression.webp",
+      "caption": "开窗/非开窗取模示意",
+      "bytes": 8370
+    },
+    "implant-ios": {
+      "file": "topics/implant-ios.webp",
+      "caption": "光学口扫可代替部分传统印模",
+      "bytes": 7718
+    },
+    "implant-delivery": {
+      "file": "topics/implant-delivery.webp",
+      "caption": "试戴、调咬合后完成安装",
+      "bytes": 9308
+    },
+    "implant-home-care": {
+      "file": "topics/implant-home-care.webp",
+      "caption": "种植牙同样需要认真清洁",
+      "bytes": 5256
+    },
+    "implant-maintenance": {
+      "file": "topics/implant-maintenance.webp",
+      "caption": "定期复查与专业维护很重要",
+      "bytes": 9308
+    },
+    "implant-faq-pain": {
+      "file": "topics/implant-faq-pain.webp",
+      "caption": "术后轻度不适常见；加重需尽快复诊",
+      "bytes": 9308
+    },
+    "implant-lifespan": {
+      "file": "topics/implant-lifespan.webp",
+      "caption": "能用多久，取决于维护与咬合负担",
+      "bytes": 9308
+    },
+    "ortho-ideal": {
+      "file": "topics/ortho-ideal.webp",
+      "caption": "正常覆合、覆盖与中线关系示意",
+      "bytes": 7046,
+      "reused": true
+    },
+    "ortho-crowding": {
+      "file": "topics/ortho-crowding.webp",
+      "caption": "间隙不足时，牙齿会挤在一起",
+      "bytes": 6552,
+      "reused": true
+    },
+    "ortho-spacing": {
+      "file": "topics/ortho-spacing.webp",
+      "caption": "散在间隙或中切牙间隙示意",
+      "bytes": 6568,
+      "reused": true
+    },
+    "ortho-deep-open": {
+      "file": "topics/ortho-deep-open.webp",
+      "caption": "深覆合或开合属于垂直向问题",
+      "bytes": 7046,
+      "reused": true
+    },
+    "ortho-crossbite": {
+      "file": "topics/ortho-crossbite.webp",
+      "caption": "反合、锁合等咬合异常示意",
+      "bytes": 6536,
+      "reused": true
+    },
+    "ortho-overjet-overbite": {
+      "file": "topics/ortho-overjet-overbite.webp",
+      "caption": "覆合与覆盖是常用测量指标",
+      "bytes": 7046,
+      "reused": true
+    },
+    "ortho-angle": {
+      "file": "topics/ortho-angle.webp",
+      "caption": "安氏分类帮助描述咬合关系",
+      "bytes": 10854,
+      "reused": true
+    },
+    "ortho-dental-skeletal": {
+      "file": "topics/ortho-dental-skeletal.webp",
+      "caption": "牙性与骨性问题决定方案难度",
+      "bytes": 7046,
+      "reused": true
+    },
+    "ortho-midline": {
+      "file": "topics/ortho-midline.webp",
+      "caption": "上下牙中线与面中线要对齐评估",
+      "bytes": 6620,
+      "reused": true
+    },
+    "ortho-asymm": {
+      "file": "topics/ortho-asymm.webp",
+      "caption": "颜面不对称需综合评估",
+      "bytes": 6540,
+      "reused": true
+    },
+    "ortho-impacted": {
+      "file": "topics/ortho-impacted.webp",
+      "caption": "阻生牙可能需要牵引助萌",
+      "bytes": 5428,
+      "reused": true
+    },
+    "ortho-missing": {
+      "file": "topics/ortho-missing.webp",
+      "caption": "先天缺牙时的间隙管理示意",
+      "bytes": 6546,
+      "reused": true
+    },
+    "ortho-metal-bracket": {
+      "file": "topics/ortho-metal-bracket.webp",
+      "caption": "金属托槽是经典固定矫治方式",
+      "bytes": 10854,
+      "reused": true
+    },
+    "ortho-ceramic-bracket": {
+      "file": "topics/ortho-ceramic-bracket.webp",
+      "caption": "陶瓷托槽颜色更接近牙齿",
+      "bytes": 9600,
+      "reused": true
+    },
+    "ortho-self-ligating": {
+      "file": "topics/ortho-self-ligating.webp",
+      "caption": "自锁托槽用滑盖代替结扎丝",
+      "bytes": 10904,
+      "reused": true
+    },
+    "ortho-lingual": {
+      "file": "topics/ortho-lingual.webp",
+      "caption": "托槽粘在舌侧，外观更隐蔽",
+      "bytes": 7798,
+      "reused": true
+    },
+    "ortho-archwire": {
+      "file": "topics/ortho-archwire.webp",
+      "caption": "弓丝引导牙齿按计划移动",
+      "bytes": 10854,
+      "reused": true
+    },
+    "ortho-buccal-tube": {
+      "file": "topics/ortho-buccal-tube.webp",
+      "caption": "磨牙颊面管固定弓丝末端",
+      "bytes": 10854,
+      "reused": true
+    },
+    "ortho-auxiliaries": {
+      "file": "topics/ortho-auxiliaries.webp",
+      "caption": "结扎圈、弹簧、钩等辅助附件",
+      "bytes": 10854,
+      "reused": true
+    },
+    "ortho-bracket-looks": {
+      "file": "topics/ortho-bracket-looks.webp",
+      "caption": "不同托槽外观对比示意",
+      "bytes": 10854,
+      "reused": true
+    },
+    "ortho-metal-sl-demo": {
+      "file": "topics/ortho-metal-sl-demo.webp",
+      "caption": "金属自锁托槽示意",
+      "bytes": 10904,
+      "reused": true
+    },
+    "ortho-ceramic-sl-demo": {
+      "file": "topics/ortho-ceramic-sl-demo.webp",
+      "caption": "陶瓷自锁托槽示意",
+      "bytes": 10904,
+      "reused": true
+    },
+    "ortho-lingual-demo": {
+      "file": "topics/ortho-lingual-demo.webp",
+      "caption": "舌侧托槽示意",
+      "bytes": 7798,
+      "reused": true
+    },
+    "ortho-conventional-demo": {
+      "file": "topics/ortho-conventional-demo.webp",
+      "caption": "传统结扎托槽示意",
+      "bytes": 10854,
+      "reused": true
+    },
+    "ortho-clear-aligner": {
+      "file": "topics/ortho-clear-aligner.webp",
+      "caption": "透明矫治器包裹牙冠，逐步排齐",
+      "bytes": 8918,
+      "reused": true
+    },
+    "ortho-attachments": {
+      "file": "topics/ortho-attachments.webp",
+      "caption": "附件帮助牙套更好地移动牙齿",
+      "bytes": 8982,
+      "reused": true
+    },
+    "ortho-ipr": {
+      "file": "topics/ortho-ipr.webp",
+      "caption": "邻面去釉可创造少量间隙",
+      "bytes": 6546,
+      "reused": true
+    },
+    "ortho-elastics-aligner": {
+      "file": "topics/ortho-elastics-aligner.webp",
+      "caption": "牙套也可配合牵引等辅助",
+      "bytes": 8918,
+      "reused": true
+    },
+    "ortho-aligner-wear": {
+      "file": "topics/ortho-aligner-wear.webp",
+      "caption": "按医嘱时长佩戴、按时换套",
+      "bytes": 8918,
+      "reused": true
+    },
+    "ortho-retainers": {
+      "file": "topics/ortho-retainers.webp",
+      "caption": "矫治结束后用保持器稳定效果",
+      "bytes": 8784,
+      "reused": true
+    },
+    "ortho-hawley": {
+      "file": "topics/ortho-hawley.webp",
+      "caption": "活动式哈雷保持器示意",
+      "bytes": 7728
+    },
+    "ortho-fixed-retainer": {
+      "file": "topics/ortho-fixed-retainer.webp",
+      "caption": "粘在舌侧的固定保持器",
+      "bytes": 8784,
+      "reused": true
+    },
+    "ortho-tad": {
+      "file": "topics/ortho-tad.webp",
+      "caption": "种植钉提供额外支抗",
+      "bytes": 7376,
+      "reused": true
+    },
+    "ortho-elastics": {
+      "file": "topics/ortho-elastics.webp",
+      "caption": "橡皮筋牵引调整咬合关系",
+      "bytes": 10854,
+      "reused": true
+    },
+    "ortho-bite-plane": {
+      "file": "topics/ortho-bite-plane.webp",
+      "caption": "平导、斜导等咬合诱导装置",
+      "bytes": 8384,
+      "reused": true
+    },
+    "ortho-expander": {
+      "file": "topics/ortho-expander.webp",
+      "caption": "扩弓装置增宽上颌牙弓",
+      "bytes": 8884,
+      "reused": true
+    },
+    "ortho-headgear": {
+      "file": "topics/ortho-headgear.webp",
+      "caption": "口外支抗装置示意（外观示意）",
+      "bytes": 10854,
+      "reused": true
+    },
+    "ortho-twinblock": {
+      "file": "topics/ortho-twinblock.webp",
+      "caption": "Twin-Block 功能矫治器示意",
+      "bytes": 6924,
+      "reused": true
+    },
+    "ortho-herbst": {
+      "file": "topics/ortho-herbst.webp",
+      "caption": "Herbst 矫治器示意",
+      "bytes": 10854,
+      "reused": true
+    },
+    "ortho-frankel-ii": {
+      "file": "topics/ortho-frankel-ii.webp",
+      "caption": "Frankel II 型肌功能矫治器示意",
+      "bytes": 7658,
+      "reused": true
+    },
+    "ortho-frankel-iii": {
+      "file": "topics/ortho-frankel-iii.webp",
+      "caption": "Frankel III 型肌功能矫治器示意",
+      "bytes": 7658,
+      "reused": true
+    },
+    "ortho-myofunctional": {
+      "file": "topics/ortho-myofunctional.webp",
+      "caption": "肌功能矫治相关装置示意",
+      "bytes": 8918,
+      "reused": true
+    },
+    "ortho-biology": {
+      "file": "topics/ortho-biology.webp",
+      "caption": "牙齿移动依赖牙周组织改建",
+      "bytes": 5428,
+      "reused": true
+    },
+    "ortho-records": {
+      "file": "topics/ortho-records.webp",
+      "caption": "模型、照片与影像共同记录起点",
+      "bytes": 7672,
+      "reused": true
+    },
+    "ortho-plan-talk": {
+      "file": "topics/ortho-plan-talk.webp",
+      "caption": "方案需要结合目标与风险一起谈",
+      "bytes": 10854,
+      "reused": true
+    },
+    "ortho-extraction": {
+      "file": "topics/ortho-extraction.webp",
+      "caption": "拔牙与否取决于拥挤与面型",
+      "bytes": 6608,
+      "reused": true
+    },
+    "ortho-surgery": {
+      "file": "topics/ortho-surgery.webp",
+      "caption": "骨性严重时可能需正畸正颌联合",
+      "bytes": 6610,
+      "reused": true
+    },
+    "ortho-ipr-flow": {
+      "file": "topics/ortho-ipr-flow.webp",
+      "caption": "邻面去釉按步骤、少量进行",
+      "bytes": 6588,
+      "reused": true
+    },
+    "ortho-visits": {
+      "file": "topics/ortho-visits.webp",
+      "caption": "复诊时调整弓丝或更换牙套",
+      "bytes": 10854,
+      "reused": true
+    },
+    "ortho-hygiene": {
+      "file": "topics/ortho-hygiene.webp",
+      "caption": "戴矫治器期间清洁更关键",
+      "bytes": 5256,
+      "reused": true
+    },
+    "ortho-diet": {
+      "file": "topics/ortho-diet.webp",
+      "caption": "避免过硬过黏食物保护托槽",
+      "bytes": 10854,
+      "reused": true
+    },
+    "ortho-emergency": {
+      "file": "topics/ortho-emergency.webp",
+      "caption": "托槽脱落等应急处理要及时联系医生",
+      "bytes": 10854,
+      "reused": true
+    },
+    "prostho-metal-crown": {
+      "file": "topics/prostho-metal-crown.webp",
+      "caption": "金属全冠强度高，颜色不自然",
+      "bytes": 5502,
+      "reused": true
+    },
+    "prostho-pfm": {
+      "file": "topics/prostho-pfm.webp",
+      "caption": "金属底冠外覆瓷层",
+      "bytes": 5484,
+      "reused": true
+    },
+    "prostho-all-ceramic": {
+      "file": "topics/prostho-all-ceramic.webp",
+      "caption": "全瓷冠美观，适合前牙区",
+      "bytes": 5488,
+      "reused": true
+    },
+    "prostho-zirconia": {
+      "file": "topics/prostho-zirconia.webp",
+      "caption": "氧化锆强度高、颜色可调",
+      "bytes": 5492,
+      "reused": true
+    },
+    "prostho-temp-crown": {
+      "file": "topics/prostho-temp-crown.webp",
+      "caption": "正式牙做好前的过渡牙冠",
+      "bytes": 5486,
+      "reused": true
+    },
+    "prostho-inlay": {
+      "file": "topics/prostho-inlay.webp",
+      "caption": "嵌体嵌在牙洞内，保留更多牙体",
+      "bytes": 5834,
+      "reused": true
+    },
+    "prostho-onlay": {
+      "file": "topics/prostho-onlay.webp",
+      "caption": "高嵌体覆盖牙尖，保护薄弱牙体",
+      "bytes": 5834,
+      "reused": true
+    },
+    "prostho-overlay": {
+      "file": "topics/prostho-overlay.webp",
+      "caption": "覆盖咬合面的修复方式",
+      "bytes": 5488,
+      "reused": true
+    },
+    "prostho-veneer-porcelain": {
+      "file": "topics/prostho-veneer-porcelain.webp",
+      "caption": "薄薄的瓷片贴在牙齿唇面",
+      "bytes": 5818,
+      "reused": true
+    },
+    "prostho-veneer-resin": {
+      "file": "topics/prostho-veneer-resin.webp",
+      "caption": "树脂贴面可一次成形，耐磨性较弱",
+      "bytes": 5822,
+      "reused": true
+    },
+    "prostho-veneer-prep": {
+      "file": "topics/prostho-veneer-prep.webp",
+      "caption": "贴面只需少量预备牙面",
+      "bytes": 5818,
+      "reused": true
+    },
+    "prostho-edentulous-change": {
+      "file": "topics/prostho-edentulous-change.webp",
+      "caption": "缺牙后牙槽骨会逐渐吸收",
+      "bytes": 8794
+    },
+    "prostho-fixed-bridge": {
+      "file": "topics/prostho-fixed-bridge.webp",
+      "caption": "固定桥靠两侧基牙承托中间假牙",
+      "bytes": 4800
+    },
+    "prostho-maryland": {
+      "file": "topics/prostho-maryland.webp",
+      "caption": "马里兰桥用舌侧翼板粘接",
+      "bytes": 3916
+    },
+    "prostho-rpd": {
+      "file": "topics/prostho-rpd.webp",
+      "caption": "可摘局部义齿可自行取戴清洁",
+      "bytes": 5192
+    },
+    "prostho-complete": {
+      "file": "topics/prostho-complete.webp",
+      "caption": "全口义齿恢复无牙颌的外观与功能",
+      "bytes": 8794
+    },
+    "prostho-suction": {
+      "file": "topics/prostho-suction.webp",
+      "caption": "吸附性义齿依靠边缘封闭固位",
+      "bytes": 8794
+    },
+    "prostho-flexible": {
+      "file": "topics/prostho-flexible.webp",
+      "caption": "弹性义齿卡环更隐蔽",
+      "bytes": 5164
+    },
+    "prostho-choose-few": {
+      "file": "topics/prostho-choose-few.webp",
+      "caption": "缺一两颗牙：种植、桥或活动义齿等可选",
+      "bytes": 4800
+    },
+    "prostho-mat-domestic": {
+      "file": "topics/prostho-mat-domestic.webp",
+      "caption": "冠材料要看适应证与美学需求",
+      "bytes": 5492,
+      "reused": true
+    },
+    "prostho-veneer-mat": {
+      "file": "topics/prostho-veneer-mat.webp",
+      "caption": "贴面材料影响美学与强度",
+      "bytes": 5818,
+      "reused": true
+    },
+    "prostho-residual": {
+      "file": "topics/prostho-residual.webp",
+      "caption": "残根残冠常需桩核后做冠",
+      "bytes": 3130,
+      "reused": true
+    },
+    "prostho-fracture": {
+      "file": "topics/prostho-fracture.webp",
+      "caption": "折裂深度决定能否保留",
+      "bytes": 5834,
+      "reused": true
+    },
+    "prostho-discolor": {
+      "file": "topics/prostho-discolor.webp",
+      "caption": "变色牙可用贴面或全冠改善",
+      "bytes": 5488,
+      "reused": true
+    },
+    "prostho-post-core": {
+      "file": "topics/prostho-post-core.webp",
+      "caption": "桩核为牙冠提供固位核心",
+      "bytes": 5124,
+      "reused": true
+    },
+    "prostho-fiber-post": {
+      "file": "topics/prostho-fiber-post.webp",
+      "caption": "纤维桩弹性模量更接近牙本质",
+      "bytes": 5580,
+      "reused": true
+    },
+    "prostho-metal-post": {
+      "file": "topics/prostho-metal-post.webp",
+      "caption": "金属桩核强度高，颜色偏深",
+      "bytes": 5580,
+      "reused": true
+    },
+    "prostho-after-rct": {
+      "file": "topics/prostho-after-rct.webp",
+      "caption": "根管治疗后常需冠保护",
+      "bytes": 3378,
+      "reused": true
+    },
+    "prostho-crown-lengthen": {
+      "file": "topics/prostho-crown-lengthen.webp",
+      "caption": "牙冠延长可暴露更多健康牙体",
+      "bytes": 5492,
+      "reused": true
+    },
+    "prostho-prep": {
+      "file": "topics/prostho-prep.webp",
+      "caption": "牙体预备为修复体留出空间",
+      "bytes": 5488,
+      "reused": true
+    },
+    "prostho-impression": {
+      "file": "topics/prostho-impression.webp",
+      "caption": "传统取模或口扫都用于制作修复体",
+      "bytes": 8370,
+      "reused": true
+    },
+    "prostho-shade": {
+      "file": "topics/prostho-shade.webp",
+      "caption": "比色要兼顾邻牙与肤色",
+      "bytes": 5488,
+      "reused": true
+    },
+    "prostho-provisional": {
+      "file": "topics/prostho-provisional.webp",
+      "caption": "临时修复体保护牙髓与牙龈",
+      "bytes": 5486,
+      "reused": true
+    },
+    "prostho-tryin": {
+      "file": "topics/prostho-tryin.webp",
+      "caption": "试戴时检查邻接、咬合与美观",
+      "bytes": 5488,
+      "reused": true
+    },
+    "prostho-care": {
+      "file": "topics/prostho-care.webp",
+      "caption": "修复体周围清洁决定寿命",
+      "bytes": 5694,
+      "reused": true
+    },
+    "prostho-longevity": {
+      "file": "topics/prostho-longevity.webp",
+      "caption": "寿命与咬合、清洁和维护有关",
+      "bytes": 5492,
+      "reused": true
+    },
+    "gen-incisor-canine": {
+      "file": "topics/gen-incisor-canine.webp",
+      "caption": "切牙负责切割，尖牙负责撕裂",
+      "bytes": 5428,
+      "reused": true
+    },
+    "gen-premolar-molar": {
+      "file": "topics/gen-premolar-molar.webp",
+      "caption": "前磨牙与磨牙负责研磨食物",
+      "bytes": 5428,
+      "reused": true
+    },
+    "gen-crown-root": {
+      "file": "topics/gen-crown-root.webp",
+      "caption": "牙冠露在外面，牙根在骨头里",
+      "bytes": 2944,
+      "reused": true
+    },
+    "gen-tissues": {
+      "file": "topics/gen-tissues.webp",
+      "caption": "由外到内：釉质、本质、牙髓",
+      "bytes": 2944,
+      "reused": true
+    },
+    "gen-caries-lesion": {
+      "file": "topics/gen-caries-lesion.webp",
+      "caption": "龋齿从脱矿开始，逐渐深入",
+      "bytes": 5834,
+      "reused": true
+    },
+    "gen-pulp-chamber": {
+      "file": "topics/gen-pulp-chamber.webp",
+      "caption": "牙髓腔里有神经与血管",
+      "bytes": 2944,
+      "reused": true
+    },
+    "gen-canal": {
+      "file": "topics/gen-canal.webp",
+      "caption": "根管从髓腔通向根尖",
+      "bytes": 2944,
+      "reused": true
+    },
+    "gen-periapical": {
+      "file": "topics/gen-periapical.webp",
+      "caption": "根尖周组织连接牙与牙槽骨",
+      "bytes": 2944,
+      "reused": true
+    },
+    "gen-pulpitis": {
+      "file": "topics/gen-pulpitis.webp",
+      "caption": "炎症波及牙髓时会出现疼痛",
+      "bytes": 3138,
+      "reused": true
+    },
+    "gen-gingiva": {
+      "file": "topics/gen-gingiva.webp",
+      "caption": "健康牙龈紧贴牙齿颈部",
+      "bytes": 5428,
+      "reused": true
+    },
+    "gen-pdl": {
+      "file": "topics/gen-pdl.webp",
+      "caption": "牙周膜像弹簧，缓冲咬合力",
+      "bytes": 2944,
+      "reused": true
+    },
+    "gen-alveolar": {
+      "file": "topics/gen-alveolar.webp",
+      "caption": "牙槽骨是牙齿的「地基」",
+      "bytes": 5428,
+      "reused": true
+    },
+    "gen-cementum": {
+      "file": "topics/gen-cementum.webp",
+      "caption": "牙骨质覆盖牙根表面",
+      "bytes": 2944,
+      "reused": true
+    },
+    "gen-toothbrush": {
+      "file": "topics/gen-toothbrush.webp",
+      "caption": "选择合适的牙刷并掌握方法",
+      "bytes": 5256,
+      "reused": true
+    },
+    "gen-floss": {
+      "file": "topics/gen-floss.webp",
+      "caption": "牙线清洁牙缝里刷不到的地方",
+      "bytes": 5694,
+      "reused": true
+    },
+    "gen-interdental": {
+      "file": "topics/gen-interdental.webp",
+      "caption": "牙间隙刷适合较大牙缝",
+      "bytes": 5694,
+      "reused": true
+    },
+    "gen-waterflosser": {
+      "file": "topics/gen-waterflosser.webp",
+      "caption": "冲牙器辅助清洁桥体与种植牙周",
+      "bytes": 5648,
+      "reused": true
+    },
+    "gen-composite": {
+      "file": "topics/gen-composite.webp",
+      "caption": "复合树脂颜色接近牙齿",
+      "bytes": 5834,
+      "reused": true
+    },
+    "gen-flowable": {
+      "file": "topics/gen-flowable.webp",
+      "caption": "流动树脂用于细小缺损",
+      "bytes": 5834,
+      "reused": true
+    },
+    "gen-gi": {
+      "file": "topics/gen-gi.webp",
+      "caption": "玻璃离子可释放氟，多用于特定情况",
+      "bytes": 5834,
+      "reused": true
+    },
+    "gen-amalgam": {
+      "file": "topics/gen-amalgam.webp",
+      "caption": "银汞合金充填（概览示意）",
+      "bytes": 5834,
+      "reused": true
+    },
+    "gen-primary-perm": {
+      "file": "topics/gen-primary-perm.webp",
+      "caption": "乳牙与恒牙大小、形态不同（模型无乳牙，以缩小的恒牙示意）",
+      "bytes": 9924,
+      "reused": true
+    },
+    "gen-names": {
+      "file": "topics/gen-names.webp",
+      "caption": "了解牙齿名称方便沟通",
+      "bytes": 7046,
+      "reused": true
+    },
+    "gen-fdi": {
+      "file": "topics/gen-fdi.webp",
+      "caption": "FDI 编号是国际通用牙位写法",
+      "bytes": 7046,
+      "reused": true
+    },
+    "gen-arches": {
+      "file": "topics/gen-arches.webp",
+      "caption": "上颌、下颌与左右侧要分清",
+      "bytes": 7046,
+      "reused": true
+    },
+    "gen-pa": {
+      "file": "topics/gen-pa.webp",
+      "caption": "根尖片看单颗牙根尖情况",
+      "bytes": 2944,
+      "reused": true
+    },
+    "gen-opg": {
+      "file": "topics/gen-opg.webp",
+      "caption": "全景片看整体牙列与颌骨",
+      "bytes": 7046,
+      "reused": true
+    },
+    "gen-cbct": {
+      "file": "topics/gen-cbct.webp",
+      "caption": "三维牙片（CBCT）帮助医生看清骨量和重要结构",
+      "bytes": 11272
+    },
+    "gen-ceph": {
+      "file": "topics/gen-ceph.webp",
+      "caption": "头颅侧位片常用于正畸分析",
+      "bytes": 7046,
+      "reused": true
+    },
+    "gen-photos": {
+      "file": "topics/gen-photos.webp",
+      "caption": "口内照片记录外观与咬合",
+      "bytes": 7046,
+      "reused": true
+    },
+    "gen-scan": {
+      "file": "topics/gen-scan.webp",
+      "caption": "数字化口扫生成三维牙列模型",
+      "bytes": 7672,
+      "reused": true
+    },
+    "gen-read-xray": {
+      "file": "topics/gen-read-xray.webp",
+      "caption": "片子上的亮暗对应不同组织密度",
+      "bytes": 2944,
+      "reused": true
+    },
+    "gen-demineral": {
+      "file": "topics/gen-demineral.webp",
+      "caption": "脱矿是龋齿最早的阶段",
+      "bytes": 5834,
+      "reused": true
+    },
+    "gen-caries-depth": {
+      "file": "topics/gen-caries-depth.webp",
+      "caption": "浅中深龋决定治疗方式",
+      "bytes": 3138,
+      "reused": true
+    },
+    "gen-defect": {
+      "file": "topics/gen-defect.webp",
+      "caption": "牙体缺损可用充填或修复体恢复",
+      "bytes": 5834,
+      "reused": true
+    },
+    "gen-filling": {
+      "file": "topics/gen-filling.webp",
+      "caption": "充填修复恢复外形与封闭",
+      "bytes": 5834,
+      "reused": true
+    },
+    "gen-wedge": {
+      "file": "topics/gen-wedge.webp",
+      "caption": "楔状缺损多见于牙颈部",
+      "bytes": 5834,
+      "reused": true
+    },
+    "gen-rct-anatomy": {
+      "file": "topics/gen-rct-anatomy.webp",
+      "caption": "根管治疗前先看清解剖",
+      "bytes": 2944,
+      "reused": true
+    },
+    "gen-rct-steps": {
+      "file": "topics/gen-rct-steps.webp",
+      "caption": "根管治疗：清理、成形、充填",
+      "bytes": 2944,
+      "reused": true
+    },
+    "gen-rubber-dam": {
+      "file": "topics/gen-rubber-dam.webp",
+      "caption": "橡皮障隔离术区，更干净安全",
+      "bytes": 5428,
+      "reused": true
+    },
+    "gen-prep-fill": {
+      "file": "topics/gen-prep-fill.webp",
+      "caption": "预备根管后严密充填",
+      "bytes": 2944,
+      "reused": true
+    },
+    "gen-capping": {
+      "file": "topics/gen-capping.webp",
+      "caption": "盖髓试图保留活髓",
+      "bytes": 2944,
+      "reused": true
+    },
+    "gen-pulpotomy": {
+      "file": "topics/gen-pulpotomy.webp",
+      "caption": "冠髓切断多用于乳牙或年轻恒牙（模型无乳牙，以缩小的恒牙示意）",
+      "bytes": 3122,
+      "reused": true
+    },
+    "gen-retreatment": {
+      "file": "topics/gen-retreatment.webp",
+      "caption": "再治疗清理旧充填，重新封闭",
+      "bytes": 2944,
+      "reused": true
+    },
+    "gen-internal-bleach": {
+      "file": "topics/gen-internal-bleach.webp",
+      "caption": "死髓牙可变色，有时做内漂白",
+      "bytes": 2944,
+      "reused": true
+    },
+    "gen-perio": {
+      "file": "topics/gen-perio.webp",
+      "caption": "牙龈炎与牙周炎是不同程度的问题",
+      "bytes": 5454,
+      "reused": true
+    },
+    "gen-bone-loss": {
+      "file": "topics/gen-bone-loss.webp",
+      "caption": "牙槽骨吸收会让牙齿松动",
+      "bytes": 5676,
+      "reused": true
+    },
+    "gen-mobility": {
+      "file": "topics/gen-mobility.webp",
+      "caption": "松动程度提示牙周支持情况",
+      "bytes": 5610,
+      "reused": true
+    },
+    "gen-scaling": {
+      "file": "topics/gen-scaling.webp",
+      "caption": "洁治、刮治清除菌斑牙石",
+      "bytes": 5256,
+      "reused": true
+    },
+    "gen-gtr": {
+      "file": "topics/gen-gtr.webp",
+      "caption": "牙周再生尽量恢复附着",
+      "bytes": 5896
+    },
+    "gen-perio-maint": {
+      "file": "topics/gen-perio-maint.webp",
+      "caption": "牙周维护决定长期稳定",
+      "bytes": 5514,
+      "reused": true
+    },
+    "gen-wisdom": {
+      "file": "topics/gen-wisdom.webp",
+      "caption": "智齿阻生可能引起疼痛与龋坏",
+      "bytes": 5428,
+      "reused": true
+    },
+    "gen-extract-eval": {
+      "file": "topics/gen-extract-eval.webp",
+      "caption": "拔牙前评估位置、邻牙与全身状况",
+      "bytes": 5428,
+      "reused": true
+    },
+    "gen-extract-types": {
+      "file": "topics/gen-extract-types.webp",
+      "caption": "常规拔牙与外科拔牙难度不同",
+      "bytes": 5428,
+      "reused": true
+    },
+    "gen-extract-care": {
+      "file": "topics/gen-extract-care.webp",
+      "caption": "拔牙后按医嘱咬棉、忌吸吮",
+      "bytes": 5428,
+      "reused": true
+    },
+    "gen-which-extract": {
+      "file": "topics/gen-which-extract.webp",
+      "caption": "是否拔牙由医生结合检查决定",
+      "bytes": 5428,
+      "reused": true
+    },
+    "gen-local-anesthesia": {
+      "file": "topics/gen-local-anesthesia.webp",
+      "caption": "局部麻醉让治疗过程更舒适",
+      "bytes": 5428,
+      "reused": true
+    },
+    "gen-which-dept": {
+      "file": "topics/gen-which-dept.webp",
+      "caption": "不同问题可能对应不同专科",
+      "bytes": 7046,
+      "reused": true
+    },
+    "pedo-incisor": {
+      "file": "topics/pedo-incisor.webp",
+      "caption": "乳切牙帮助发音与美观（模型无乳牙，以缩小的恒牙示意）",
+      "bytes": 9924,
+      "reused": true
+    },
+    "pedo-canine": {
+      "file": "topics/pedo-canine.webp",
+      "caption": "乳尖牙引导咬合发育（模型无乳牙，以缩小的恒牙示意）",
+      "bytes": 9924,
+      "reused": true
+    },
+    "pedo-molar": {
+      "file": "topics/pedo-molar.webp",
+      "caption": "乳磨牙维持咬合高度与间隙（模型无乳牙，以缩小的恒牙示意）",
+      "bytes": 9924,
+      "reused": true
+    },
+    "pedo-roots": {
+      "file": "topics/pedo-roots.webp",
+      "caption": "乳牙牙根相对更纤细（模型无乳牙，以缩小的恒牙示意）",
+      "bytes": 3122,
+      "reused": true
+    },
+    "pedo-root-resorb": {
+      "file": "topics/pedo-root-resorb.webp",
+      "caption": "换牙时乳牙牙根会逐渐吸收（模型无乳牙，以缩小的恒牙示意）",
+      "bytes": 3122,
+      "reused": true
+    },
+    "pedo-eruption": {
+      "file": "topics/pedo-eruption.webp",
+      "caption": "恒牙按大致顺序萌出（模型无乳牙，以缩小的恒牙示意）",
+      "bytes": 5428,
+      "reused": true
+    },
+    "pedo-mixed": {
+      "file": "topics/pedo-mixed.webp",
+      "caption": "混合牙列阶段乳恒牙并存（模型无乳牙，以缩小的恒牙示意）",
+      "bytes": 7046,
+      "reused": true
+    },
+    "pedo-retained": {
+      "file": "topics/pedo-retained.webp",
+      "caption": "乳牙滞留可能导致双排牙",
+      "bytes": 6544,
+      "reused": true
+    },
+    "pedo-ectopic-6": {
+      "file": "topics/pedo-ectopic-6.webp",
+      "caption": "六龄牙异位萌出需尽早评估",
+      "bytes": 6610,
+      "reused": true
+    },
+    "pedo-extract-primary": {
+      "file": "topics/pedo-extract-primary.webp",
+      "caption": "乳牙拔除要考虑后继恒牙（模型无乳牙，以缩小的恒牙示意）",
+      "bytes": 9924,
+      "reused": true
+    },
+    "pedo-supernumerary": {
+      "file": "topics/pedo-supernumerary.webp",
+      "caption": "多生牙可能阻挡正常萌出",
+      "bytes": 6488,
+      "reused": true
+    },
+    "pedo-timeline": {
+      "file": "topics/pedo-timeline.webp",
+      "caption": "换牙时间有个体差异",
+      "bytes": 7046,
+      "reused": true
+    },
+    "pedo-young-perm": {
+      "file": "topics/pedo-young-perm.webp",
+      "caption": "新萌出恒牙牙根往往未完全形成（模型无乳牙，以缩小的恒牙示意）",
+      "bytes": 2944,
+      "reused": true
+    },
+    "pedo-open-apex": {
+      "file": "topics/pedo-open-apex.webp",
+      "caption": "根尖孔开放的年轻恒牙需特殊处理",
+      "bytes": 2944,
+      "reused": true
+    },
+    "pedo-apex": {
+      "file": "topics/pedo-apex.webp",
+      "caption": "根尖孔是神经血管进出的通道",
+      "bytes": 2944,
+      "reused": true
+    },
+    "pedo-dens-evaginatus": {
+      "file": "topics/pedo-dens-evaginatus.webp",
+      "caption": "畸形中央尖易折断，需早期保护",
+      "bytes": 5428,
+      "reused": true
+    },
+    "pedo-brush-floss": {
+      "file": "topics/pedo-brush-floss.webp",
+      "caption": "儿童也要建立刷牙牙线习惯",
+      "bytes": 5256,
+      "reused": true
+    },
+    "pedo-sealant": {
+      "file": "topics/pedo-sealant.webp",
+      "caption": "窝沟封闭预防磨牙龋齿",
+      "bytes": 5552,
+      "reused": true
+    },
+    "pedo-fluoride": {
+      "file": "topics/pedo-fluoride.webp",
+      "caption": "涂氟增强牙齿抗龋能力（模型无乳牙，以缩小的恒牙示意）",
+      "bytes": 9924,
+      "reused": true
+    },
+    "pedo-space-maintainer": {
+      "file": "topics/pedo-space-maintainer.webp",
+      "caption": "早失乳牙后用装置保持间隙（模型无乳牙，以缩小的恒牙示意）",
+      "bytes": 7348,
+      "reused": true
+    },
+    "pedo-infant-check": {
+      "file": "topics/pedo-infant-check.webp",
+      "caption": "婴幼儿口腔检查越早越好（模型无乳牙，以缩小的恒牙示意）",
+      "bytes": 9924,
+      "reused": true
+    },
+    "pedo-caries": {
+      "file": "topics/pedo-caries.webp",
+      "caption": "乳牙龋进展快，要早治（模型无乳牙，以缩小的恒牙示意）",
+      "bytes": 10182,
+      "reused": true
+    },
+    "pedo-filling": {
+      "file": "topics/pedo-filling.webp",
+      "caption": "乳牙充填恢复外形，保护牙髓（模型无乳牙，以缩小的恒牙示意）",
+      "bytes": 9926,
+      "reused": true
+    },
+    "pedo-ssc": {
+      "file": "topics/pedo-ssc.webp",
+      "caption": "金属预成冠常用于大面积乳磨牙缺损（模型无乳牙，以缩小的恒牙示意）",
+      "bytes": 8462,
+      "reused": true
+    },
+    "pedo-esthetic-crown": {
+      "file": "topics/pedo-esthetic-crown.webp",
+      "caption": "前牙可用更美观的预成冠（模型无乳牙，以缩小的恒牙示意）",
+      "bytes": 4960,
+      "reused": true
+    },
+    "pedo-pulp-therapy": {
+      "file": "topics/pedo-pulp-therapy.webp",
+      "caption": "乳牙牙髓治疗尽量保留到换牙（模型无乳牙，以缩小的恒牙示意）",
+      "bytes": 3122,
+      "reused": true
+    },
+    "pedo-primary-rct": {
+      "file": "topics/pedo-primary-rct.webp",
+      "caption": "乳牙根管治疗考虑继承恒牙（模型无乳牙，以缩小的恒牙示意）",
+      "bytes": 3122,
+      "reused": true
+    },
+    "pedo-vital-pulp": {
+      "file": "topics/pedo-vital-pulp.webp",
+      "caption": "年轻恒牙尽量保存活髓",
+      "bytes": 2944,
+      "reused": true
+    },
+    "pedo-apexification": {
+      "file": "topics/pedo-apexification.webp",
+      "caption": "根尖屏障或牙髓再生促进根尖闭合",
+      "bytes": 2944,
+      "reused": true
+    },
+    "pedo-anterior-crossbite": {
+      "file": "topics/pedo-anterior-crossbite.webp",
+      "caption": "乳牙反合宜早期干预评估",
+      "bytes": 6610,
+      "reused": true
+    },
+    "pedo-mixed-eval": {
+      "file": "topics/pedo-mixed-eval.webp",
+      "caption": "混合牙列期评估发育与间隙（模型无乳牙，以缩小的恒牙示意）",
+      "bytes": 7046,
+      "reused": true
+    },
+    "pedo-habits": {
+      "file": "topics/pedo-habits.webp",
+      "caption": "口呼吸、吮指等习惯影响牙颌发育",
+      "bytes": 7046,
+      "reused": true
+    },
+    "pedo-early-appliance": {
+      "file": "topics/pedo-early-appliance.webp",
+      "caption": "早期矫治装置引导颌骨与牙列",
+      "bytes": 7836,
+      "reused": true
+    },
+    "pedo-facemask": {
+      "file": "topics/pedo-facemask.webp",
+      "caption": "前方牵引用于特定骨性反合",
+      "bytes": 7046,
+      "reused": true
+    },
+    "pedo-timing": {
+      "file": "topics/pedo-timing.webp",
+      "caption": "早期矫治时机因问题类型而异",
+      "bytes": 7046,
+      "reused": true
+    },
+    "pedo-space-mgmt": {
+      "file": "topics/pedo-space-mgmt.webp",
+      "caption": "间隙管理保护继承恒牙萌出空间（模型无乳牙，以缩小的恒牙示意）",
+      "bytes": 7348,
+      "reused": true
+    },
+    "pedo-band-loop": {
+      "file": "topics/pedo-band-loop.webp",
+      "caption": "带环丝圈式间隙保持器（模型无乳牙，以缩小的恒牙示意）",
+      "bytes": 7348,
+      "reused": true
+    },
+    "pedo-lingual-arch": {
+      "file": "topics/pedo-lingual-arch.webp",
+      "caption": "舌弓式保持器维持下颌牙弓长度（模型无乳牙，以缩小的恒牙示意）",
+      "bytes": 11116,
+      "reused": true
+    },
+    "pedo-nance": {
+      "file": "topics/pedo-nance.webp",
+      "caption": "Nance 弓靠腭部支托固位（模型无乳牙，以缩小的恒牙示意）",
+      "bytes": 10774,
+      "reused": true
+    },
+    "pedo-crown-fracture": {
+      "file": "topics/pedo-crown-fracture.webp",
+      "caption": "牙冠折断后尽快就医",
+      "bytes": 5834,
+      "reused": true
+    },
+    "pedo-avulsion": {
+      "file": "topics/pedo-avulsion.webp",
+      "caption": "牙齿完全脱出要正确保存并急诊",
+      "bytes": 5428,
+      "reused": true
+    },
+    "pedo-trauma-follow": {
+      "file": "topics/pedo-trauma-follow.webp",
+      "caption": "外伤后需按计划随访拍片",
+      "bytes": 5428,
+      "reused": true
+    },
+    "pedo-mouthguard": {
+      "file": "topics/pedo-mouthguard.webp",
+      "caption": "运动防护牙托降低外伤风险",
+      "bytes": 8674,
+      "reused": true
+    }
+  },
+  "groups": {
+    "implant|种植牙由哪几部分组成": {
+      "file": "topics/implant-crown.webp",
+      "caption": "种植牙由种植体、基台与牙冠组成",
+      "topic": "implant-crown"
+    },
+    "implant|半口、全口缺牙怎么补": {
+      "file": "topics/implant-allon4.webp",
+      "caption": "四枚种植体支持一整弓修复",
+      "topic": "implant-allon4"
+    },
+    "implant|骨头不够时可能用到的术式": {
+      "file": "topics/implant-gbr.webp",
+      "caption": "用膜和植骨材料引导新骨生成",
+      "topic": "implant-gbr"
+    },
+    "implant|种植体系统怎么看": {
+      "file": "topics/implant-single.webp",
+      "caption": "单颗缺失时常见的种植修复",
+      "topic": "implant-single"
+    },
+    "implant|从检查到戴牙后的保养": {
+      "file": "topics/implant-delivery.webp",
+      "caption": "试戴、调咬合后完成安装",
+      "topic": "implant-delivery"
+    },
+    "ortho|牙列与咬合": {
+      "file": "topics/ortho-crowding.webp",
+      "caption": "间隙不足时，牙齿会挤在一起",
+      "topic": "ortho-crowding"
+    },
+    "ortho|固定矫治": {
+      "file": "topics/ortho-metal-bracket.webp",
+      "caption": "金属托槽是经典固定矫治方式",
+      "topic": "ortho-metal-bracket"
+    },
+    "ortho|托槽外观怎么选": {
+      "file": "topics/ortho-ceramic-bracket.webp",
+      "caption": "陶瓷托槽颜色更接近牙齿",
+      "topic": "ortho-ceramic-bracket"
+    },
+    "ortho|隐形矫治": {
+      "file": "topics/ortho-clear-aligner.webp",
+      "caption": "透明矫治器包裹牙冠，逐步排齐",
+      "topic": "ortho-clear-aligner"
+    },
+    "ortho|保持装置": {
+      "file": "topics/ortho-hawley.webp",
+      "caption": "活动式哈雷保持器示意",
+      "topic": "ortho-hawley"
+    },
+    "ortho|矫治辅助装置": {
+      "file": "topics/ortho-tad.webp",
+      "caption": "种植钉提供额外支抗",
+      "topic": "ortho-tad"
+    },
+    "ortho|功能矫治器": {
+      "file": "topics/ortho-twinblock.webp",
+      "caption": "Twin-Block 功能矫治器示意",
+      "topic": "ortho-twinblock"
+    },
+    "ortho|正畸流程与维护": {
+      "file": "topics/ortho-metal-bracket.webp",
+      "caption": "金属托槽是经典固定矫治方式",
+      "topic": "ortho-metal-bracket"
+    },
+    "prostho|牙冠": {
+      "file": "topics/prostho-metal-crown.webp",
+      "caption": "金属全冠强度高，颜色不自然",
+      "topic": "prostho-metal-crown"
+    },
+    "prostho|嵌体与高嵌体": {
+      "file": "topics/prostho-inlay.webp",
+      "caption": "嵌体嵌在牙洞内，保留更多牙体",
+      "topic": "prostho-inlay"
+    },
+    "prostho|贴面": {
+      "file": "topics/prostho-veneer-porcelain.webp",
+      "caption": "薄薄的瓷片贴在牙齿唇面",
+      "topic": "prostho-veneer-porcelain"
+    },
+    "prostho|义齿与缺牙修复": {
+      "file": "topics/prostho-complete.webp",
+      "caption": "全口义齿恢复无牙颌的外观与功能",
+      "topic": "prostho-complete"
+    },
+    "prostho|材料怎么选": {
+      "file": "topics/prostho-zirconia.webp",
+      "caption": "氧化锆强度高、颜色可调",
+      "topic": "prostho-zirconia"
+    },
+    "prostho|牙体缺损": {
+      "file": "topics/prostho-residual.webp",
+      "caption": "残根残冠常需桩核后做冠",
+      "topic": "prostho-residual"
+    },
+    "prostho|桩核与冠修复": {
+      "file": "topics/prostho-post-core.webp",
+      "caption": "桩核为牙冠提供固位核心",
+      "topic": "prostho-post-core"
+    },
+    "prostho|修复流程与维护": {
+      "file": "topics/prostho-prep.webp",
+      "caption": "牙体预备为修复体留出空间",
+      "topic": "prostho-prep"
+    },
+    "general|牙齿结构": {
+      "file": "topics/gen-crown-root.webp",
+      "caption": "牙冠露在外面，牙根在骨头里",
+      "topic": "gen-crown-root"
+    },
+    "general|牙体牙髓": {
+      "file": "topics/gen-caries-lesion.webp",
+      "caption": "龋齿从脱矿开始，逐渐深入",
+      "topic": "gen-caries-lesion"
+    },
+    "general|牙周组织": {
+      "file": "topics/gen-gingiva.webp",
+      "caption": "健康牙龈紧贴牙齿颈部",
+      "topic": "gen-gingiva"
+    },
+    "general|口腔清洁": {
+      "file": "topics/gen-toothbrush.webp",
+      "caption": "选择合适的牙刷并掌握方法",
+      "topic": "gen-toothbrush"
+    },
+    "general|补牙材料": {
+      "file": "topics/gen-composite.webp",
+      "caption": "复合树脂颜色接近牙齿",
+      "topic": "gen-composite"
+    },
+    "general|牙位与牙列": {
+      "file": "topics/gen-primary-perm.webp",
+      "caption": "乳牙与恒牙大小、形态不同（模型无乳牙，以缩小的恒牙示意）",
+      "topic": "gen-primary-perm"
+    },
+    "general|口腔检查与影像": {
+      "file": "topics/gen-cbct.webp",
+      "caption": "三维牙片（CBCT）帮助医生看清骨量和重要结构",
+      "topic": "gen-cbct"
+    },
+    "general|龋齿与牙体缺损": {
+      "file": "topics/gen-demineral.webp",
+      "caption": "脱矿是龋齿最早的阶段",
+      "topic": "gen-demineral"
+    },
+    "general|根管治疗与牙髓保存": {
+      "file": "topics/gen-rct-anatomy.webp",
+      "caption": "根管治疗前先看清解剖",
+      "topic": "gen-rct-anatomy"
+    },
+    "general|牙周健康与治疗": {
+      "file": "topics/gen-perio.webp",
+      "caption": "牙龈炎与牙周炎是不同程度的问题",
+      "topic": "gen-perio"
+    },
+    "general|拔牙与智齿": {
+      "file": "topics/gen-wisdom.webp",
+      "caption": "智齿阻生可能引起疼痛与龋坏",
+      "topic": "gen-wisdom"
+    },
+    "general|麻醉与就诊": {
+      "file": "topics/gen-local-anesthesia.webp",
+      "caption": "局部麻醉让治疗过程更舒适",
+      "topic": "gen-local-anesthesia"
+    },
+    "pedo|乳牙": {
+      "file": "topics/pedo-incisor.webp",
+      "caption": "乳切牙帮助发音与美观（模型无乳牙，以缩小的恒牙示意）",
+      "topic": "pedo-incisor"
+    },
+    "pedo|替牙期": {
+      "file": "topics/pedo-root-resorb.webp",
+      "caption": "换牙时乳牙牙根会逐渐吸收（模型无乳牙，以缩小的恒牙示意）",
+      "topic": "pedo-root-resorb"
+    },
+    "pedo|年轻恒牙": {
+      "file": "topics/pedo-young-perm.webp",
+      "caption": "新萌出恒牙牙根往往未完全形成（模型无乳牙，以缩小的恒牙示意）",
+      "topic": "pedo-young-perm"
+    },
+    "pedo|儿童口腔护理": {
+      "file": "topics/pedo-sealant.webp",
+      "caption": "窝沟封闭预防磨牙龋齿",
+      "topic": "pedo-sealant"
+    },
+    "pedo|乳牙龋病与修复": {
+      "file": "topics/pedo-ssc.webp",
+      "caption": "金属预成冠常用于大面积乳磨牙缺损（模型无乳牙，以缩小的恒牙示意）",
+      "topic": "pedo-ssc"
+    },
+    "pedo|儿童牙髓与年轻恒牙治疗": {
+      "file": "topics/pedo-pulp-therapy.webp",
+      "caption": "乳牙牙髓治疗尽量保留到换牙（模型无乳牙，以缩小的恒牙示意）",
+      "topic": "pedo-pulp-therapy"
+    },
+    "pedo|早期矫治与习惯管理": {
+      "file": "topics/pedo-anterior-crossbite.webp",
+      "caption": "乳牙反合宜早期干预评估",
+      "topic": "pedo-anterior-crossbite"
+    },
+    "pedo|间隙管理": {
+      "file": "topics/pedo-band-loop.webp",
+      "caption": "带环丝圈式间隙保持器（模型无乳牙，以缩小的恒牙示意）",
+      "topic": "pedo-band-loop"
+    },
+    "pedo|牙外伤与运动防护": {
+      "file": "topics/pedo-mouthguard.webp",
+      "caption": "运动防护牙托降低外伤风险",
+      "topic": "pedo-mouthguard"
+    }
+  },
+  "guides": {
+    "guide-indications": {
+      "file": "guide/guide-indications.webp",
+      "caption": "种植体坐在牙槽骨里，上方再接基台和牙冠，看起来接近您自己的牙。",
+      "bytes": 9308
+    },
+    "guide-timeline-exam": {
+      "file": "guide/guide-timeline-exam.webp",
+      "caption": "初诊时拍三维牙片，看清骨量和重要结构。",
+      "bytes": 11272
+    },
+    "guide-timeline-place": {
+      "file": "guide/guide-timeline-place.webp",
+      "caption": "手术把种植体放入颌骨，愈合基台帮助塑形牙龈。",
+      "bytes": 9428
+    },
+    "guide-timeline-heal": {
+      "file": "guide/guide-timeline-heal.webp",
+      "caption": "等待骨结合的几个月里，骨头会慢慢包紧种植体。",
+      "bytes": 5896
+    },
+    "guide-timeline-crown": {
+      "file": "guide/guide-timeline-crown.webp",
+      "caption": "确认稳定后戴上牙冠，就可以正常咀嚼。",
+      "bytes": 9308
+    },
+    "guide-compare-implant": {
+      "file": "guide/guide-compare-implant.webp",
+      "caption": "种植牙：不必磨损邻牙，咀嚼接近天然牙。",
+      "bytes": 9308
+    },
+    "guide-compare-denture": {
+      "file": "guide/guide-compare-denture.webp",
+      "caption": "活动义齿：有基托，需要摘戴清洁。",
+      "bytes": 8794
+    },
+    "guide-compare-bridge": {
+      "file": "guide/guide-compare-bridge.webp",
+      "caption": "固定牙桥：要磨两侧邻牙来架桥。",
+      "bytes": 4800
+    },
+    "guide-gbr": {
+      "file": "guide/guide-gbr.webp",
+      "caption": "引导骨再生：在骨头不够的地方填骨粉，再盖上屏障膜。",
+      "bytes": 5896
+    },
+    "guide-sinus": {
+      "file": "guide/guide-sinus.webp",
+      "caption": "上颌窦提升：抬起窦底并植骨，增加后牙区骨高度。",
+      "bytes": 5592
+    },
+    "guide-time": {
+      "file": "guide/guide-time.webp",
+      "caption": "如果需要植骨，通常会多等一段时间，等新骨长牢。",
+      "bytes": 5896
+    },
+    "guide-timeline": {
+      "caption": "从检查到戴牙，大致分这几步。具体节奏请以医生安排为准。",
+      "files": [
+        {
+          "file": "guide/guide-timeline-exam.webp",
+          "caption": "初诊时拍三维牙片，看清骨量和重要结构。",
+          "bytes": 11272
+        },
+        {
+          "file": "guide/guide-timeline-place.webp",
+          "caption": "手术把种植体放入颌骨，愈合基台帮助塑形牙龈。",
+          "bytes": 9428
+        },
+        {
+          "file": "guide/guide-timeline-heal.webp",
+          "caption": "等待骨结合的几个月里，骨头会慢慢包紧种植体。",
+          "bytes": 5896
+        },
+        {
+          "file": "guide/guide-timeline-crown.webp",
+          "caption": "确认稳定后戴上牙冠，就可以正常咀嚼。",
+          "bytes": 9308
+        }
+      ]
+    },
+    "guide-compare": {
+      "caption": "种植牙、活动义齿和固定牙桥各有特点，没有绝对的「最好」。",
+      "files": [
+        {
+          "file": "guide/guide-compare-implant.webp",
+          "caption": "种植牙：不必磨损邻牙，咀嚼接近天然牙。",
+          "bytes": 9308
+        },
+        {
+          "file": "guide/guide-compare-denture.webp",
+          "caption": "活动义齿：有基托，需要摘戴清洁。",
+          "bytes": 8794
+        },
+        {
+          "file": "guide/guide-compare-bridge.webp",
+          "caption": "固定牙桥：要磨两侧邻牙来架桥。",
+          "bytes": 4800
+        }
+      ]
+    }
+  },
+  "generatedAt": "2026-11-17T10:58:40.202Z",
+  "errors": []
+};

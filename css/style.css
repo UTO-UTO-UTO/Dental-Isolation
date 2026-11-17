@@ -704,6 +704,128 @@ body.detail-page { overflow-x: hidden; }
     box-shadow: 0 8px 24px #1a2e2810;
   }
   .topic-lbl { right: 4%; font-size: 11px; }
-  .topic-viewer-controls { flex-wrap: wrap; justify-content: flex-end; max-width: 70%; }
-  .topic-viewer-caption { bottom: 52px; font-size: 11px; }
+  .topic-viewer-hint { display: none; }
+  .topic-viewer-controls {
+    left: 8px;
+    right: 8px;
+    bottom: 8px;
+    max-width: none;
+    width: auto;
+    justify-content: center;
+    flex-wrap: nowrap;
+    background: #f6f8f8f2;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 5px 8px;
+  }
+  .topic-viewer-caption {
+    left: 12px;
+    right: 12px;
+    bottom: 54px;
+    max-width: none;
+    text-align: center;
+    font-size: 11px;
+  }
+}
+
+
+
+/* ===== Isolation diagrams (SVG, local, no network) ===== */
+.iso-figure {
+  margin: 0 0 1.4rem;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 12px 14px 10px;
+  max-width: 100%;
+}
+.iso-figure svg,
+.iso-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  max-height: 280px;
+}
+.iso-figure figcaption {
+  margin: 8px 2px 2px;
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.65;
+}
+.iso-figure-guide { margin: 0 0 1.2rem; }
+.iso-figure-guide .iso-svg { max-height: 240px; }
+.iso-inline { margin: 0 0 10px; padding: 0; border: 0; background: transparent; }
+.iso-inline .iso-svg { max-height: 150px; }
+.iso-inline figcaption { display: none; }
+
+.atlas-row {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr) auto;
+  gap: 16px 16px;
+  align-items: start;
+}
+.atlas-thumb {
+  width: 96px;
+  height: 76px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: #fff;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  flex: none;
+}
+.atlas-thumb .iso-svg,
+.atlas-thumb svg,
+.atlas-thumb img {
+  width: 100%;
+  height: 100%;
+  max-height: none;
+  display: block;
+  object-fit: cover;
+  padding: 0;
+}
+.atlas-thumb { margin-top: 2px; }
+@media (max-width: 640px) {
+  .atlas-row {
+    grid-template-columns: 72px minmax(0, 1fr) auto;
+    gap: 12px;
+  }
+  .atlas-thumb { width: 72px; height: 60px; border-radius: 10px; }
+  .iso-figure { padding: 10px 10px 8px; }
+  .iso-figure .iso-svg { max-height: 220px; }
+}
+
+/* Detail isolation figure lives in the copy band only — never over the 3D canvas */
+.detail-copy-band .iso-figure { margin-top: 0; }
+
+/* ===== Realistic 3D stills (pre-rendered, local) ===== */
+.iso-still { padding: 0; overflow: hidden; background: #eef2f0; }
+.iso-still img {
+  width: 100%;
+  height: auto;
+  display: block;
+  background: #eef2f0;
+  vertical-align: middle;
+}
+.iso-still figcaption {
+  margin: 8px 12px 10px;
+}
+.iso-figure-guide.iso-still { margin: 0 0 1.2rem; }
+.iso-inline { margin: 0 0 10px; padding: 0; border: 0; background: transparent; }
+.iso-inline img { max-height: 168px; width: 100%; object-fit: cover; border-radius: 10px; }
+.iso-inline figcaption { display: none; }
+.iso-still-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin: 0 0 1.2rem;
+}
+.iso-still-row .iso-still { margin: 0; }
+.iso-still-cell figcaption { font-size: 12px; margin: 6px 10px 8px; }
+.detail-viewer { background-color: #eef2f0; background-repeat: no-repeat; }
+.detail-viewer.is-ready { background-image: none !important; }
+@media (max-width: 640px) {
+  .iso-still-row { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .iso-still-cell figcaption { font-size: 11px; }
 }

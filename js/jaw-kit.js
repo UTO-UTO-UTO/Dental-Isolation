@@ -345,6 +345,44 @@ export function cutShell(mesh, fdi, mat, { frac = CROWN_FRAC, scale = 1, keep = 
   return shell;
 }
 
+/**
+ * Smooth clinical crown cut from a jaw.glb molar, reoriented for the
+ * implant stack (mm units, +Y occlusal, cervical margin at y = 0).
+ * Used instead of the loop-subdivided crown_molar.glb, whose occlusal
+ * surface reads as fibres / a sea urchin.
+ */
+export async function makeJawMolarCrown(base = "", { fdi = "36" } = {}) {
+  const gltf = await loadJawGltf(base);
+  gltf.scene.updateMatrixWorld(true);
+  let src = null;
+  gltf.scene.traverse((o) => {
+    if (o.isMesh && o.name === `tooth_${fdi}`) src = o;
+  });
+  if (!src) return null;
+  const mat = ceramicMaterial("crown");
+  const cut = cutToothGeometry(src, fdi, { frac: CROWN_FRAC, keep: "crown" });
+  const geo = cut.geometry;
+  if (isUpperFdi(fdi)) geo.rotateX(Math.PI);
+  geo.scale(JAW_MM, JAW_MM, JAW_MM);
+  geo.computeVertexNormals();
+  geo.computeBoundingBox();
+  const mesh = new THREE.Mesh(geo, mat);
+  mesh.castShadow = true;
+  mesh.name = "jawMolarCrown";
+  const bb = geo.boundingBox;
+  const rx = Math.max(Math.abs(bb.min.x), Math.abs(bb.max.x)) * 0.9;
+  const rz = Math.max(Math.abs(bb.min.z), Math.abs(bb.max.z)) * 0.9;
+  const cap = new THREE.Mesh(new THREE.CylinderGeometry(1, 1, 0.35, 28), mat.clone());
+  cap.scale.set(rx, 1, rz);
+  cap.position.y = 0.22;
+  cap.castShadow = true;
+  const holder = new THREE.Group();
+  holder.add(mesh, cap);
+  holder.userData.homeY = 1.15;
+  holder.userData.explodeY = 17;
+  return holder;
+}
+
 export function tubeAlong(points, radius, material, { closed = false, tubular = 0 } = {}) {
   if (!points || points.length < 2) return null;
   const curve = new THREE.CatmullRomCurve3(points, closed, "centripetal");
@@ -520,13 +558,15 @@ export function placeCrownRestore(kit, overlay, fdi, { kind = "ceramic", explode
   return shell;
 }
 
-export function placeBridge(kit, overlay, pontic, { maryland = false } = {}) {
+export function placeBridge(kit, overlay, pontic, { maryland = false, lift = 0 } = {}) {
   const neighbors = neighborsOf(pontic);
   const abut = neighbors.length >= 2 ? neighbors : ["14", "16"];
   const [a, b] = abut;
   const mat = ceramicMaterial("crown");
+  const liftVec = occlusalDir(pontic).multiplyScalar(lift);
   if (kit.teeth[pontic]) kit.teeth[pontic].visible = false;
 
+  const crowns = [];
   for (const fdi of [a, b]) {
     if (!kit.teeth[fdi]) continue;
     if (maryland) {
@@ -534,11 +574,16 @@ export function placeBridge(kit, overlay, pontic, { maryland = false } = {}) {
       const wing = cutShell(kit.teeth[fdi], fdi, metalMaterial(), {
         frac: CROWN_FRAC, scale: 1.01, buccal: fa.outward, facialMin: 0.15,
       });
+      if (lift) wing.position.add(liftVec);
       overlay.add(wing);
+      crowns.push(wing);
     } else {
-      overlay.add(cutShell(kit.teeth[fdi], fdi, mat, { frac: CROWN_FRAC, scale: 1.03 }));
+      const shell = cutShell(kit.teeth[fdi], fdi, mat, { frac: CROWN_FRAC, scale: 1.03 });
+      if (lift) shell.position.add(liftVec);
+      overlay.add(shell);
       overlay.add(cutShell(kit.teeth[fdi], fdi, enamelMaterial(), { frac: CROWN_FRAC, keep: "root" }));
       kit.teeth[fdi].visible = false;
+      crowns.push(shell);
     }
   }
 
@@ -551,17 +596,18 @@ export function placeBridge(kit, overlay, pontic, { maryland = false } = {}) {
   const mid = ca.clone().add(cb).multiplyScalar(0.5);
   ponticMesh.position.x = mid.x;
   ponticMesh.position.z = mid.z;
+  if (lift) ponticMesh.position.add(liftVec);
   overlay.add(ponticMesh);
 
-  const metal = metalMaterial();
+  const connMat = mat.clone();
   for (const end of [a, b]) {
     if (!kit.teeth[end]) continue;
-    const ce = worldCenter(kit.teeth[end]);
-    const dir = mid.clone().sub(ce);
+    const ce = worldCenter(kit.teeth[end]).add(liftVec.clone());
+    const dir = mid.clone().add(liftVec).sub(ce);
     const len = dir.length();
     if (len < 0.01) continue;
-    const rod = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, len * 0.85, 8), metal);
-    rod.position.copy(ce).lerp(mid, 0.5);
+    const rod = new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.11, len * 0.62, 12), connMat);
+    rod.position.copy(ce).lerp(mid.clone().add(liftVec), 0.5);
     rod.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir.clone().normalize());
     overlay.add(rod);
   }
@@ -722,6 +768,7 @@ export async function cloneJaw(base, opts = {}) {
     keepSoftOnIsolate = true,
     keepBoneOnIsolate = true,
     clipToFocus = false,
+    clipPad = 1.15,
   } = opts;
 
   const gltf = await loadJawGltf(base);
@@ -820,7 +867,7 @@ export async function cloneJaw(base, opts = {}) {
     isolateTeeth.forEach((fdi) => {
       if (toothMap[fdi]) fb.expandByObject(toothMap[fdi]);
     });
-    fb.expandByScalar(1.15);
+    fb.expandByScalar(clipPad);
     const min = fb.min;
     const max = fb.max;
     focusPlanes.push(

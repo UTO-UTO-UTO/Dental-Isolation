@@ -6,8 +6,9 @@
 import { THREE, OrbitControls, createRenderer, applyStudioEnvironment, loadGLB, makeContactShadow, fitRenderer } from "./stage.js";
 import { getTopicScene } from "./topic-scenes.js";
 import * as P from "./topic-parts.js";
-import { visibleBox } from "./jaw-kit.js";
 import { composeTopicModel } from "./topic-real-scenes.js";
+import { makeJawMolarCrown } from "./jaw-kit.js";
+import { centerModelOnFocus, frameIsolation } from "./iso-frame.js";
 
 const ROOT = "../";
 
@@ -28,7 +29,7 @@ async function init(topicId) {
   const scene = new THREE.Scene();
   applyStudioEnvironment(renderer, scene, { intensity: 0.95, base: ROOT });
 
-  const camera = new THREE.PerspectiveCamera(36, 1, 0.1, 200);
+  const camera = new THREE.PerspectiveCamera(32, 1, 0.1, 200);
   camera.position.set(0.8, 0.55, 2.6);
 
   const key = new THREE.DirectionalLight(0xffffff, 1.05);
@@ -43,29 +44,20 @@ async function init(topicId) {
   scene.add(world);
 
   const model = await buildModel(preset);
+  world.add(model);
   if (model.userData && model.userData.syncClip) model.userData.syncClip();
-  const box = visibleBox(model);
-  const size = box.getSize(new THREE.Vector3());
-  const center = box.getCenter(new THREE.Vector3());
-  const maxDim = Math.max(size.x, size.y, size.z) || 1;
-  const holder = new THREE.Group();
-  model.position.sub(center);
-  holder.add(model);
-  holder.scale.setScalar(1.35 / maxDim);
-  world.add(holder);
-
-  scene.add(makeContactShadow({ size: 2.4, opacity: 0.28, y: -0.75 }));
+  const focused = centerModelOnFocus(model);
+  scene.add(makeContactShadow({ size: 3.0, opacity: 0.24, y: focused.min.y - 0.05 }));
 
   const controls = new OrbitControls(camera, canvas);
   controls.enableDamping = true;
   controls.dampingFactor = 0.08;
   controls.enablePan = false;
-  controls.minDistance = 1.4;
-  controls.maxDistance = 5.5;
-  controls.minPolarAngle = 0.25;
-  controls.maxPolarAngle = Math.PI * 0.7;
-  controls.target.set(0, 0.05, 0);
-  controls.update();
+  controls.minDistance = 0.6;
+  controls.maxDistance = 8;
+  controls.minPolarAngle = 0.12;
+  controls.maxPolarAngle = Math.PI * 0.82;
+  frameIsolation(camera, controls, model, preset, { fill: 1.16 });
 
   const labelsEl = document.getElementById("topic-part-labels");
   const labelTexts = preset.labels || [];
@@ -120,9 +112,7 @@ async function init(topicId) {
   const resetBtn = document.getElementById("topic-reset-view");
   if (resetBtn) {
     resetBtn.addEventListener("click", () => {
-      camera.position.set(0.8, 0.55, 2.6);
-      controls.target.set(0, 0.05, 0);
-      controls.update();
+      frameIsolation(camera, controls, model, preset, { fill: 1.16 });
       targetExplode = preset.explode || 0;
       explodeT = targetExplode;
       if (explodeRange) explodeRange.value = String(Math.round(targetExplode * 100));
@@ -182,12 +172,14 @@ async function init(topicId) {
     },
   };
   canvas.dataset.ready = "1";
+  const viewer = document.getElementById("detail-viewer");
+  if (viewer) viewer.classList.add("is-ready");
 }
 
 async function buildModel(preset) {
   let crownMesh = null;
   try {
-    crownMesh = await loadCrownGlb();
+    crownMesh = await makeJawMolarCrown(ROOT);
   } catch (_) { /* procedural crown fallback */ }
 
   try {
